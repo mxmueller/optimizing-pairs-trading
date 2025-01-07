@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  data-pipeline:
+    build:
+      context: ./data
+      dockerfile: Dockerfile
+    command: python /app/manager.py
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+      fluentd:
+        condition: service_started
+      logging:
+        condition: service_started
+    networks:
+      - app-network
+    volumes:
+      - ./data:/app
+    restart: unless-stopped
+
+  logging:
+    build:
+      context: ./infrastructure/logging
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  fluentd:
+    build:
+      context: ./infrastructure/logging/config/fluentd
+      dockerfile: Dockerfile.fluentd
+    volumes:
+      - ./infrastructure/logging/config/fluentd/conf:/fluentd/etc
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      - logging-network
+      - app-network
+    restart: unless-stopped
+
+  seq:
+    image: datalust/seq:latest
+    ports:
+      - "5341:5341"
+      - "80:80"
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - seq_data:/data
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg14
+    environment:
+      - POSTGRES_USER=trading
+      - POSTGRES_PASSWORD=trading
+      - POSTGRES_DB=trading_data
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/database/init:/docker-entrypoint-initdb.d
+      - timescale_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trading -d trading_data"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+
+volumes:
+  seq_data:
+  timescale_data:
+
+networks:
+  app-network:
+    driver: bridge
+  logging-network:
+    driver: bridge
