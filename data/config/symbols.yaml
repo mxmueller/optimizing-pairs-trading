@@ -1,0 +1,19 @@
+settings:
+  historical_start_date: "2024-01-01"
+  api:
+    base_url: "https://query1.finance.yahoo.com/v8/finance/chart"
+    params:
+      interval: "1d"
+      events: "history"
+      includeAdjustedClose: true
+      batch_size: 20
+
+symbols:
+  - pair: "MSFT"
+  - pair: "AAPL"
+  - pair: "GOOGL"
+  - pair: "JNJ"
+  - pair: "KO"
+  - pair: "WMT"
+  - pair: "PEP"
+  - pair: "CL"
