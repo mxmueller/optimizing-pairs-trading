@@ -8,12 +8,69 @@ settings:
       includeAdjustedClose: true
       batch_size: 20
 
+  # PCI spezifische Einstellungen
+  pci:
+    formation_days: 252       # Formation Period (1 Handelsjahr)
+    trading_days: 63         # Trading Period (1 Quartal)
+    min_r2_mr: 0.5          # Minimum R² für Mean Reversion
+    min_rho: 0.5            # Minimum AR(1) Koeffizient
+    entry_zscore: 1.0       # Entry Signal
+    exit_zscore: 0.5        # Exit Signal
+    stop_loss: 0.1          # 10% maximaler Verlust
+
+# Symbole mit Sektor-Information
 symbols:
   - pair: "MSFT"
+    sector: "Technology"
+    description: "Microsoft Corporation"
+
   - pair: "AAPL"
+    sector: "Technology"
+    description: "Apple Inc."
+
   - pair: "GOOGL"
+    sector: "Technology"
+    description: "Alphabet Inc."
+
   - pair: "JNJ"
+    sector: "Healthcare"
+    description: "Johnson & Johnson"
+
   - pair: "KO"
+    sector: "Consumer Staples"
+    description: "The Coca-Cola Company"
+
   - pair: "WMT"
+    sector: "Consumer Staples"
+    description: "Walmart Inc."
+
   - pair: "PEP"
+    sector: "Consumer Staples"
+    description: "PepsiCo Inc."
+
   - pair: "CL"
+    sector: "Consumer Staples"
+    description: "Colgate-Palmolive Company"
+
+pci_pairs:
+  # Technology Pairs
+  - primary: "MSFT"
+    secondary: "AAPL"
+    active: true
+
+  - primary: "MSFT"
+    secondary: "GOOGL"
+    active: true
+
+  - primary: "AAPL"
+    secondary: "GOOGL"
+    active: true
+
+  # Consumer Staples Pairs
+  - primary: "KO"
+    secondary: "PEP"
+    active: true
+
+  - primary: "WMT"
+    secondary: "CL"
+    active: true
