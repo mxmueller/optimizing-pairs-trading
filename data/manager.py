@@ -35,7 +35,7 @@ def send_log(message: str, level: LogLevel = LogLevel.INFO) -> None:
         "source": LogSource.SYSTEM,
         "level": level,
         "message": message,
-        "component": "process-manager",
+        "component": "pci-manager",
         "status": "active",
         "timestamp": datetime.now(UTC).isoformat()
     }
@@ -46,56 +46,58 @@ def send_log(message: str, level: LogLevel = LogLevel.INFO) -> None:
         logger.error(f"Failed to send log: {e}")
 
 
-def run_symbol_pipeline(symbol: str):
+def run_pair_pipeline(pair_id: str):
     """
-    Führt die komplette Pipeline für ein Symbol aus
+    Führt die Pipeline für ein Aktien-Paar aus
     """
     try:
+        symbol1, symbol2 = pair_id.split('_')
         from layer.raw.collector import main as collector_main
-        from layer.normalized.processor import main as processor_main
-        from layer.feature.processor import main as feature_main
+        from layer.pci.pci_layer import main as pci_main
 
         # Queues für Layer-Kommunikation
-        raw_to_normalized_queue = multiprocessing.Queue()
-        normalized_to_feature_queue = multiprocessing.Queue()
+        raw_to_pci_queue = multiprocessing.Queue()
+        pci_to_feature_queue = multiprocessing.Queue()
 
-        # Prozesse für jeden Layer
-        collector = Process(
+        # Collector Prozesse für beide Symbole
+        collector1 = Process(
             target=collector_main,
-            args=(raw_to_normalized_queue, symbol),
-            name=f"collector_{symbol}"
+            args=(raw_to_pci_queue, symbol1),
+            name=f"collector_{symbol1}"
         )
 
-        normalizer = Process(
-            target=processor_main,
-            args=(raw_to_normalized_queue, normalized_to_feature_queue, symbol),
-            name=f"normalizer_{symbol}"
+        collector2 = Process(
+            target=collector_main,
+            args=(raw_to_pci_queue, symbol2),
+            name=f"collector_{symbol2}"
         )
 
-        feature_processor = Process(
-            target=feature_main,
-            args=(normalized_to_feature_queue, symbol),
-            name=f"feature_{symbol}"
+        # PCI Processor für das Paar
+        pci_processor = Process(
+            target=pci_main,
+            args=(raw_to_pci_queue, pci_to_feature_queue, pair_id),
+            name=f"pci_{pair_id}"
         )
 
         # Prozesse starten
-        collector.start()
-        logger.info(f"Started collector for {symbol}")
+        collector1.start()
+        logger.info(f"Started collector for {symbol1}")
 
-        normalizer.start()
-        logger.info(f"Started normalizer for {symbol}")
+        time.sleep(1)  # Kleine Verzögerung zwischen Starts
 
-        feature_processor.start()
-        logger.info(f"Started feature processor for {symbol}")
+        collector2.start()
+        logger.info(f"Started collector for {symbol2}")
 
-        # Auf Prozesse warten
-        collector.join()
-        normalizer.join()
-        feature_processor.join()
+        pci_processor.start()
+        logger.info(f"Started PCI processor for pair {pair_id}")
+
+        collector1.join()
+        collector2.join()
+        pci_processor.join()
 
     except Exception as e:
-        logger.error(f"Error in pipeline for {symbol}: {str(e)}")
-        send_log(f"Error in pipeline for {symbol}: {str(e)}", LogLevel.ERROR)
+        logger.error(f"Error in pipeline for pair {pair_id}: {str(e)}")
+        send_log(f"Error in pipeline for pair {pair_id}: {str(e)}", LogLevel.ERROR)
         raise
 
 
@@ -113,20 +115,26 @@ def main():
     try:
         # Konfiguration laden
         config = load_config()
-        symbols = [symbol['pair'] for symbol in config['symbols']]
-        total_symbols = len(symbols)
 
-        send_log(f"Starting processing for {total_symbols} symbols")
-        logger.info(f"Processing symbols: {symbols}")
+        # Aktive Paare aus der PCI-Sektion filtern
+        active_pairs = [
+            f"{pair['primary']}_{pair['secondary']}"
+            for pair in config.get('pci_pairs', [])
+            if pair.get('active', False)
+        ]
 
-        # Prozesse für jedes Symbol erstellen
+        total_pairs = len(active_pairs)
+        send_log(f"Starting processing for {total_pairs} pairs")
+        logger.info(f"Processing pairs: {active_pairs}")
+
+        # Prozesse für jedes Paar erstellen
         processes = []
-        for symbol in symbols:
-            p = Process(target=run_symbol_pipeline, args=(symbol,))
+        for pair_id in active_pairs:
+            p = Process(target=run_pair_pipeline, args=(pair_id,))
             processes.append(p)
             p.start()
-            logger.info(f"Started pipeline for {symbol}")
-            time.sleep(1)  # Kleine Verzögerung zwischen Starts
+            logger.info(f"Started pipeline for pair {pair_id}")
+            time.sleep(2)  # Verzögerung zwischen Pair-Starts
 
         # Auf alle Prozesse warten
         for p in processes:
