@@ -1,5 +1,6 @@
 settings:
-  historical_start_date: "2024-01-01"
+  historical_start_date: "2020-01-01"
+  pci_enabled: false
   api:
     base_url: "https://query1.finance.yahoo.com/v8/finance/chart"
     params:
@@ -8,7 +9,6 @@ settings:
       includeAdjustedClose: true
       batch_size: 20
 
-  # PCI spezifische Einstellungen
   pci:
     formation_days: 252       # Formation Period (1 Handelsjahr)
     trading_days: 63         # Trading Period (1 Quartal)

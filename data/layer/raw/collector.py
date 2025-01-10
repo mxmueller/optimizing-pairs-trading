@@ -11,15 +11,14 @@ from sqlalchemy import text
 import pandas_market_calendars as mcal
 from functools import wraps, lru_cache
 from multiprocessing import Queue
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
 from database.database import DatabaseConnection
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class LogLevel(str, Enum):
     DEBUG = "DEBUG"
@@ -27,8 +26,10 @@ class LogLevel(str, Enum):
     WARNING = "WARNING"
     ERROR = "ERROR"
 
+
 class LogSource(str, Enum):
     SYSTEM = "system"
+
 
 def retry_on_exception(retries=3, delay=5):
     def decorator(func):
@@ -44,8 +45,11 @@ def retry_on_exception(retries=3, delay=5):
                         logger.warning(f"Attempt {attempt + 1} failed: {str(e)}. Retrying in {delay} seconds...")
                         time.sleep(delay)
             raise last_exception
+
         return wrapper
+
     return decorator
+
 
 class MarketCalendar:
     def __init__(self):
@@ -53,17 +57,11 @@ class MarketCalendar:
 
     @lru_cache(maxsize=1000)
     def is_trading_day(self, check_date: date) -> bool:
-        schedule = self.calendar.schedule(
-            start_date=check_date,
-            end_date=check_date
-        )
+        schedule = self.calendar.schedule(start_date=check_date, end_date=check_date)
         return len(schedule) > 0
 
     def get_trading_days(self, start_date: date, end_date: date) -> List[date]:
-        schedule = self.calendar.schedule(
-            start_date=start_date,
-            end_date=end_date
-        )
+        schedule = self.calendar.schedule(start_date=start_date, end_date=end_date)
         return [d.date() for d in schedule.index]
 
     @lru_cache(maxsize=1)
@@ -73,22 +71,18 @@ class MarketCalendar:
             start_date=today - timedelta(days=10),
             end_date=today
         )
-        if len(schedule) == 0:
-            return None
-        return schedule.index[-1].date()
+        return schedule.index[-1].date() if len(schedule) > 0 else None
+
 
 class RawDataCollector:
-    BATCH_SIZE = 500
+    BATCH_SIZE = 1000
+    CHUNK_DAYS = 90
+    MAX_WORKERS = 3
 
-    def __init__(self, update_queue: Queue, symbol: str) -> None:
-        """
-        Initialisiert den Collector für ein spezifisches Symbol
-        """
+    def __init__(self, update_queue: Queue, symbol: str):
         self.symbol = symbol
         self.config = self._load_config()
-        self.headers = {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'
-        }
+        self.headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'}
         self.db = DatabaseConnection()
         self.start_date = datetime.strptime(
             self.config['settings']['historical_start_date'],
@@ -99,7 +93,7 @@ class RawDataCollector:
 
     def _load_config(self) -> Dict[str, Any]:
         try:
-            with open('/app/config/symbols.yaml', 'r') as file:
+            with open('/app/config/settings.yaml', 'r') as file:
                 config = yaml.safe_load(file)
             self._validate_config(config)
             return config
@@ -113,11 +107,8 @@ class RawDataCollector:
 
         if not all(key in config for key in required_keys):
             raise ValueError(f"Missing required config keys. Required: {required_keys}")
-
         if not all(key in config['settings'] for key in required_settings):
             raise ValueError(f"Missing required settings. Required: {required_settings}")
-
-        # Validate symbol exists in config
         if not any(s['pair'] == self.symbol for s in config['symbols']):
             raise ValueError(f"Symbol {self.symbol} not found in configuration")
 
@@ -130,7 +121,6 @@ class RawDataCollector:
             "status": "active",
             "timestamp": datetime.now(UTC).isoformat()
         }
-
         try:
             requests.post("http://logging:8000/log", json=log_data, timeout=5)
         except Exception as e:
@@ -147,19 +137,11 @@ class RawDataCollector:
                 "timestamp": datetime.now(UTC).isoformat()
             }
             self.update_queue.put(update_event)
-            self.send_log(
-                f"Published update event: {record_count} records",
-                LogLevel.INFO
-            )
+            self.send_log(f"Published update event: {record_count} records")
         except Exception as e:
-            self.send_log(
-                f"Failed to publish update event: {e}",
-                LogLevel.ERROR
-            )
-            logger.error(f"Failed to publish update event: {e}")
+            self.send_log(f"Failed to publish update event: {e}", LogLevel.ERROR)
 
     def get_missing_dates(self) -> List[date]:
-        """Ermittelt fehlende Handelstage für das Symbol"""
         with self.db.get_session() as session:
             query = text("""
                 SELECT DISTINCT date
@@ -167,29 +149,14 @@ class RawDataCollector:
                 WHERE symbol = :symbol
                 ORDER BY date
             """)
-            existing_dates = set(row[0] for row in session.execute(
-                query,
-                {"symbol": self.symbol}
-            ).fetchall())
-
+            existing_dates = set(row[0] for row in session.execute(query, {"symbol": self.symbol}))
             trading_days = self.market_calendar.get_trading_days(
                 start_date=self.start_date.date(),
                 end_date=self.market_calendar.get_last_trading_day()
             )
-
-            missing_dates = [
-                day for day in trading_days
-                if day not in existing_dates
-            ]
-
-            if missing_dates:
-                logger.info(f"Found {len(missing_dates)} missing trading days")
-                logger.debug(f"Missing dates: {[d.strftime('%Y-%m-%d') for d in missing_dates]}")
-
-            return missing_dates
+            return [day for day in trading_days if day not in existing_dates]
 
     def create_optimal_date_ranges(self, dates: List[date]) -> List[Tuple[datetime, datetime]]:
-        """Erstellt optimale Datumsbereiche für API-Abfragen"""
         if not dates:
             return []
 
@@ -199,36 +166,21 @@ class RawDataCollector:
         prev_date = dates[0]
 
         for current_date in dates[1:]:
-            trading_days_between = len(self.market_calendar.get_trading_days(
-                start_date=prev_date,
-                end_date=current_date
-            ))
-
-            if trading_days_between > 30 or len(self.market_calendar.get_trading_days(
-                    start_date=current_start,
-                    end_date=current_date
-            )) >= self.BATCH_SIZE:
+            if len(self.market_calendar.get_trading_days(current_start, current_date)) >= self.BATCH_SIZE:
                 ranges.append((
                     datetime.combine(current_start, datetime.min.time(), UTC),
                     datetime.combine(prev_date, datetime.min.time(), UTC)
                 ))
                 current_start = current_date
-
             prev_date = current_date
 
         ranges.append((
             datetime.combine(current_start, datetime.min.time(), UTC),
             datetime.combine(prev_date, datetime.min.time(), UTC)
         ))
-
         return ranges
 
-    @retry_on_exception(retries=3, delay=5)
-    def collect_and_store_data(self, start_date: datetime, end_date: datetime) -> int:
-        """Sammelt und speichert Daten für einen Zeitraum"""
-        logger.info(f"Collecting data from {start_date.date()} to {end_date.date()}")
-        self.send_log(f"Starting collection from {start_date.date()} to {end_date.date()}")
-
+    def fetch_data_chunk(self, start_date: datetime, end_date: datetime) -> Dict:
         url = f"{self.config['settings']['api']['base_url']}/{self.symbol}"
         params = {
             **self.config['settings']['api']['params'],
@@ -236,101 +188,108 @@ class RawDataCollector:
             'period2': int((end_date + timedelta(days=1)).timestamp()),
             'interval': '1d'
         }
-
         response = requests.get(url, params=params, headers=self.headers, timeout=10)
         response.raise_for_status()
+        return response.json()
 
-        data = response.json()
-        if not data.get('chart', {}).get('result'):
-            logger.warning(f"No data available")
-            return 0
+    @retry_on_exception(retries=3, delay=5)
+    def collect_and_store_data(self, start_date: datetime, end_date: datetime) -> int:
+        logger.info(f"Collecting data from {start_date.date()} to {end_date.date()}")
 
-        result = data['chart']['result'][0]
-        timestamps = result.get('timestamp', [])
-        quotes = result.get('indicators', {}).get('quote', [{}])[0]
+        date_chunks = []
+        current = start_date
+        while current < end_date:
+            chunk_end = min(current + timedelta(days=self.CHUNK_DAYS), end_date)
+            date_chunks.append((current, chunk_end))
+            current = chunk_end + timedelta(days=1)
 
         records = []
-        for i, ts in enumerate(timestamps):
-            dt = datetime.fromtimestamp(ts, UTC).date()
-            if not self.market_calendar.is_trading_day(dt):
-                continue
+        with ThreadPoolExecutor(max_workers=self.MAX_WORKERS) as executor:
+            future_to_chunk = {
+                executor.submit(self.fetch_data_chunk, chunk_start, chunk_end): (chunk_start, chunk_end)
+                for chunk_start, chunk_end in date_chunks
+            }
 
-            if all(quotes.get(field) and i < len(quotes[field]) for field in
-                   ['open', 'high', 'low', 'close', 'volume']):
-                records.append({
-                    "date": dt,
-                    "symbol": self.symbol,
-                    "open": quotes['open'][i],
-                    "high": quotes['high'][i],
-                    "low": quotes['low'][i],
-                    "close": quotes['close'][i],
-                    "volume": quotes['volume'][i]
-                })
+            for future in as_completed(future_to_chunk):
+                try:
+                    data = future.result()
+                    if not data.get('chart', {}).get('result'):
+                        continue
+
+                    result = data['chart']['result'][0]
+                    timestamps = result.get('timestamp', [])
+                    quotes = result.get('indicators', {}).get('quote', [{}])[0]
+
+                    for i, ts in enumerate(timestamps):
+                        dt = datetime.fromtimestamp(ts, UTC).date()
+                        if not self.market_calendar.is_trading_day(dt):
+                            continue
+
+                        if all(quotes.get(field) and i < len(quotes[field]) for field in
+                               ['open', 'high', 'low', 'close', 'volume']):
+                            records.append({
+                                "date": dt,
+                                "symbol": self.symbol,
+                                "open": quotes['open'][i],
+                                "high": quotes['high'][i],
+                                "low": quotes['low'][i],
+                                "close": quotes['close'][i],
+                                "volume": quotes['volume'][i]
+                            })
+
+                except Exception as e:
+                    chunk_start, chunk_end = future_to_chunk[future]
+                    logger.error(f"Error fetching chunk {chunk_start} to {chunk_end}: {e}")
 
         if records:
             with self.db.get_session() as session:
-                session.execute(
-                    text("""
-                    INSERT INTO raw_market_data 
-                    (date, symbol, open, high, low, close, volume)
-                    VALUES (:date, :symbol, :open, :high, :low, :close, :volume)
-                    ON CONFLICT (date, symbol) DO UPDATE 
-                    SET open = EXCLUDED.open,
-                        high = EXCLUDED.high,
-                        low = EXCLUDED.low,
-                        close = EXCLUDED.close,
-                        volume = EXCLUDED.volume
-                    """),
-                    records
-                )
+                for i in range(0, len(records), self.BATCH_SIZE):
+                    batch = records[i:i + self.BATCH_SIZE]
+                    session.execute(
+                        text("""
+                        INSERT INTO raw_market_data 
+                        (date, symbol, open, high, low, close, volume)
+                        VALUES (:date, :symbol, :open, :high, :low, :close, :volume)
+                        ON CONFLICT (date, symbol) DO UPDATE 
+                        SET open = EXCLUDED.open,
+                            high = EXCLUDED.high,
+                            low = EXCLUDED.low,
+                            close = EXCLUDED.close,
+                            volume = EXCLUDED.volume
+                        """),
+                        batch
+                    )
                 session.commit()
 
-                self.publish_update_event(start_date, end_date, len(records))
-                logger.info(f"Successfully stored {len(records)} records")
-
-        return len(records)
+        total_records = len(records)
+        self.publish_update_event(start_date, end_date, total_records)
+        logger.info(f"Successfully stored {total_records} records")
+        return total_records
 
     def update_symbol_data(self) -> Dict[str, Any]:
-        """Aktualisiert die Daten für das Symbol"""
         last_trading_day = self.market_calendar.get_last_trading_day()
 
         with self.db.get_session() as session:
-            query = text("""
-                SELECT MAX(date) 
-                FROM raw_market_data 
-                WHERE symbol = :symbol
-            """)
-            last_update = session.execute(
-                query,
-                {"symbol": self.symbol}
-            ).scalar()
+            query = text("SELECT MAX(date) FROM raw_market_data WHERE symbol = :symbol")
+            last_update = session.execute(query, {"symbol": self.symbol}).scalar()
 
             if last_update and self.market_calendar.is_trading_day(last_update):
                 if last_update >= last_trading_day:
                     status_msg = f"Data is up to date (last update: {last_update})"
                     logger.info(status_msg)
                     self.send_log(status_msg)
-                    return {
-                        "symbol": self.symbol,
-                        "status": "up_to_date",
-                        "updates": 0
-                    }
+                    return {"symbol": self.symbol, "status": "up_to_date", "updates": 0}
 
         missing_dates = self.get_missing_dates()
-
         if missing_dates and last_update:
             today = datetime.now(UTC).date()
             missing_dates = [d for d in missing_dates if d < today or d not in [last_update]]
 
         if not missing_dates:
-            status_msg = f"No missing dates"
+            status_msg = "No missing dates"
             logger.info(status_msg)
             self.send_log(status_msg)
-            return {
-                "symbol": self.symbol,
-                "status": "up_to_date",
-                "updates": 0
-            }
+            return {"symbol": self.symbol, "status": "up_to_date", "updates": 0}
 
         self.send_log(f"Starting update with {len(missing_dates)} missing dates")
         date_ranges = self.create_optimal_date_ranges(missing_dates)
@@ -339,7 +298,7 @@ class RawDataCollector:
         for start, end in date_ranges:
             records_added = self.collect_and_store_data(start, end)
             total_updates += records_added
-            time.sleep(2)  # Rate limiting
+            time.sleep(2)
 
         final_status = f"Completed update: {total_updates} records in {len(date_ranges)} batches"
         logger.info(final_status)
@@ -351,6 +310,7 @@ class RawDataCollector:
             "updates": total_updates,
             "batches_processed": len(date_ranges)
         }
+
 
 def wait_for_database(max_attempts=30, delay=10):
     attempt = 0
@@ -370,10 +330,8 @@ def wait_for_database(max_attempts=30, delay=10):
                 logger.error(f"Failed to connect to database after {max_attempts} attempts")
                 raise
 
+
 def main(update_queue: Queue, symbol: str) -> None:
-    """
-    Hauptfunktion für die Symbol-spezifische Datensammlung
-    """
     wait_for_database()
     collector = RawDataCollector(update_queue, symbol)
 
@@ -389,13 +347,14 @@ def main(update_queue: Queue, symbol: str) -> None:
 
             collector.send_log("Data collection cycle completed")
             logger.info("Waiting for next check...")
-            time.sleep(3600)  # Stündlicher Check
+            time.sleep(3600)
 
         except Exception as e:
             error_msg = f"Main loop error: {str(e)}"
             logger.error(error_msg)
             collector.send_log(error_msg, LogLevel.ERROR)
             time.sleep(60)
+
 
 if __name__ == "__main__":
     pass
