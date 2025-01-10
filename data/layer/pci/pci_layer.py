@@ -2,7 +2,7 @@ import yaml
 import requests
 import logging
 from datetime import datetime, UTC
-from typing import Dict, Any, Tuple
+from typing import Dict, Any
 from enum import Enum
 from multiprocessing import Queue
 from sqlalchemy import text
@@ -12,12 +12,10 @@ from layer.pci.pci_processor import PCIProcessor
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 class LogLevel(str, Enum):
     INFO = "INFO"
     WARNING = "WARNING"
     ERROR = "ERROR"
-
 
 class PCILayerProcessor:
     def __init__(self, input_queue: Queue, output_queue: Queue, symbol_pair: str):
@@ -32,10 +30,10 @@ class PCILayerProcessor:
         self.processed_ranges = set()
 
     def _load_config(self) -> Dict[str, Any]:
-        with open('/app/config/symbols.yaml', 'r') as file:
+        with open('/app/config/settings.yaml', 'r') as file:
             config = yaml.safe_load(file)
             pair_config = next((pair for pair in config['pci_pairs']
-                                if f"{pair['primary']}_{pair['secondary']}" == self.symbol_pair), None)
+                             if f"{pair['primary']}_{pair['secondary']}" == self.symbol_pair), None)
             if not pair_config or not pair_config.get('active', False):
                 raise ValueError(f"Pair {self.symbol_pair} not found or not active")
             self.pci_settings = config['settings']['pci']
@@ -53,6 +51,43 @@ class PCILayerProcessor:
             requests.post("http://logging:8000/log", json=log_data, timeout=5)
         except Exception as e:
             logger.error(f"Failed to send log: {e}")
+
+    def get_all_pairs(self):
+        try:
+            with self.db.get_session() as session:
+                # Get all active pairs from config
+                active_pairs = []
+                for pair in self.config['pci_pairs']:
+                    if pair.get('active', False):
+                        primary = pair['primary']
+                        secondary = pair['secondary']
+                        data1 = self._get_symbol_data(session, primary)
+                        data2 = self._get_symbol_data(session, secondary)
+                        if data1 and data2 and len(data1) == len(data2):
+                            active_pairs.append({
+                                'data1': data1,
+                                'data2': data2,
+                                'primary': primary,
+                                'secondary': secondary
+                            })
+                return active_pairs
+        except Exception as e:
+            self.send_log(f"Failed to get pairs: {e}", LogLevel.ERROR)
+            return []
+
+    def _get_symbol_data(self, session, symbol):
+        try:
+            query = text("""
+                SELECT date, close 
+                FROM raw_market_data 
+                WHERE symbol = :symbol 
+                ORDER BY date
+            """)
+            result = session.execute(query, {"symbol": symbol}).fetchall()
+            return [{'date': row[0], 'close': float(row[1])} for row in result]
+        except Exception as e:
+            self.send_log(f"Failed to get data for {symbol}: {e}", LogLevel.ERROR)
+            return None
 
     def validate_data_availability(self, start_date: str, end_date: str) -> bool:
         try:
@@ -80,10 +115,9 @@ class PCILayerProcessor:
             self.send_log(f"Data validation failed: {e}", LogLevel.ERROR)
             return False
 
-    def get_date_range(self, event1: Dict, event2: Dict) -> Tuple[str, str]:
-        dates = []
-        for event in [event1, event2]:
-            dates.extend([event['start_date'], event['end_date']])
+    def get_date_range(self, event1: Dict, event2: Dict) -> tuple[str, str]:
+        dates = [event1['start_date'], event1['end_date'],
+                event2['start_date'], event2['end_date']]
         return min(dates), max(dates)
 
     def process_raw_event(self, event: Dict[str, Any]) -> None:
@@ -109,8 +143,23 @@ class PCILayerProcessor:
                 if not self.validate_data_availability(start_date, end_date):
                     return
 
+                # Get all potential pairs and run selection
+                all_pairs = self.get_all_pairs()
+                selected_pairs = self.pci_processor.select_pairs(all_pairs)
+
+                if not selected_pairs:
+                    self.send_log("No pairs selected after filtering")
+                    return
+
+                # Process only selected pairs
                 try:
-                    self.process_pci(start_date, end_date)
+                    for pair in selected_pairs:
+                        if (pair['primary'] == self.symbol1 and
+                            pair['secondary'] == self.symbol2):
+                            self.process_pci(
+                                start_date, end_date,
+                                pair['data1'], pair['data2']
+                            )
                     self.processed_ranges.add(range_key)
                 except Exception as e:
                     self.send_log(f"PCI processing failed: {e}", LogLevel.ERROR)
@@ -120,47 +169,16 @@ class PCILayerProcessor:
         except Exception as e:
             self.send_log(f"Event processing failed: {e}", LogLevel.ERROR)
 
-    def process_pci(self, start_date: str, end_date: str) -> None:
+    def process_pci(self, start_date: str, end_date: str, data1, data2) -> None:
         try:
+            self.pci_processor.pci_settings = self.pci_settings
+            pci_results = self.pci_processor.process_pair(data1, data2)
+
+            if not pci_results:
+                logger.warning("No PCI results generated")
+                return
+
             with self.db.get_session() as session:
-                data = session.execute(text("""
-                    SELECT date, symbol, close
-                    FROM raw_market_data
-                    WHERE symbol IN :symbols
-                    AND date BETWEEN :start_date AND :end_date
-                    AND close IS NOT NULL
-                    ORDER BY date, symbol
-                """), {
-                    "symbols": (self.symbol1, self.symbol2),
-                    "start_date": start_date,
-                    "end_date": end_date
-                }).fetchall()
-
-                if not data:
-                    raise ValueError("No data found for processing")
-
-                data_dict = {self.symbol1: [], self.symbol2: []}
-                for row in data:
-                    data_dict[row.symbol].append({
-                        'date': row.date,
-                        'symbol': row.symbol,
-                        'close': float(row.close)
-                    })
-
-                for symbol, values in data_dict.items():
-                    if not values:
-                        raise ValueError(f"No data for {symbol}")
-
-                self.pci_processor.pci_settings = self.pci_settings
-                pci_results = self.pci_processor.process_pair(
-                    data_dict[self.symbol1],
-                    data_dict[self.symbol2]
-                )
-
-                if not pci_results:
-                    logger.warning("No PCI results generated")
-                    return
-
                 session.execute(text("""
                     INSERT INTO pci_market_data (
                         date, symbol_pair, symbol1, symbol2,
@@ -192,7 +210,6 @@ class PCILayerProcessor:
             self.send_log(f"PCI processing failed: {str(e)}", LogLevel.ERROR)
             raise
 
-
 def main(input_queue: Queue, output_queue: Queue, symbol_pair: str):
     try:
         processor = PCILayerProcessor(input_queue, output_queue, symbol_pair)
@@ -207,7 +224,6 @@ def main(input_queue: Queue, output_queue: Queue, symbol_pair: str):
     except Exception as e:
         logger.error(f"Fatal error: {str(e)}")
         raise
-
 
 if __name__ == "__main__":
     pass

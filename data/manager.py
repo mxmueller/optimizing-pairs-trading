@@ -47,53 +47,32 @@ def send_log(message: str, level: LogLevel = LogLevel.INFO) -> None:
 
 
 def run_pair_pipeline(pair_id: str):
-    """
-    Führt die Pipeline für ein Aktien-Paar aus
-    """
     try:
         symbol1, symbol2 = pair_id.split('_')
         from layer.raw.collector import main as collector_main
         from layer.pci.pci_layer import main as pci_main
 
-        # Queues für Layer-Kommunikation
         raw_to_pci_queue = multiprocessing.Queue()
         pci_to_feature_queue = multiprocessing.Queue()
 
-        # Collector Prozesse für beide Symbole
-        collector1 = Process(
-            target=collector_main,
-            args=(raw_to_pci_queue, symbol1),
-            name=f"collector_{symbol1}"
-        )
+        collector1 = Process(target=collector_main, args=(raw_to_pci_queue, symbol1))
+        collector2 = Process(target=collector_main, args=(raw_to_pci_queue, symbol2))
 
-        collector2 = Process(
-            target=collector_main,
-            args=(raw_to_pci_queue, symbol2),
-            name=f"collector_{symbol2}"
-        )
-
-        # PCI Processor für das Paar
-        pci_processor = Process(
-            target=pci_main,
-            args=(raw_to_pci_queue, pci_to_feature_queue, pair_id),
-            name=f"pci_{pair_id}"
-        )
-
-        # Prozesse starten
         collector1.start()
         logger.info(f"Started collector for {symbol1}")
-
-        time.sleep(1)  # Kleine Verzögerung zwischen Starts
-
+        time.sleep(1)
         collector2.start()
         logger.info(f"Started collector for {symbol2}")
 
-        pci_processor.start()
-        logger.info(f"Started PCI processor for pair {pair_id}")
+        config = load_config()
+        if config['settings'].get('pci_enabled', True):
+            pci_processor = Process(target=pci_main, args=(raw_to_pci_queue, pci_to_feature_queue, pair_id))
+            pci_processor.start()
+            logger.info(f"Started PCI processor for pair {pair_id}")
+            pci_processor.join()
 
         collector1.join()
         collector2.join()
-        pci_processor.join()
 
     except Exception as e:
         logger.error(f"Error in pipeline for pair {pair_id}: {str(e)}")
@@ -104,7 +83,7 @@ def run_pair_pipeline(pair_id: str):
 def load_config() -> Dict:
     """Lädt die Konfiguration aus der YAML-Datei"""
     try:
-        with open('/app/config/symbols.yaml', 'r') as file:
+        with open('/app/config/settings.yaml', 'r') as file:
             return yaml.safe_load(file)
     except Exception as e:
         logger.error(f"Failed to load config: {e}")
