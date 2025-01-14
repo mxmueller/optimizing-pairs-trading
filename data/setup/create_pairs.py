@@ -13,7 +13,9 @@ def create_pairs():
         symbol1 String,
         symbol2 String,
         sub_industry1 String,
-        sub_industry2 String
+        sub_industry2 String,
+        p_value Nullable(Float64),
+        cointegration_score Nullable(Float64)
     ) ENGINE = MergeTree()
     ORDER BY pair_key
     ''')
@@ -45,7 +47,9 @@ def create_pairs():
                 sym1,
                 sym2,
                 stock1['sub_industry'],
-                stock2['sub_industry']
+                stock2['sub_industry'],
+                None,  # p_value
+                None   # cointegration_score
             ))
     
     if pairs_data:

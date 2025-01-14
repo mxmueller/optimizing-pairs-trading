@@ -32,60 +32,61 @@ def fetch_stock_data(symbol, start_date, end_date):
         print(f"Error fetching data for {symbol}: {str(e)}")
         return None
 
-def has_ten_years_data(df):
+def is_complete_data(df, min_days_per_year=240):
     if df is None or df.empty:
         return False
-    days_diff = (df.index.max() - df.index.min()).days
-    return days_diff >= 3650  # ~10 Jahre
+        
+    years = (df.index.max() - df.index.min()).days / 365
+    required_days = int(years * min_days_per_year)
+    actual_days = len(df)
+    
+    return actual_days >= required_days
 
 def main():
     df_constituents = pd.read_csv('../raw/sp500_constituents.csv')
     symbols = df_constituents['Symbol'].tolist()
 
     end_date = datetime.now()
-    start_date = end_date - timedelta(days=11*365)  # 11 Jahre für Puffer
+    start_date = end_date - timedelta(days=11*365)
     
     conn = create_database()
     cursor = conn.cursor()
     
-    complete_symbols = []
+    total_symbols = len(symbols)
+    complete_count = 0
+    incomplete_count = 0
     
-    for symbol in symbols:
-        print(f"Checking {symbol}")
+    for idx, symbol in enumerate(symbols, 1):
+        print(f"Processing {symbol} ({idx}/{total_symbols})")
         yahoo_symbol = symbol.replace('.','-')
+        
         df = fetch_stock_data(yahoo_symbol, start_date, end_date)
         
-        if has_ten_years_data(df):
-            complete_symbols.append(symbol)
-            print(f"✓ {symbol} has 10+ years data")
+        if is_complete_data(df):
+            complete_count += 1
+            for index, row in df.iterrows():
+                cursor.execute('''
+                    INSERT OR REPLACE INTO daily_prices 
+                    (symbol, date, open, high, low, close, volume)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                ''', (
+                    symbol,
+                    index.strftime('%Y-%m-%d'),
+                    row['Open'],
+                    row['High'],
+                    row['Low'],
+                    row['Close'],
+                    row['Volume']
+                ))
+            conn.commit()
+            print(f"Stored complete data for {symbol}")
         else:
-            print(f"✗ {symbol} insufficient history")
+            incomplete_count += 1
+            print(f"Skipped {symbol} - incomplete data")
     
-    print(f"\nFound {len(complete_symbols)} symbols with 10+ years history")
-    
-    for symbol in complete_symbols:
-        print(f"Processing {symbol}")
-        yahoo_symbol = symbol.replace('.','-')
-        df = fetch_stock_data(yahoo_symbol, start_date, end_date)
-        
-        for index, row in df.iterrows():
-            cursor.execute('''
-                INSERT OR REPLACE INTO daily_prices 
-                (symbol, date, open, high, low, close, volume)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (
-                symbol,
-                index.strftime('%Y-%m-%d'),
-                row['Open'],
-                row['High'],
-                row['Low'],
-                row['Close'],
-                row['Volume']
-            ))
-        conn.commit()
-        print(f"Stored data for {symbol}")
-    
-    print(f"\nStored data for all {len(complete_symbols)} complete symbols")
+    print(f"\nProcessing completed:")
+    print(f"Complete symbols: {complete_count}")
+    print(f"Incomplete symbols: {incomplete_count}")
     conn.close()
 
 if __name__ == "__main__":
