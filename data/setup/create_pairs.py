@@ -20,6 +20,8 @@ def create_pairs():
     ORDER BY pair_key
     ''')
 
+    available_symbols = set(sym[0] for sym in client.execute('SELECT DISTINCT symbol FROM stock_data'))
+
     sectors_data = client.execute('''
     SELECT 
         symbol,
@@ -31,29 +33,35 @@ def create_pairs():
     
     df = pd.DataFrame(sectors_data, columns=['symbol', 'sector', 'sub_industry'])
     pairs_data = []
+    skipped_pairs = 0
     
     for sector in df['sector'].unique():
         sector_stocks = df[df['sector'] == sector]
         symbols = sector_stocks['symbol'].tolist()
         
         for sym1, sym2 in combinations(symbols, 2):
-            stock1 = sector_stocks[sector_stocks['symbol'] == sym1].iloc[0]
-            stock2 = sector_stocks[sector_stocks['symbol'] == sym2].iloc[0]
-            sector_clean = sector.replace(' ', '_').upper()
-            
-            pairs_data.append((
-                f"{sector_clean}_{sym1}_{sym2}",
-                sector,
-                sym1,
-                sym2,
-                stock1['sub_industry'],
-                stock2['sub_industry'],
-                None,  # p_value
-                None   # cointegration_score
-            ))
+            if sym1 in available_symbols and sym2 in available_symbols:
+                stock1 = sector_stocks[sector_stocks['symbol'] == sym1].iloc[0]
+                stock2 = sector_stocks[sector_stocks['symbol'] == sym2].iloc[0]
+                sector_clean = sector.replace(' ', '_').upper()
+                
+                pairs_data.append((
+                    f"{sector_clean}_{sym1}_{sym2}",
+                    sector,
+                    sym1,
+                    sym2,
+                    stock1['sub_industry'],
+                    stock2['sub_industry'],
+                    None,
+                    None
+                ))
+            else:
+                skipped_pairs += 1
     
     if pairs_data:
         client.execute('INSERT INTO stock_pairs VALUES', pairs_data)
+    
+    print(f"Skipped {skipped_pairs} pairs due to missing data")
 
 if __name__ == "__main__":
     create_pairs()
