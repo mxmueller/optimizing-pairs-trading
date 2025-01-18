@@ -20,7 +20,7 @@ class BacktestConfig:
         self.price_impact_coef = price_impact_coef
 
 class PairBacktest:
-    def __init__(self, config=None, signals_path='../notebooks/results/cointegration_bollinger_results.parquet', 
+    def __init__(self, config=None, signals_path='../notebooks/results/cointegration_zscore_results.parquet', 
                  market_data_path='../notebooks/nasdaq_daily.parquet'):
         self.config = config if config else BacktestConfig()
         self.signals = pd.read_parquet(signals_path)
@@ -116,7 +116,7 @@ class PairBacktest:
         equity['equity_net'] = cumulative_pnl_net
         self.equity_curve = equity
         return self.equity_curve
-    
+
     def plot_equity_curve(self):
         if self.equity_curve is None:
             self.calculate_equity_curve()
@@ -255,7 +255,7 @@ class PairBacktest:
 if __name__ == "__main__":
     custom_config = BacktestConfig(
         initial_capital=100000,
-        trade_percentage=0.01,
+        trade_percentage=0.05,
         commission_per_share=0.005,
         variable_fee=0.00018,
         bid_ask_spread=0.0002,
