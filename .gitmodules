@@ -1,0 +1,3 @@
+[submodule "docs/github-pages/themes/typo"]
+	path = docs/github-pages/themes/typo
+	url = https://github.com/tomfran/typo.git
