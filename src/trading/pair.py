@@ -8,7 +8,7 @@ from config import BacktestConfig
 from joblib import Parallel, delayed
 
 class PairBacktest:
-    def __init__(self, config=None, signals_path=None, market_data_path='../notebooks/sim_daily.parquet'):
+    def __init__(self, config=None, signals_path=None, market_data_path='../notebooks/nasdaq_daily.parquet'):
         self.config = config if config else BacktestConfig()
         if signals_path:
             self.signals = pd.read_parquet(signals_path)

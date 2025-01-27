@@ -4,7 +4,7 @@ from config import BacktestConfig
 from pair import PairBacktest
 
 class MultiStrategyBacktest:
-    def __init__(self, config=None, market_data_path='../notebooks/sim_daily.parquet'):
+    def __init__(self, config=None, market_data_path='../notebooks/nasdaq_daily.parquet'):
         self.config = config if config else BacktestConfig()
         self.market_data_path = market_data_path
         self.strategies = {}
