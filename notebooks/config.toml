@@ -1,0 +1,2 @@
+[data]
+raw_data_path = "../../data/raw/nasdaq_daily.parquet"

@@ -8,7 +8,7 @@ from config import BacktestConfig
 from joblib import Parallel, delayed
 
 class PairBacktest:
-    def __init__(self, config=None, signals_path=None, market_data_path='../notebooks/nasdaq_daily.parquet'):
+    def __init__(self, config=None, signals_path=None, market_data_path='../../data/raw/nasdaq_daily.parquet'):
         self.config = config if config else BacktestConfig()
         if signals_path:
             self.signals = pd.read_parquet(signals_path)
@@ -31,7 +31,7 @@ class PairBacktest:
         self.equity_curve = None
 
     @staticmethod
-    def get_available_strategies(directory='../notebooks/results/'):
+    def get_available_strategies(directory='../../data/results/'):
         files = glob.glob(os.path.join(directory, '*.parquet'))
         return {os.path.splitext(os.path.basename(f))[0]: f for f in files}
         
