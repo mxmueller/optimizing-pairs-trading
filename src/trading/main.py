@@ -53,21 +53,62 @@ if single_backtest.validate_data():
     ])
 
     with tab1:
-        st.header('Strategy Comparison')
-        
-        col1, col2 = st.columns([2, 1])
-        with col1:
+            st.header('Strategy Comparison')
+            
             st.plotly_chart(multi_backtest.plot_all_equity_curves(), use_container_width=True)
-        
-        with col2:
+            
             metrics_df = multi_backtest.get_strategy_metrics()
             st.dataframe(metrics_df.style.format({
                 'Final Equity': '${:,.2f}',
                 'Total Return %': '{:.2f}%',
                 'Win Rate %': '{:.2f}%',
                 'Avg Trade': '${:.2f}',
-                'Num Trades': '{:,.0f}'
+                'Num Trades': '{:,.0f}',
+                'Max Drawdown %': '{:.2f}%',
+                'Sharpe Ratio': '{:.2f}',
+                'Sortino Ratio': '{:.2f}',
+                'Return/Drawdown': '{:.2f}',
+                'Profit Factor': '{:.2f}',
+                'Win/Loss Ratio': '{:.2f}',
+                'Max Win Streak': '{:.0f}',
+                'Max Loss Streak': '{:.0f}',
+                'Avg Duration (days)': '{:.1f}',
+                'Trades per Month': '{:.1f}',
+                'Best Month': '${:.2f}',
+                'Worst Month': '${:.2f}'
             }))
+
+            # Market Index Plot - hole market_data aus der ersten Strategie
+            if multi_backtest.strategies:
+                first_strategy = next(iter(multi_backtest.strategies.values()))
+                market_data = first_strategy.market_data
+                normalized_df = market_data.copy()
+                
+                for symbol in market_data['symbol'].unique():
+                    mask = market_data['symbol'] == symbol
+                    start_price = market_data[mask]['close'].iloc[0]
+                    normalized_df.loc[mask, 'close'] = market_data[mask]['close'] / start_price * 100
+
+                index_values = normalized_df.groupby('date')['close'].mean()
+                
+                fig = go.Figure()
+                fig.add_trace(go.Scatter(
+                    x=index_values.index,
+                    y=index_values.values,
+                    mode='lines',
+                    name='Market Index'
+                ))
+                
+                fig.update_layout(
+                    title='Market Index',
+                    xaxis_title='Date',
+                    yaxis_title='Index Value',
+                    template='plotly_white'
+                )
+                
+                st.plotly_chart(fig, use_container_width=True)
+            
+
 
     with tab2:
         st.header('Single Strategy Analysis')
