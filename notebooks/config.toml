@@ -1,2 +1,2 @@
 [data]
-raw_data_path = "../../data/raw/sim_daily.parquet"
+raw_data_path = "../../data/raw/nasdaq_daily.parquet"

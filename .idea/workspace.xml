@@ -5,12 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f14cecc-ea7d-4ad3-9827-8f5223220f79" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/data/raw/sp500_stock_data.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/raw/sp500_stock_data.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/raw/sp500_stock_data.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/data/raw/sp500_stock_data.parquet" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/setup/stock_fetcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/setup/stock_fetcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/do/pci.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pci/03_kalman_filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/pci/03_kalman_filter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pci/05_trading_signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/pci/05_trading_signals.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notebooks/data/02_figures.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/raw/sim_daily.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/data/raw/sim_daily.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/results/Cluster_Z-Score.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/data/results/Cluster_Z-Score.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/config.toml" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/config.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/data/00_nasdaq_market_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/data/00_nasdaq_market_data.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/data/01_simulated_market_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/data/01_simulated_market_data.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/06_apcluster_bollinger.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/06_apcluster_bollinger.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/07_randomforest_zscore.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/07_randomforest_zscore.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/08_randomforest_bollinger.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/08_randomforest_bollinger.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,20 +42,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature/v0.0.2/full-circle-validation",
-    "last_opened_file_path": "/Users/mumaxi2/Git/mxmueller/optimizing-pairs-trading-ml",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "configurable.group.editor",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/v0.1.2/improved-display&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mumaxi2/Git/mxmueller/optimizing-pairs-trading-ml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/data/config" />
@@ -72,6 +79,10 @@
       <updated>1736272970427</updated>
       <workItem from="1736272971465" duration="15849000" />
       <workItem from="1736441534105" duration="11395000" />
+      <workItem from="1738247345241" duration="12341000" />
+      <workItem from="1738313426842" duration="17876000" />
+      <workItem from="1738658898049" duration="8216000" />
+      <workItem from="1738744792145" duration="43000" />
     </task>
     <servers />
   </component>
