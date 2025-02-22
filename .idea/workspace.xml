@@ -5,24 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f14cecc-ea7d-4ad3-9827-8f5223220f79" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/optimizing-pairs-trading-ml.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/optimizing-pairs-trading-ml.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/results/Cluster_Bollinger.parquet" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/results/Cluster_Z-Score.parquet" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/results/CoInt_Bollinger.parquet" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/results/CoInt_Z-Score.parquet" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/results/Random-Forest_Bollinger.parquet" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/results/Random-Forest_Z-Score.parquet" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/data/00_nasdaq_market_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/data/00_nasdaq_market_data.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/data/02_figures.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/data/index_and_returns.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/data/index_plot.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/data/index_plot.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/research/05_apcluster_robustness.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/research/05_apcluster_robustness.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/data/02_forex_market_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/data/02_forex_market_data.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore_evo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger_evo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore_evo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/06_apcluster_bollinger_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/06_apcluster_bollinger_evo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/07_gradientboost_zscore_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/07_gradientboost_zscore_evo.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/trading/pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/trading/pair.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/trading/strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/trading/strategy.py" afterDir="false" />
     </list>
@@ -53,7 +42,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/v0.1.3/gradient-boost-tree&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/v.2.0.0/evo&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/mumaxi2/Git/mxmueller/optimizing-pairs-trading-ml&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -93,7 +82,10 @@
       <workItem from="1738658898049" duration="8216000" />
       <workItem from="1738744792145" duration="79819000" />
       <workItem from="1739462229209" duration="25639000" />
-      <workItem from="1739725370441" duration="23049000" />
+      <workItem from="1739725370441" duration="26406000" />
+      <workItem from="1739866943306" duration="14426000" />
+      <workItem from="1740061282738" duration="745000" />
+      <workItem from="1740065028623" duration="4327000" />
     </task>
     <servers />
   </component>
@@ -110,16 +102,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
-          <url>notebook:///Users/mumaxi2/Git/mxmueller/optimizing-pairs-trading-ml/notebooks/data/02_forex_market_data.ipynb</url>
-          <line>229</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
