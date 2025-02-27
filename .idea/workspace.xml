@@ -5,19 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f14cecc-ea7d-4ad3-9827-8f5223220f79" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/notebooks/data/02_figures.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/raw/sim_daily.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/data/raw/sim_daily.parquet" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/results/Cluster_Z-Score.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/data/results/Cluster_Z-Score.parquet" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/config.toml" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/config.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/data/00_nasdaq_market_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/data/00_nasdaq_market_data.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/data/01_simulated_market_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/data/01_simulated_market_data.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/strategies/06_apcluster_bollinger.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/06_apcluster_bollinger.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/strategies/07_randomforest_zscore.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/07_randomforest_zscore.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/strategies/08_randomforest_bollinger.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/08_randomforest_bollinger.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/data/02_forex_market_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/data/02_forex_market_data.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/02_cointegration_zscore_evo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/03_cointegration_bollinger_evo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/05_apcluster_zscore_evo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/06_apcluster_bollinger_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/06_apcluster_bollinger_evo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/strategies/07_gradientboost_zscore_evo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/strategies/07_gradientboost_zscore_evo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trading/pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/trading/pair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trading/strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/trading/strategy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +24,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
@@ -45,19 +42,20 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/v0.1.2/improved-display&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/v.2.0.0/evo&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/mumaxi2/Git/mxmueller/optimizing-pairs-trading-ml&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/notebooks/research" />
       <recent name="$PROJECT_DIR$/data/config" />
     </key>
   </component>
@@ -82,7 +80,12 @@
       <workItem from="1738247345241" duration="12341000" />
       <workItem from="1738313426842" duration="17876000" />
       <workItem from="1738658898049" duration="8216000" />
-      <workItem from="1738744792145" duration="43000" />
+      <workItem from="1738744792145" duration="79819000" />
+      <workItem from="1739462229209" duration="25639000" />
+      <workItem from="1739725370441" duration="26406000" />
+      <workItem from="1739866943306" duration="14426000" />
+      <workItem from="1740061282738" duration="745000" />
+      <workItem from="1740065028623" duration="4327000" />
     </task>
     <servers />
   </component>

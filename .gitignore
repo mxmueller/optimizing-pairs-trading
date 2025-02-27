@@ -68,3 +68,10 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+data/.DS_Store
+data/.DS_Store
+data/.idea/data.iml
+data/.idea/inspectionProfiles/profiles_settings.xml
+data/.idea/misc.xml
+data/.idea/modules.xml
+data/.idea/vcs.xml

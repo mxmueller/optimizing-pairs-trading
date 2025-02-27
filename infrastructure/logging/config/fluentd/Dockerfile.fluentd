@@ -1,8 +1,0 @@
-FROM fluent/fluentd:v1.16
-
-USER root
-
-# Install seq plugin
-RUN gem install fluent-plugin-seq
-
-USER fluent
