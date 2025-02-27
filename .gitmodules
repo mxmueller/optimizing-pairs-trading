@@ -1,3 +1,6 @@
 [submodule "docs/github-pages/themes/typo"]
 	path = docs/github-pages/themes/typo
 	url = https://github.com/tomfran/typo.git
+[submodule "src/backtester"]
+	path = src/backtester
+	url = git@github.com:mxmueller/backtester.git
