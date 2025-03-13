@@ -75,3 +75,6 @@ data/.idea/inspectionProfiles/profiles_settings.xml
 data/.idea/misc.xml
 data/.idea/modules.xml
 data/.idea/vcs.xml
+/data/.minio.sys/
+/data/markets/
+.idea/workspace.xml

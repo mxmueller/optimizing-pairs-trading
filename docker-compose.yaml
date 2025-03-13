@@ -1,0 +1,59 @@
+services:
+  minio:
+    build: ./src/backtester/services/minio
+    container_name: minio-server
+    environment:
+      - CONFIG_FILE=/config/config.yaml
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+      - ./config.yaml:/config/config.yaml
+      - ./data:/data
+    restart: unless-stopped
+
+  analytics:
+    build: ./src/backtester/services/analytics
+    container_name: analytics-service
+    volumes:
+      - ./config.yaml:/app/config.yaml
+      - ./data:/app/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      - minio
+    restart: unless-stopped
+
+  notebook_runner:
+    build: ./src/backtester/services/notebook_runner
+    container_name: notebook-runner-service
+    volumes:
+      - ./config.yaml:/app/config.yaml
+      - ./data:/app/data
+      - ./notebooks:/app/notebooks
+      - ./src:/app/src
+    ports:
+      - "8080:8080"
+    depends_on:
+      - minio
+    restart: unless-stopped
+
+  streamlit:
+    build:
+      context: ./src/backtester/services/streamlit
+    container_name: streamlit-app
+    volumes:
+      - ./config.yaml:/app/config.yaml
+      - ./data:/app/data
+    ports:
+      - "8501:8501"
+    depends_on:
+      - minio
+      - analytics
+    environment:
+      - ANALYTICS_URL=http://analytics-service:8000
+    restart: unless-stopped
+
+volumes:
+  minio-data:

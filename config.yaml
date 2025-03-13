@@ -1,0 +1,24 @@
+minio:
+  user: minioadmin
+  password: minioadmin
+
+storage:
+  base_bucket: markets
+  markets:
+    - name: FTSE100
+      data_file: market_data.parquet
+      data_path: ./data/raw/ftse_daily.parquet
+      strategies:
+        - file: version_1.parquet
+          source_path: ./data/evaluation/ftse100/ftse_trades.parquet
+          type: Z-Score
+          description: Initial Setup Version
+          pair_finding: Clustering
+        - file: version_2.parquet
+          source_path: ./data/evaluation/ftse100/ftse_trades2.parquet
+          type: Z-Score
+          description: Initial Setup Version Test
+          pair_finding: Clustering
+    - name: NASDAQ100
+      data_file: market_data.parquet
+      data_path: ./data/raw/nasdaq_daily.parquet
