@@ -22,3 +22,11 @@ storage:
     - name: NASDAQ100
       data_file: market_data.parquet
       data_path: ./data/raw/nasdaq_daily.parquet
+
+markup:
+  goldmark:
+    parser:
+      wrapStandAloneImageWithinParagraph: false
+      attribute:
+        block: true
+        title: true

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    Ausarbeitung | Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/docs/"/>
+
+<meta property="og:url" content="http://localhost:1313/docs/">
+  <meta property="og:site_name" content="Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading">
+  <meta property="og:title" content="Ausarbeitung">
+  <meta property="og:description" content="Pairstrading ist eine nichtdirektionale Handelsstrategie, die unabhängig von der Marktrichtung funktioniert (Vidyamurthy 2004, p. 8). Sie basiert auf historischen Zusammenhängen zwischen zwei Wertpapieren (Zeitreihen) $X_i(t)$ und $X_j(t)$ und nutzt temporäre Abweichungen in deren Preisbeziehung zur Gewinnerzielung aus. Im verbreiteten, statistischen Pairstrading werden zwei Hauptansätze unterschieden: kointegrationsbasierte und korrelationsbasierte Verfahren. Engle et al. 1987 legten die theoretischen Grundlagen der Kointegration, Vidyamurthy et al. 2004 entwickelten deren Anwendung im Pairstrading, und Gatev et al. 2006 etablierten den korrelationsbasierten Ansatz. Pairstrading umfasst zwei fundamentale Schritte: das Identifizieren geeigneter Paare und deren Handel.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.a770b0fa208c110590b91b5ec2cab4d57f5090aab9738535859f2e5783b124af.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="light">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/docs/" >
+                /Docs
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span>
+        <a href="/docs/">Ausarbeitung</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Ausarbeitung</h1>
+        
+        
+    </header>
+    
+    <div class="single-content">
+      <p>Pairstrading ist eine nichtdirektionale Handelsstrategie, die unabhängig von der Marktrichtung funktioniert <a href="#ref-Vidyamurthy%202004" id="cite-Vidyamurthy 2004">(Vidyamurthy 2004, p. 8)</a>. Sie basiert auf historischen Zusammenhängen zwischen zwei Wertpapieren (Zeitreihen) $X_i(t)$ und $X_j(t)$ und nutzt temporäre Abweichungen in deren Preisbeziehung zur Gewinnerzielung aus. Im verbreiteten, statistischen Pairstrading werden zwei Hauptansätze unterschieden: kointegrationsbasierte und korrelationsbasierte Verfahren. <a href="#ref-Engle%201987" id="cite-Engle 1987">Engle et al. 1987</a> legten die theoretischen Grundlagen der Kointegration, <a href="#ref-Vidyamurthy%202004" id="cite-Vidyamurthy 2004">Vidyamurthy et al. 2004</a> entwickelten deren Anwendung im Pairstrading, und <a href="#ref-Gatev%202006" id="cite-Gatev 2006">Gatev et al. 2006</a> etablierten den korrelationsbasierten Ansatz. Pairstrading umfasst zwei fundamentale Schritte: das Identifizieren geeigneter Paare und deren Handel.</p>
+<h3 class="heading" id="der-kointegrationsansatz">
+  Der Kointegrationsansatz
+  <a class="anchor" href="#der-kointegrationsansatz">#</a>
+</h3>
+<p>Die Cointegration hat nichts mit der &ldquo;Integration&rdquo; zu tun wie der Name vermuten lässt. Nach <a href="#ref-Engle%201987" id="cite-Engle 1987">Engle et al. 1987</a> werden Paare auf eine langfristige Gleichgewichtsbeziehung getestet. Die Zeitreihen können kurzfristig voneinander abweichen, werden jedoch in der thorie durch ökonomische Kräfte langfristig zusammengehalten.</p>
+<p><strong>Cointegrierte Paare finden:</strong> Um solche Beziehungen zu identifizieren, wird zunächst eine Regressionsgleichung geschätzt:
+<!-- raw HTML omitted --><!-- raw HTML omitted -->
+$$X_i(t) = \alpha_{i,j} + \beta_{i,j} X_j(t) + \varepsilon_{i,j}(t)$$</p>
+<p>Die Residuen $\varepsilon_{i,j}(t)$ dieser Regression müssen stationär sein, auch wenn die ursprünglichen Zeitreihen $X_i(t)$ und $X_j(t)$ selbst nichtstationär sind. Ein stationärer Prozess kehrt zu seinem Mittelwert zurück und weist konstante Varianz auf. Mit dem Engle-Granger-Verfahren <a href="#ref-Engle%20Granger%201987" id="cite-Engle Granger 1987">(cf. Engle Granger 1987)</a> wird diese Stationarität der Residuen mittels Augmented Dickey-Fuller-Test <a href="#ref-Dickey%201979" id="cite-Dickey 1979">(cf. Dickey 1979)</a> geprüft. Die Nullhypothese lautet, dass die Residuen eine Einheitswurzel besitzen (nichtstationär sind). Wird diese Nullhypothese bei einem Signifikanzniveau $\alpha_{\text{sig}}$ verworfen ($p$-Wert $&lt; \alpha_{\text{sig}}$), liegt Kointegration vor.</p>
+<p><strong>Cointegrierte Paare handeln:</strong> Aufgrund ihrer statistischen Eigenschaften (stabilisieren die Varianz) werden die Preise logarithmisch mit $\log X_i(t)$ und $\log X_j(t)$ angewandt. Um das optimale Verhältnis für einen Trade zu finden, wird die Hedge Ratio durch lineare Regression bestimmt:
+<!-- raw HTML omitted --><!-- raw HTML omitted -->
+$$\log X_i(t) = \alpha_{i,j} + \beta_{i,j} \log X_j(t) + \varepsilon_{i,j}(t)$$</p>
+<p>Wobei $\alpha_{i,j}$ die Konstante (Intercept der Regression), $\beta_{i,j}$ das Hedge Ratio (gibt an, wie viele Einheiten von $X_j$ pro Einheit $X_i$ gehandelt werden) und $\varepsilon_{i,j}(t)$ der Fehlerterm (Residuen) ist. Das Hedge Ratio $\beta_{i,j}$ hat den Zweck, dass Long- und Short-Positionen marktneutral sind. Mit dem Hedge Ratio kann nun ein marktneutraler Spread konstruiert werden:
+<!-- raw HTML omitted --><!-- raw HTML omitted -->
+$$Spread_{i,j}(t) = \log X_i(t) - \beta_{i,j} \log X_j(t)$$</p>
+<p>Dieser Spread eliminiert die gemeinsame Marktbewegung. Damit Trading damit aber profitabel ist, muss der Spread mean-reverting (mittelwertrückkehrend) sein:
+<!-- raw HTML omitted --><!-- raw HTML omitted -->
+$$Spread_{i,j}(t) = \mu_{i,j} + u_{i,j}(t)$$</p>
+<p>wobei $u_{i,j}(t)$ ein stationärer Prozess mit $E[u_{i,j}(t)] = 0$ ist. Im Handel können profitable Abweichungen nur realisiert werden, wenn der Spread zum Mittelwert zurückkehrt. Um feststellen zu können, wann der Spread zu weit von seinem Mittelwert entfernt ist, wird er normalisiert:
+<!-- raw HTML omitted --><!-- raw HTML omitted -->
+$$Z_{i,j}(t) = \frac{Spread_{i,j}(t) - \mu_{i,j}}{\sigma_{i,j}}$$
+Der Z-Score macht Abweichungen vergleichbar und definiert klare Ein- und Ausstiegssignale. Als Beispiel bei $\theta = 2$: Long bei $Z_{i,j}(t) &lt; -\theta$ mit Long $X_i$, Short $\beta_{i,j} \cdot X_j$ oder Short bei $Z_{i,j}(t) &gt; +\theta$ dann vice versa Short $X_i$, Long $\beta_{i,j} \cdot X_j$. Der Exit solcher Trades erfolgt bei $Z_{i,j}(t) \rightarrow 0$, da der Spread zur historischen Mitte zurückkehrt.</p>
+<h3 class="heading" id="der-korrelationsansatz">
+  Der Korrelationsansatz
+  <a class="anchor" href="#der-korrelationsansatz">#</a>
+</h3>
+<p>Nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006">Gatev et al. 2006</a> basiert der korreltaionsansatz auf der Annahme, dass $X_i(t)$ und $X_j(t)$ mit historisch hoher Korrelation auch in Zukunft eine ähnliche Preisbewegung aufweisen werden. Im Gegensatz zu kointegrationsbasierten Ansätzen wird hier keine langfristige Gleichgewichtsbeziehung vorausgesetzt sondern kurzfristige Korrelationsbezeihungen angenommen.</p>
+<p><strong>Korrealierende Paare finden:</strong> Bei korrelationsbasierten Verfahren erfolgt die Paarauswahl nach <a href="#ref-Sharpe%201964" id="cite-Sharpe 1964">Sharpe 1964</a> mittels der Pearson-Korrelation in einer Formationsperiode der Länge $t_f$:
+<!-- raw HTML omitted --><!-- raw HTML omitted -->
+$$\rho_{i,j} = \frac{Cov(X_i, X_j)}{\sigma_{X_i} \sigma_{X_j}} = \frac{\sum_{t=1}^{t_f}(X_i(t) - \bar{X_i})(X_j(t) - \bar{X_j})}{\sqrt{\sum_{t=1}^{t_f}(X_i(t) - \bar{X_i})^2}\sqrt{\sum_{t=1}^{t_f}(X_j(t) - \bar{X_j})^2}}$$</p>
+<p>wobei $\bar{X_i}$ und $\bar{X_j}$ die Mittelwerte der jeweiligen Zeitreihen in der Formationsperiode darstellen. Paare mit $\rho_{i,j} &gt; \rho_{\min}$ oberhalb eines definierten Schwellenwerts werden für das Trading ausgewählt.</p>
+<p><strong>Korrelierte Paare handeln:</strong>
+Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006">Gatev et al. 2006</a> werden die Zeitreihen zunächst normalisiert. Die kumulative Summe<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> der logarithmierten Renditen wird durch ihre historische Standardabweichung geteilt:</p>
+<p>$$Z_k(t) = \frac{\sum_{s=1}^{t} \log\frac{X_k(s)}{X_k(s-1)}}{\sigma_k} \quad \text{für } k \in {i,j}$$</p>
+<p>wobei $\sigma_i$ und $\sigma_j$ die Standardabweichungen der logarithmierten Renditen in der Formationsperiode sind. Der Spread zwischen den normalisierten Zeitreihen wird als Divergenz definiert: $D_{i,j}(t) = Z_i(t) - Z_j(t)$. Wenn die Divergenz einen Schwellenwert $\delta$ überschreitet werden entsprechende Handelssignale erzeugt. Long von $X_i$ und Short $X_j$ bei $D_{i,j}(t) &lt; -\delta$ und Long von $X_j$ und Short $X_i$ bei $D_{i,j}(t) &lt; +\delta$. Die Positionen werden geschlossen, wenn die Divergenz gegen null konvergiert ($D_{i,j}(t) \rightarrow 0$).</p>
+<h2 class="heading" id="ziel-oder-motivation">
+  Ziel oder Motivation
+  <a class="anchor" href="#ziel-oder-motivation">#</a>
+</h2>
+<p><strong>Drei zentrale Faktoren</strong> reduzieren die Profitabilität statischer Pairstrading-Anwendungen im modernen Marktumfeld:</p>
+<ol>
+<li>
+<p><strong>Popularität:</strong> Je mehr Marktteilnehmer dieselbe Strategie nutzen, desto schneller verschwinden die Arbitragemöglichkeiten <a href="#ref-Jacobs%202015" id="cite-Jacobs 2015">(cf. Jacobs 2015)</a>. Die Anwendung von Pairs trading steigt seit Anfang der 2000er Jahre nachweisbar bei professional traders, institutional investors, and hedge fund managers <a href="#ref-Miao%202014" id="cite-Miao 2014">(Miao 2014, p. 96)</a>.</p>
+</li>
+<li>
+<p><strong>Eliminierung von Ineffizienzen:</strong> <a href="#ref-Miao%202014" id="cite-Miao 2014">Miao et al. 2014</a> verdeutlicht, wie High Frequency Handel (<em>HFT</em>) durch technologischen Fortschritt Markteffizienzen eliminiert. Während bei der Entwicklung der kointegrationsbasierten und korrelationsbasierten Ansätze Positionen über Wochen oder Tage gehalten wurden, werden heute Arbitragemöglichkeiten binnen Stunden, Minuten oder sogar Sekunden ausgenutzt. Die Ineffizienzen, auf denen klassisches Pairs Trading basiert, werden schneller erkannt und eliminiert, bevor traditionelle Ansätze reagieren können.</p>
+</li>
+<li>
+<p><strong>Instabilität:</strong> <a href="#ref-Chen%202019" id="cite-Chen 2019">Chen et al. 2019</a> zeigen, dass Kointegrationsbeziehungen zwischen Aktienpaaren nicht stabil sind, sondern sich durch Regime-Wechsel grundlegend verändern oder vollständig verschwinden können. Marktbedingungen wechseln zwischen verschiedenen Zuständen - von kointegrierenden Beziehungen hin zu Black-Scholes-ähnlichen Märkten ohne statistische Arbitragemöglichkeiten.</p>
+</li>
+</ol>
+<p>Diese Herausforderungen eröffnen spezifische Ansatzpunkte zur Weiterentwicklung. Aufgrund der Ressourcen institutioneller High Frequency Handelsysteme macht es im Kontext der Markteffizienzen keinen Sinn, an den Handelsstrategien für vorhandene Paarfindungsstrategien direkt anzusetzen. Die Annahme ist, dass sobald eine Ineffizienz besteht, verschiedene Handelsstrategien zu ihr führen können, diese aber immer von Ressourcen (Rechen- und Übertragungsgeschwindigkeit) geschlagen werden können. Kommulieren eine großer Anteil der Marktteilnehmer durch die verwendung Dokumentierter und in der Vergangenheit erfolgreicher Verfahren wie der Cointegration, Korrelationen oder ihren Weiterentwicklungen, entstehen &ldquo;crowded trades&rdquo;, die bei ersten Verlusten zu gleichzeitigen Liquidationen und Verlustververstärkungen führen. Daher lautet die Hypthese dieser Arbeit die Profitabilitat und Optimizierung des Pairs Trading darin liegen kann, Paare finden zu können die durch diese traditionell statistischen Ansätze sonst verborgen bleiben. Zur Bewältigung der Instabilitätsproblematik werden adaptive Ansätze mit rollenden Fenstern und dynamischen Parametern eingesetzt, die sich kontinuierlich an veränderte Marktregime anpassen können.</p>
+<p>Das führt zur folgenden Forschungsfrage: Inwieweit verbessert ein maschineller Lernansatz zur Paaridentifikation die Performance von Pairs Trading Strategien im Vergleich zu traditionellen kointegrationsbasierten Verfahren? Als explorative Arbeit ist die Vorgabe der maschinellen Lernansätze bewusst offen gehalten. Am Ende konnten zwei Ansätze erarbeitet werden: ein <a href="#ML1">Affinity propagation Clustering</a> und <a href="#ML2">Gradient Boost Regressor</a> Verfahren. Diese werden mit einem kointegrationsbasierten, nach <a href="#ref-Engle%201987" id="cite-Engle 1987">Engle et al. 1987</a> implementierten Ansatz verglichen. Dieser erhält jedoch zur Vergleichbarkeit ebenfalls die Anwendung des <a href="#Window">Sliding Window Ansatzes</a>. Vergleichsstudien begründen die Auswahl durch validierte Überlegenheit der Kointegrationsverfahren gegenüber der Korrelation <a href="#ref-Rad%202016" id="cite-Rad 2016">(Rad 2016)</a>; <a href="#ref-Carrasco%20Bl%c3%a1zquez%202018" id="cite-Carrasco Blázquez 2018">(Carrasco Blázquez 2018)</a>; <a href="#ref-Ma%202022" id="cite-Ma 2022">(Ma 2022)</a>.</p>
+<hr>
+<h1 class="heading" id="data">
+  Data
+  <a class="anchor" href="#data">#</a>
+</h1>
+<p>Um eine Teilmenge an Zeitreihen (Wertpapieren, Aktien oder sonstigem) zu erhalten auf die dann Verfahren zur Paarbildung angewendet werden können verwenden vergleichbare Arbeiten Vorauswahlen wie den Global Industry Classification Standard (GICS) <a href="#ref-Do%202010" id="cite-Do 2010">(Do 2010, p. 8)</a>.</p>
+<p><span id="economy-chart"></span>
+
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" >
+        <img loading="lazy" alt="Alt-Text" src="/images/economy.drawio.png" >
+    </div>
+
+    
+    <div class="caption-container">
+        <figcaption> Abbildung 1: Systematische Darstellung der Wirtschaftsstruktur mit den Klassifikationsebenen: 1. Global Industry Classification Standard (<em>GICS</em>); 2. Nationale Sektoren (Primär-, Sekundär, Tertiärer-sektor); 3. Hierarchische Industriestruktur (Industriezweig; Industrie, Subindustrie); 4. Inländische Aktienindizes im Kontext der globalen und nationalen Wirtschaft. </figcaption>
+    </div>
+    
+</figure>
+</p>
+<p><em>GICS</em> bildet die Basis für S&amp;P und MSCI Finanzmarkt-Indizes, in denen jede Firma gemäß ihrer Hauptgeschäftstätigkeit genau einer Subindustrie und damit einer Industrie, einem Industrie-Zweig und einem Sektor zugewiesen ist. Die Eingrenzung an potenziellen Paaren bildet sich dann in den jeweils durch die Klassifizierung festgelegten Sektoren bzw. Subsektoren (siehe <a href="#economy-chart">Abbildung 1, siehe 3</a>). So können zwar wirtschaftliche Synergien in den Paaren vorliegen, jedoch können potenzielle Verbindungen von vornherein fälschlicherweise ausgeschlossen werden. Um diese Ausgrenzung größtmöglich zu abstrahieren, geschieht die Vorauswahl auf nationaler volkswirtschaftlicher Ebene (siehe <a href="#economy-chart">Abbildung 1, siehe 2</a>). Diese bewusste Entscheidung gegen sektorspezifische Vorfilterung folgt der Hypothese, dass maschinelle Lernverfahren auch branchenübergreifende Zusammenhänge identifizieren können, die durch traditionelle GICS-basierte Einschränkungen ausgeschlossen würden. Im Rahmen dieser Arbeit geschieht dies im Rahmen des amerikanischen und britischen Marktes in Form des <em>NASDAQ-100</em> und <em>FTSE-100</em> (im Nachfolgenden abgekürzt als $N_{100}$
+​ und $F_{100}$) (siehe <a href="#economy-chart">Abbildung 1, siehe 4</a>).</p>
+<p><strong>Indizes:</strong> Die Aktiendaten beider Indizes erstrecken sich über den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$, wobei $t_{\text{start}}$ dem 01.01.2020 und $t_{\text{end}}$ dem 01.01.2025 entspricht. Für jede Aktie wird an jedem Handelstag ein vollständiger Datensatz erfasst, der das Handelssymbol, das Datum sowie die wesentlichen Kursinformationen umfasst: Eröffnungskurs, Tageshöchstkurs, Tagestiefstkurs, Schlusskurs und Handelsvolumen. Da keine weiteren Einschränkungen bezüglich Marktkapitalisierung, Liquidität oder Branchenzugehörigkeit vorliegen, ergibt sich aus dem Pool aller 100 Aktien eines Index $A = {a_1, a_2, &hellip;, a_{100}}$ die Menge aller zulässigen Paare durch $P = {(a_i, a_j) \mid a_i, a_j \in A \land i &lt; j}$. Dies entspricht $\binom{100}{2} = 4950$ möglichen Paarkandidaten pro Index.</p>
+<p><span id="indices"></span>
+
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" >
+        <img loading="lazy" alt="Alt-Text" src="/images/economy.dr.png" >
+    </div>
+
+    
+    <div class="caption-container">
+        <figcaption> Abbildung 2: Die Abbildung zeigt die normalisierten Marktindizes $F_{100}$ und $N_{100}$ (2020-2025, Basis=100) mit Gesamtwachstum ($F_{100}$: +30,1%, $N_{100}$: +107,1%) und hervorgehobenem Wachstum im Jahr 2024 von $F_{100}$: +7,9%, $N_{100}$: +15,8%. </figcaption>
+    </div>
+    
+</figure>
+</p>
+<p><strong>Datenbereinigung:</strong> Zeitreihen, die nicht die vollständige Anzahl an Datenpunkten für den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$ vorweisen können, wurden ausgelassen. Das resultierte für $N_{100}$ in 94 und $F_{100}$ in 98 Aktien pro Index. Der Umgang mit vereinzelt fehlenden Werten erfolgt anhand der Kurszeitreihen $X_i(t)$ für jede Aktie $i$. Eine Vorwärtsinterpolation ersetzt fehlende Werte durch den letzten verfügbaren Wert derselben Zeitreihe: $X_i(t) = X_i(t-k)$, wobei $k$ die kleinste positive Zahl ist, für die $X_i(t-k)$ beobachtet wurde. Anschließend werden bestehende Lücken durch nachfolgende Werte aufgefüllt: $X_i(t) = X_i(t+m)$, wobei $m$ die kleinste positive Zahl ist, für die $X_i(t+m)$ beobachtet wurde. Im Vergleich zu anderen Methoden wie der linearen oder polynomialen Interpolation bietet die Vorwärts- und Rückwärtsinterpolation eine robuste Lösung für Finanzzeitreihen, da sie ausschließlich beobachtete Werte verwendet und so die Kontinuität der Daten bewahrt <a href="#ref-Moritz%202017" id="cite-Moritz 2017">(Moritz 2017)</a>. Der bereinigte, normalisierter Kursverlauf aller vorhanden Werte pro Indices kann <a href="#indices">Abbildung 2</a> entnommen werden.</p>
+<h1 class="heading" id="ml1">
+  ML1
+  <a class="anchor" href="#ml1">#</a>
+</h1>
+<h1 class="heading" id="ml2">
+  ML2
+  <a class="anchor" href="#ml2">#</a>
+</h1>
+<h1 class="heading" id="window">
+  Window
+  <a class="anchor" href="#window">#</a>
+</h1>
+<h1 class="heading" id="data-1">
+  Data
+  <a class="anchor" href="#data-1">#</a>
+</h1>
+<h2 class="heading" id="cite-example">
+  Cite Example
+  <a class="anchor" href="#cite-example">#</a>
+</h2>
+<p>bla <a href="#cost-function">Zur Kostenfunktion</a>
+Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
+<a href="#ref-Engle%20Granger%201987" id="cite-Engle Granger 1987">(cf. Engle Granger 1987)</a>
+<a href="#ref-Engle%20Granger%201987" id="cite-Engle Granger 1987">(Engle Granger et al. 1987, S. 255)</a>
+<p>Laut <a href="#ref-Jacobs%202015" id="cite-Jacobs 2015">cf. Jacobs et al. 2015, S. 255</a> ist&hellip;</p>
+<h2 class="heading" id="literatur">
+  Literatur
+  <a class="anchor" href="#literatur">#</a>
+</h2>
+
+<div id="ref-Sharpe 1964" class="reference">
+  <span class="ref-label">[Sharpe 1964]</span>
+  <span class="ref-content">Sharpe, W. F. (1964). Capital Asset Prices: A Theory of Market Equilibrium Under Conditions of Risk. The Journal of Finance, 19(3), 425-442. <a href="https://doi.org/10.1111/j.1540-6261.1964.tb02865.x">https://doi.org/10.1111/j.1540-6261.1964.tb02865.x</a></span>
+</div>
+
+<div id="ref-Dickey 1979" class="reference">
+  <span class="ref-label">[Dickey 1979]</span>
+  <span class="ref-content">Dickey, D. A., &amp; Fuller, W. A. (1979). Distribution of the Estimators for Autoregressive Time Series with a Unit Root. Journal of the American Statistical Association, 74, 427-431. <a href="https://api.semanticscholar.org/CorpusID:56458593">https://api.semanticscholar.org/CorpusID:56458593</a></span>
+</div>
+
+<div id="ref-Engle 1987" class="reference">
+  <span class="ref-label">[Engle 1987]</span>
+  <span class="ref-content">Engle, R. F., &amp; Granger, C. W. J. (1987). Co-integration and Error Correction: Representation, Estimation, and Testing. Econometrica, 55(2), 251-276. <a href="https://ideas.repec.org/a/ecm/emetrp/v55y1987i2p251-76.html">https://ideas.repec.org/a/ecm/emetrp/v55y1987i2p251-76.html</a></span>
+</div>
+
+<div id="ref-Vidyamurthy 2004" class="reference">
+  <span class="ref-label">[Vidyamurthy 2004]</span>
+  <span class="ref-content">Vidyamurthy, G. (2004). Pairs Trading: Quantitative Methods and Analysis. John Wiley &amp; Sons, Hoboken, New Jersey.</span>
+</div>
+
+<div id="ref-Gatev 2006" class="reference">
+  <span class="ref-label">[Gatev 2006]</span>
+  <span class="ref-content">Gatev, E., Goetzmann, W. N., &amp; Rouwenhorst, K. G. (2006). Pairs Trading: Performance of a Relative Value Arbitrage Rule. Yale ICF Working Paper No. 08-03. <a href="https://doi.org/10.2139/ssrn.141615">https://doi.org/10.2139/ssrn.141615</a></span>
+</div>
+
+<div id="ref-Do 2010" class="reference">
+  <span class="ref-label">[Do 2010]</span>
+  <span class="ref-content">Do, B., &amp; Faff, R. (2010). Does simple pairs trading still work? Financial Analysts Journal, 66(4), 83-95. <a href="https://doi.org/10.2469/faj.v66.n4.1">https://doi.org/10.2469/faj.v66.n4.1</a></span>
+</div>
+
+<div id="ref-Miao 2014" class="reference">
+  <span class="ref-label">[Miao 2014]</span>
+  <span class="ref-content">Miao, G. J. (2014). High frequency and dynamic pairs trading based on statistical arbitrage using a two-stage correlation and cointegration approach. International Journal of Economics and Finance, 6, 96. <a href="https://api.semanticscholar.org/CorpusID:54175142">https://api.semanticscholar.org/CorpusID:54175142</a></span>
+</div>
+
+<div id="ref-Jacobs 2015" class="reference">
+  <span class="ref-label">[Jacobs 2015]</span>
+  <span class="ref-content">Jacobs, H., &amp; Weber, M. (2015). On the determinants of pairs trading profitability. Journal of Financial Markets, 23, 75-97. <a href="https://doi.org/10.1016/j.finmar.2014.12.001">https://doi.org/10.1016/j.finmar.2014.12.001</a></span>
+</div>
+
+<div id="ref-Rad 2016" class="reference">
+  <span class="ref-label">[Rad 2016]</span>
+  <span class="ref-content">Rad, H., Low, R. K. Y., &amp; Faff, R. (2016). The profitability of pairs trading strategies: distance, cointegration and copula methods. Quantitative Finance, 16(10), 1541-1558. <a href="https://doi.org/10.1080/14697688.2016.1164337">https://doi.org/10.1080/14697688.2016.1164337</a></span>
+</div>
+
+<div id="ref-Moritz 2017" class="reference">
+  <span class="ref-label">[Moritz 2017]</span>
+  <span class="ref-content">Moritz, S., &amp; Bartz-Beielstein, T. (2017). imputeTS: Time series missing value imputation in R. The R Journal, 9(1), 207-218. <a href="https://doi.org/10.32614/RJ-2017-009">https://doi.org/10.32614/RJ-2017-009</a></span>
+</div>
+
+<div id="ref-Carrasco Blázquez 2018" class="reference">
+  <span class="ref-label">[Carrasco Blázquez 2018]</span>
+  <span class="ref-content">Carrasco Blázquez, M., De la Orden De la Cruz, C., &amp; Prado Román, C. (2018). Pairs trading techniques: An empirical contrast. European Research on Management and Business Economics, 24(3), 160-167. <a href="https://doi.org/10.1016/j.iedeen.2018.05.002">https://doi.org/10.1016/j.iedeen.2018.05.002</a></span>
+</div>
+
+<div id="ref-Chen 2019" class="reference">
+  <span class="ref-label">[Chen 2019]</span>
+  <span class="ref-content">Chen, K., Chiu, M. C., &amp; Wong, H. Y. (2019). Time-consistent mean-variance pairs-trading under regime-switching cointegration. SIAM Journal on Financial Mathematics, 10(2), 632-665. <a href="https://doi.org/10.1137/18M1209611">https://doi.org/10.1137/18M1209611</a></span>
+</div>
+
+<div id="ref-Ma 2022" class="reference">
+  <span class="ref-label">[Ma 2022]</span>
+  <span class="ref-content">Ma, B., &amp; Ślepaczuk, R. (2022). The profitability of pairs trading strategies on Hong-Kong stock market: distance, cointegration, and correlation methods. Working Papers 2022-02, Faculty of Economic Sciences, University of Warsaw. <a href="https://ideas.repec.org/p/war/wpaper/2022-02.html">https://ideas.repec.org/p/war/wpaper/2022-02.html</a></span>
+</div>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Die kumulative Summe der Log-Renditen ist die laufende Aufsummierung aller bisherigen Renditen und zeigt, wie sich der Preis insgesamt vom Startpunkt verändert hat.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
