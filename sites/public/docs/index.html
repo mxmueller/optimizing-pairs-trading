@@ -56,7 +56,7 @@
 
 
 
-<link rel="stylesheet" href="/assets/combined.min.a770b0fa208c110590b91b5ec2cab4d57f5090aab9738535859f2e5783b124af.css" media="all">
+<link rel="stylesheet" href="/assets/combined.min.0d41f7df4b254b9ea5ad925d84046d60c8636d6630d18497be726888dbd86312.css" media="all">
 
 
 
@@ -159,7 +159,8 @@
   <a class="anchor" href="#der-kointegrationsansatz">#</a>
 </h3>
 <p>Die Cointegration hat nichts mit der &ldquo;Integration&rdquo; zu tun wie der Name vermuten lässt. Nach <a href="#ref-Engle%201987" id="cite-Engle 1987">Engle et al. 1987</a> werden Paare auf eine langfristige Gleichgewichtsbeziehung getestet. Die Zeitreihen können kurzfristig voneinander abweichen, werden jedoch in der thorie durch ökonomische Kräfte langfristig zusammengehalten.</p>
-<p><strong>Cointegrierte Paare finden:</strong> Um solche Beziehungen zu identifizieren, wird zunächst eine Regressionsgleichung geschätzt:
+<p><span id="cointpair"></span>
+<strong>Cointegrierte Paare finden:</strong> Um solche Beziehungen zu identifizieren, wird zunächst eine Regressionsgleichung geschätzt:
 <!-- raw HTML omitted --><!-- raw HTML omitted -->
 $$X_i(t) = \alpha_{i,j} + \beta_{i,j} X_j(t) + \varepsilon_{i,j}(t)$$</p>
 <p>Die Residuen $\varepsilon_{i,j}(t)$ dieser Regression müssen stationär sein, auch wenn die ursprünglichen Zeitreihen $X_i(t)$ und $X_j(t)$ selbst nichtstationär sind. Ein stationärer Prozess kehrt zu seinem Mittelwert zurück und weist konstante Varianz auf. Mit dem Engle-Granger-Verfahren <a href="#ref-Engle%20Granger%201987" id="cite-Engle Granger 1987">(cf. Engle Granger 1987)</a> wird diese Stationarität der Residuen mittels Augmented Dickey-Fuller-Test <a href="#ref-Dickey%201979" id="cite-Dickey 1979">(cf. Dickey 1979)</a> geprüft. Die Nullhypothese lautet, dass die Residuen eine Einheitswurzel besitzen (nichtstationär sind). Wird diese Nullhypothese bei einem Signifikanzniveau $\alpha_{\text{sig}}$ verworfen ($p$-Wert $&lt; \alpha_{\text{sig}}$), liegt Kointegration vor.</p>
@@ -182,17 +183,18 @@ Der Z-Score macht Abweichungen vergleichbar und definiert klare Ein- und Ausstie
 </h3>
 <p>Nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006">Gatev et al. 2006</a> basiert der korreltaionsansatz auf der Annahme, dass $X_i(t)$ und $X_j(t)$ mit historisch hoher Korrelation auch in Zukunft eine ähnliche Preisbewegung aufweisen werden. Im Gegensatz zu kointegrationsbasierten Ansätzen wird hier keine langfristige Gleichgewichtsbeziehung vorausgesetzt sondern kurzfristige Korrelationsbezeihungen angenommen.</p>
 <p><strong>Korrealierende Paare finden:</strong> Bei korrelationsbasierten Verfahren erfolgt die Paarauswahl nach <a href="#ref-Sharpe%201964" id="cite-Sharpe 1964">Sharpe 1964</a> mittels der Pearson-Korrelation in einer Formationsperiode der Länge $t_f$:
-<!-- raw HTML omitted --><!-- raw HTML omitted -->
+<span id="f6"></span>
 $$\rho_{i,j} = \frac{Cov(X_i, X_j)}{\sigma_{X_i} \sigma_{X_j}} = \frac{\sum_{t=1}^{t_f}(X_i(t) - \bar{X_i})(X_j(t) - \bar{X_j})}{\sqrt{\sum_{t=1}^{t_f}(X_i(t) - \bar{X_i})^2}\sqrt{\sum_{t=1}^{t_f}(X_j(t) - \bar{X_j})^2}}$$</p>
 <p>wobei $\bar{X_i}$ und $\bar{X_j}$ die Mittelwerte der jeweiligen Zeitreihen in der Formationsperiode darstellen. Paare mit $\rho_{i,j} &gt; \rho_{\min}$ oberhalb eines definierten Schwellenwerts werden für das Trading ausgewählt.</p>
 <p><strong>Korrelierte Paare handeln:</strong>
 Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006">Gatev et al. 2006</a> werden die Zeitreihen zunächst normalisiert. Die kumulative Summe<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> der logarithmierten Renditen wird durch ihre historische Standardabweichung geteilt:</p>
 <p>$$Z_k(t) = \frac{\sum_{s=1}^{t} \log\frac{X_k(s)}{X_k(s-1)}}{\sigma_k} \quad \text{für } k \in {i,j}$$</p>
 <p>wobei $\sigma_i$ und $\sigma_j$ die Standardabweichungen der logarithmierten Renditen in der Formationsperiode sind. Der Spread zwischen den normalisierten Zeitreihen wird als Divergenz definiert: $D_{i,j}(t) = Z_i(t) - Z_j(t)$. Wenn die Divergenz einen Schwellenwert $\delta$ überschreitet werden entsprechende Handelssignale erzeugt. Long von $X_i$ und Short $X_j$ bei $D_{i,j}(t) &lt; -\delta$ und Long von $X_j$ und Short $X_i$ bei $D_{i,j}(t) &lt; +\delta$. Die Positionen werden geschlossen, wenn die Divergenz gegen null konvergiert ($D_{i,j}(t) \rightarrow 0$).</p>
-<h2 class="heading" id="ziel-oder-motivation">
+<hr>
+<h1 class="heading" id="ziel-oder-motivation">
   Ziel oder Motivation
   <a class="anchor" href="#ziel-oder-motivation">#</a>
-</h2>
+</h1>
 <p><strong>Drei zentrale Faktoren</strong> reduzieren die Profitabilität statischer Pairstrading-Anwendungen im modernen Marktumfeld:</p>
 <ol>
 <li>
@@ -205,8 +207,10 @@ Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006"
 <p><strong>Instabilität:</strong> <a href="#ref-Chen%202019" id="cite-Chen 2019">Chen et al. 2019</a> zeigen, dass Kointegrationsbeziehungen zwischen Aktienpaaren nicht stabil sind, sondern sich durch Regime-Wechsel grundlegend verändern oder vollständig verschwinden können. Marktbedingungen wechseln zwischen verschiedenen Zuständen - von kointegrierenden Beziehungen hin zu Black-Scholes-ähnlichen Märkten ohne statistische Arbitragemöglichkeiten.</p>
 </li>
 </ol>
-<p>Diese Herausforderungen eröffnen spezifische Ansatzpunkte zur Weiterentwicklung. Aufgrund der Ressourcen institutioneller High Frequency Handelsysteme macht es im Kontext der Markteffizienzen keinen Sinn, an den Handelsstrategien für vorhandene Paarfindungsstrategien direkt anzusetzen. Die Annahme ist, dass sobald eine Ineffizienz besteht, verschiedene Handelsstrategien zu ihr führen können, diese aber immer von Ressourcen (Rechen- und Übertragungsgeschwindigkeit) geschlagen werden können. Kommulieren eine großer Anteil der Marktteilnehmer durch die verwendung Dokumentierter und in der Vergangenheit erfolgreicher Verfahren wie der Cointegration, Korrelationen oder ihren Weiterentwicklungen, entstehen &ldquo;crowded trades&rdquo;, die bei ersten Verlusten zu gleichzeitigen Liquidationen und Verlustververstärkungen führen. Daher lautet die Hypthese dieser Arbeit die Profitabilitat und Optimizierung des Pairs Trading darin liegen kann, Paare finden zu können die durch diese traditionell statistischen Ansätze sonst verborgen bleiben. Zur Bewältigung der Instabilitätsproblematik werden adaptive Ansätze mit rollenden Fenstern und dynamischen Parametern eingesetzt, die sich kontinuierlich an veränderte Marktregime anpassen können.</p>
-<p>Das führt zur folgenden Forschungsfrage: Inwieweit verbessert ein maschineller Lernansatz zur Paaridentifikation die Performance von Pairs Trading Strategien im Vergleich zu traditionellen kointegrationsbasierten Verfahren? Als explorative Arbeit ist die Vorgabe der maschinellen Lernansätze bewusst offen gehalten. Am Ende konnten zwei Ansätze erarbeitet werden: ein <a href="#ML1">Affinity propagation Clustering</a> und <a href="#ML2">Gradient Boost Regressor</a> Verfahren. Diese werden mit einem kointegrationsbasierten, nach <a href="#ref-Engle%201987" id="cite-Engle 1987">Engle et al. 1987</a> implementierten Ansatz verglichen. Dieser erhält jedoch zur Vergleichbarkeit ebenfalls die Anwendung des <a href="#Window">Sliding Window Ansatzes</a>. Vergleichsstudien begründen die Auswahl durch validierte Überlegenheit der Kointegrationsverfahren gegenüber der Korrelation <a href="#ref-Rad%202016" id="cite-Rad 2016">(Rad 2016)</a>; <a href="#ref-Carrasco%20Bl%c3%a1zquez%202018" id="cite-Carrasco Blázquez 2018">(Carrasco Blázquez 2018)</a>; <a href="#ref-Ma%202022" id="cite-Ma 2022">(Ma 2022)</a>.</p>
+<p>Diese Herausforderungen eröffnen spezifische Ansatzpunkte zur Weiterentwicklung. Aufgrund der Ressourcen institutioneller High Frequency Handelsysteme macht es im Kontext der Markteffizienzen keinen Sinn, an den Handelsstrategien für vorhandene Paarfindungsstrategien direkt anzusetzen. Die Annahme ist, dass sobald eine Ineffizienz besteht, verschiedene Handelsstrategien zu ihr führen können, diese aber immer von Ressourcen (Rechen- und Übertragungsgeschwindigkeit) geschlagen werden können. Kommulieren eine großer Anteil der Marktteilnehmer durch die verwendung Dokumentierter und in der Vergangenheit erfolgreicher Verfahren wie der Cointegration, Korrelationen oder ihren Weiterentwicklungen, entstehen &ldquo;crowded trades&rdquo;, die bei ersten Verlusten zu gleichzeitigen Liquidationen und Verlustververstärkungen führen. Daher lautet die Hypthese dieser Arbeit die Profitabilitat und Optimizierung des Pairs Trading darin liegen kann, Paare finden zu können die durch diese traditionell statistischen Ansätze sonst verborgen bleiben. Zur Bewältigung der Instabilitätsproblematik werden adaptive Ansätze mit rollenden Fenstern und dynamischen Parametern eingesetzt, die sich kontinuierlich an veränderte Marktregime anpassen können. Das führt zur folgenden Forschungsfrage:</p>
+<blockquote>
+<p>Inwieweit verbessert ein maschineller Lernansatz zur Paaridentifikation die Performance von Pairs Trading Strategien im Vergleich zu traditionellen kointegrationsbasierten Verfahren?</p></blockquote>
+<p>Als explorative Arbeit ist die Vorgabe der maschinellen Lernansätze bewusst offen gehalten. Am Ende konnten zwei Ansätze erarbeitet werden: ein <a href="#ML1">Affinity propagation Clustering</a> und <a href="#ML2">Gradient Boost Regressor</a> Verfahren. Diese werden mit einem kointegrationsbasierten, nach <a href="#ref-Engle%201987" id="cite-Engle 1987">Engle et al. 1987</a> implementierten Ansatz verglichen. Dieser erhält jedoch zur Vergleichbarkeit ebenfalls die Anwendung des <a href="#Window">Sliding Window Ansatzes</a>. Vergleichsstudien begründen die Auswahl durch validierte Überlegenheit der Kointegrationsverfahren gegenüber der Korrelation <a href="#ref-Rad%202016" id="cite-Rad 2016">(Rad 2016)</a>; <a href="#ref-Carrasco%20Bl%c3%a1zquez%202018" id="cite-Carrasco Blázquez 2018">(Carrasco Blázquez 2018)</a>; <a href="#ref-Ma%202022" id="cite-Ma 2022">(Ma 2022)</a>.</p>
 <hr>
 <h1 class="heading" id="data">
   Data
@@ -258,7 +262,7 @@ Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006"
 <figure class="">
 
     <div class="img-container" >
-        <img loading="lazy" alt="Alt-Text" src="/images/economy.dr.png" >
+        <img loading="lazy" alt="Alt-Text" src="https://placehold.co/200" >
     </div>
 
     
@@ -269,14 +273,112 @@ Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006"
 </figure>
 </p>
 <p><strong>Datenbereinigung:</strong> Zeitreihen, die nicht die vollständige Anzahl an Datenpunkten für den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$ vorweisen können, wurden ausgelassen. Das resultierte für $N_{100}$ in 94 und $F_{100}$ in 98 Aktien pro Index. Der Umgang mit vereinzelt fehlenden Werten erfolgt anhand der Kurszeitreihen $X_i(t)$ für jede Aktie $i$. Eine Vorwärtsinterpolation ersetzt fehlende Werte durch den letzten verfügbaren Wert derselben Zeitreihe: $X_i(t) = X_i(t-k)$, wobei $k$ die kleinste positive Zahl ist, für die $X_i(t-k)$ beobachtet wurde. Anschließend werden bestehende Lücken durch nachfolgende Werte aufgefüllt: $X_i(t) = X_i(t+m)$, wobei $m$ die kleinste positive Zahl ist, für die $X_i(t+m)$ beobachtet wurde. Im Vergleich zu anderen Methoden wie der linearen oder polynomialen Interpolation bietet die Vorwärts- und Rückwärtsinterpolation eine robuste Lösung für Finanzzeitreihen, da sie ausschließlich beobachtete Werte verwendet und so die Kontinuität der Daten bewahrt <a href="#ref-Moritz%202017" id="cite-Moritz 2017">(Moritz 2017)</a>. Der bereinigte, normalisierter Kursverlauf aller vorhanden Werte pro Indices kann <a href="#indices">Abbildung 2</a> entnommen werden.</p>
-<h1 class="heading" id="ml1">
-  ML1
-  <a class="anchor" href="#ml1">#</a>
+<hr>
+<h1 class="heading" id="affinity-propagation-clustering-approach">
+  Affinity Propagation Clustering Approach
+  <a class="anchor" href="#affinity-propagation-clustering-approach">#</a>
 </h1>
-<h1 class="heading" id="ml2">
-  ML2
-  <a class="anchor" href="#ml2">#</a>
+<p>Affinity Propagation ist ein exemplarbasiertes Clustering-Verfahren, das durch iterative Nachrichtenübertragung zwischen Datenpunkten automatisch die optimale Clusteranzahl bestimmt und repräsentative Exemplare aus den Daten selbst auswählt. Der Algorithmus maximiert Ähnlichkeitssummen durch Nachrichtenaustausch, der bewertet wie gut Datenpunkte als Cluster-Zentren geeignet sind und wie bereit andere sind, diese zu akzeptieren <a href="#ref-Dueck%202009" id="cite-Dueck 2009">(Dueck 2009)</a>.</p>
+<p>Die Auswahl erfolgte aus zwei Gründen: Erstens ermöglicht die automatische Clusterbestimmung beim Sliding Window Verfahren eine flexible Anpassung der Clusteranzahl zwischen Zeitfenstern. Zweitens existiert bisher nur eine dokumentierte Anwendung zur Paarfindung im Pairs Trading, aber in abgewandelter Form und im Cryptocurrency-Markt <a href="#ref-Othman%202025" id="cite-Othman 2025">(Othman 2025)</a>. Mithilfe des Silhouette Score wurde auf Basis der Hauptmerkmale Rendite und Volatilität ausgewählt. Diese werden nach Ihrer gänigen Form angewandt:</p>
+<p>$$\text{Rendite} = R_i = \frac{1}{T} \sum_{t=1}^{T} \frac{P_t - P_{t-1}}{P_{t-1}} \times \text{Handelstage pro Jahr}$$
+$$\text{Volatilität} = V_i = \sqrt{\frac{1}{T-1} \sum_{t=1}^{T} \left( \frac{P_t - P_{t-1}}{P_{t-1}} - \mu \right)^2} \times \sqrt{\text{Handelstage pro Jahr}}$$</p>
+<p>Die wirtschaftliche Annahme ist, dass Aktien mit ähnlichen Risiko-Rendite-Profilen vergleichbar auf Marktbedingungen reagieren und daher stabilere statistische Beziehungen aufweisen als willkürlich gewählte Paare. Das Clustering reduziert den Suchraum wenige hundert Paarkombinationen innerhalb der Cluster, wodurch das Multiple-Testing-Problem minimiert wird.</p>
+<p><span id="cluster2"></span>
+<figure><img src="/images/oo2.drawio.png"
+    alt="Abbildung 3: Affinity Propagation Clustering für $F_{100}$ Aktien im Rendite-Volatilität-Raum mit exemplar-basierten Cluster-Zentren."><figcaption>
+      <p>Abbildung 3: Affinity Propagation Clustering für $F_{100}$ Aktien im Rendite-Volatilität-Raum mit exemplar-basierten Cluster-Zentren.</p>
+    </figcaption>
+</figure>
+</p>
+<p><a href="#cluster2">Abbildung 3</a>) zeigt das Affinity Propagation Clustering im originalen Rendite-Volatilität-Raum für den $F_{100}$. Die Verbindungslinien verdeutlichen die exemplar-basierte Struktur: jede Aktie ist mit ihrem Cluster-Zentrum verbunden, wobei die Zentren selbst Aktien aus dem Datensatz sind (nicht berechnete Mittelwerte). Eine mögliche ökonimische interpretierbarkeit dieser Cluster ist mithilfe der Rendite-Volatilität-Quadranten auf der rechten Seite der grafik zu sehen.</p>
+<p>Kointegrationstests bleiben notwendig, da ähnliche Rendite-Volatilität-Profile nicht automatisch langfristige Gleichgewichtsbeziehungen garantieren - das Clustering dient als ökonomisch motivierte Vorauswahl für statistisch robuste Paare mit lokaler aussagekraft(siehe <a href="#cluster1">Abbildung 3</a>).
+Die Auswahl eines Paares erfolgt nach erfolgt durch einen gewichteten Score aus Cluster-Zentrumsabstand und Profil-Ähnlichkeit:</p>
+<p><span id="score"></span>
+$$S_{i,j} = 0.6 \cdot D_{center,norm} + 0.4 \cdot D_{profile,norm}$$</p>
+<p>wobei $D_{center}$ den durchschnittlichen euklidischen Abstand beider Aktien zum Cluster-Zentrum $C$ und $D_{profile}$ die direkte euklidische Distanz zwischen den Aktien im standardisierten Rendite-Volatilität-Raum misst. Beide Komponenten werden min-max-normalisiert und nur Paare mit <a href="#cointpair">Kointegrations</a>-$p$-Wert $&lt; 0.05$ werden für das Trading ausgewählt.</p>
+<p><span id="cluster3"></span>
+<figure><img src="/images/output4.png"
+    alt="Abbildung 4: Selektierte Trading-Paare nach Kointegrationstest und Score-Bewertung im t-SNE Ähnlichkeitsraum." width="650"><figcaption>
+      <p>Abbildung 4: Selektierte Trading-Paare nach Kointegrationstest und Score-Bewertung im t-SNE Ähnlichkeitsraum.</p>
+    </figcaption>
+</figure>
+</p>
+<p><a href="#cluster3">Abbildung 4</a> reduziert in ihrer Darstellung nach der <a href="#score">Score Bewertung</a> und <a href="#cointpair">Kointegrationstest</a> selektierten Akien. Die t-SNE Transformation projiziert diese in einen Ähnlichkeitsraum, der lokale Nachbarschaften besser sichtbar macht und die entgültigen Paare eines Fensters beispielhaft zeigt.</p>
+<p>HIER NOCH KONFIGURATION??</p>
+<h1 class="heading" id="gradient-boost-regressor-verfahren">
+  Gradient Boost Regressor Verfahren
+  <a class="anchor" href="#gradient-boost-regressor-verfahren">#</a>
 </h1>
+<p>Der Gradient Boost Regressor versucht schrittweise viele schwache Entscheidungsbäume zu einem starken Vorhersagemodell zu kombinieren, wobei jeder neue Baum die Residuen (Differenz zwischen tatsächlichen und vorhergesagten Werten) der vorherigen Bäume als Zielvariable verwendet. Das Verfahren analysiert in jeder Iteration systematisch, in welche Richtung die Vorhersagen korrigiert werden müssen, um die Fehler zu minimieren, und trainiert einen neuen Entscheidungsbaum, der genau diese Korrekturen lernt und zur Gesamtvorhersage hinzuaddiert wird <a href="#ref-He%202019" id="cite-He 2019">(He 2019)</a>.</p>
+<p>Zum Zeitpunkt der Erstellung dieser Arbeit gibt es keinen vergleichbaren Einsatz zur Parrfindung in der Literatur. Arbeiten wie die von <a href="#ref-Krauss%202017" id="cite-Krauss 2017">cf. Krauss et al. 2017</a> mit dem Titel <em>&ldquo;Deep neural networks, gradient-boosted trees, random forests: Statistical arbitrage on the S&amp;P 500&rdquo;</em> zeigen dass Gradient-Boosted Trees mit 0.37% täglichen Renditen vor Transaktionskosten sowohl Deep Neural Networks (0.33%) als auch Random Forests (0.43%) in Statistical Arbitrage Strategien übertreffen. Daher zeigt das Verfahren Potential auch im Pairs Trading erfolgreich angewendet werden zu können.</p>
+<p>Der Regressor nutzt ein mehrdimensionalen Feature Vektor zur Vorhersage der durchschnittlichen Spread-Abweichung zwischen Aktienpaaren. Die Auswahl dieser Zielvariablen folgt nach der validierung als Targetvariable in verwandten Arbeiten des Maschine Learning in Verbinduzng mit statistical abitrage <a href="#ref-Sarmento%202020" id="cite-Sarmento 2020">(Sarmento 2020)</a>; <a href="#ref-Lin%202021" id="cite-Lin 2021">(Lin 2021)</a>. Die empirischen Befunde zeigen, dass Preisdifferenzen zwischen kointegrierteren Aktien beim klassischen Pairs Trading nicht konvergieren, sondern persistieren und damit Verluste verursachen. Herkömmliche Verfahren messen Spreads, definieren Schwellenwerte und reagieren reaktiv darauf. Machine Learning-Ansätze prognostizieren hingegen Aktienpaare mit künftig minimaler Spread-Volatilität. Anstatt sämtliche kointegrierten Paare zu handeln und deren Konvergenz abzuwarten, selektiert das Modell ausschließlich Paare mit prognostizierter Spread-Stabilität.</p>
+<p>Die finale Feature-Matrix umfasst 32 Dimensionen. 3 statistische Basis-Features, 20 technische Zeitreihen-Indikatoren, 6 Volume-Eigenschaften und 3 erweiterte MACD-Komponenten. Fehlende Werte werden durch SimpleImputer mit Mittelwert-Strategie behandelt:</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left">Feature</th>
+                <th style="text-align: left">Beschreibung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left"><strong><code>Korrelation</code></strong></td>
+                <td style="text-align: left">Nutzt die bereits eingeführte <a href="#f6">Pearson-Korrelation</a> aus dem Korrelationsansatz, jedoch nicht als Selektionskriterium mit festem Schwellenwert $ρ_{min}$, sondern als kontinuierliches Feature.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong><code>Beta</code></strong></td>
+                <td style="text-align: left">Sensitivitätsverhältnis: $R_{i,t} = α + β_{i,j} · R_{j,t} + ε_t$ aus der Regression.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong><code>Residual-Standardabweichung</code></strong></td>
+                <td style="text-align: left">Die Präzision dieser linearen Beziehung.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong><code>Rate of Change</code></strong></td>
+                <td style="text-align: left">Prozentuale Preisänderungen über 5, 20 und 50 Tage für beide Aktien sowie deren Differenzen.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong><code>Williams Oszillatoren</code></strong></td>
+                <td style="text-align: left">Relative Position aktueller Preise über 10, 14, 28 und 40 Tage für beide Aktien sowie deren Differenzen.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong><code>Bollinger Bands</code></strong></td>
+                <td style="text-align: left">Spread-Volatilität relativ zum gleitenden Durchschnitt für 5, 10, 20, 25 und 50 Tage.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong><code>Moving Average Convergence/Divergence</code></strong></td>
+                <td style="text-align: left">Trend-Momentum mit Parametersätzen (12,26,9) und (5,13,5). Erfasst werden Liniendifferenzen, Signalliniendifferenzen und binäre Crossover-Signale für beide Aktien.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong><code>Volumen Rate of Change</code></strong></td>
+                <td style="text-align: left">Momentum-Indikatoren über 5, 20 und 50 Tage für beide Aktien sowie deren Differenzen.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong><code>Volumen-Durchschnitte und Standardabweichungen</code></strong></td>
+                <td style="text-align: left">Gleitende Mittelwerte und Streuungsmaße für 50 und 100 Tage.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left"><strong><code>Volumen-Änderungen</code></strong></td>
+                <td style="text-align: left">Prozentuale Veränderungen für 50 und 100 Tage.</td>
+            </tr>
+        </tbody>
+    </table>
+</div><p>Die auswahl dieser Features und ihrer Zeitfenster ergab sich aus einem zweistufigem Optimierungsprozess. Ein Feature-Set von 80 technischen Indikatoren mit unterschiedlichen Zeitfenster wurde mithilfe der <code>Gradient Boosting Feature Importance Analyse</code> evaluiert. Aus der initialen Feature Importance Rangfolge wurden die 32 leistungsstärksten Merkmale selektiert, wobei redundante Features mit hoher Korrelation eliminiert wurden.</p>
+<h5 class="heading" id="implementierung">
+  Implementierung
+  <a class="anchor" href="#implementierung">#</a>
+</h5>
+<p>Die Hyperparameter des finalen Models umfassen <code>learning_rat</code> von <code>0.2</code>, <code>max_depth</code> von <code>2</code> und <code>n_estimators</code> von <code>300</code> Bäumen, sowie <code>n_estimators</code> und <code>min_samples_leaf</code> von jeweil <code>2</code>. Die Parameterauswahl erfolgte durch eine Grid Search <code>learning_rate</code> $∈ {0.01, 0.1, 0.2}$, <code>max_depth</code> $∈ {2, 3, 4}$, <code>n_estimators</code> $∈ {100, 200, 300}$ und Regularisierungsparameter <code>min_samples_split</code> $∈ {2, 4}$ sowie <code>min_samples_leaf</code> $∈ {1, 2}$. Eine 5 Fache Kreuzvalidierung mit $R²$-Score als Optimierungsmetrik ergab die finale Konfiguration. Das Training erfolgt auf 80% der verfügbaren Daten  20% Test-Set-Evaluation.</p>
+<p><span id="regressor"></span>
+<figure><img src="/images/regressorv1.drawio.png"
+    alt="Abbildung 5: Predicted vs Actual Darstellung der Gradient Boosting Modelle für $N_{100}$ (links) und $F_{100}$ (rechts). Die lineare Beziehung zwischen vorhergesagten und tatsächlichen Spread-Abweichungen bestätigt die Vorhersagequalität beider Modelle."><figcaption>
+      <p>Abbildung 5: Predicted vs Actual Darstellung der Gradient Boosting Modelle für $N_{100}$ (links) und $F_{100}$ (rechts). Die lineare Beziehung zwischen vorhergesagten und tatsächlichen Spread-Abweichungen bestätigt die Vorhersagequalität beider Modelle.</p>
+    </figcaption>
+</figure>
+</p>
+<p>Die Predicted vs Actual Darstellungen in <a href="#regressor">Abbildung 5</a> bestätigen die solide Vorhersageleistung beider Modelle. Das $N_{100}$ Modell erreicht ein <code>R²</code> von <code>0.707</code> mit einem <code>MSE</code> von <code>0.068</code> und <code>MAE</code> von <code>0.201</code>, während das $F_{100}$ Modell ein <code>R²</code> von <code>0.652</code> bei einem <code>MSE</code> von <code>0.084</code> und <code>MAE</code> von <code>0.227</code> erzielt.</p>
 <h1 class="heading" id="window">
   Window
   <a class="anchor" href="#window">#</a>
@@ -324,6 +426,11 @@ Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
   <span class="ref-content">Gatev, E., Goetzmann, W. N., &amp; Rouwenhorst, K. G. (2006). Pairs Trading: Performance of a Relative Value Arbitrage Rule. Yale ICF Working Paper No. 08-03. <a href="https://doi.org/10.2139/ssrn.141615">https://doi.org/10.2139/ssrn.141615</a></span>
 </div>
 
+<div id="ref-Dueck 2009" class="reference">
+  <span class="ref-label">[Dueck 2009]</span>
+  <span class="ref-content">Dueck, D. (2009). Affinity propagation: Clustering data by passing messages. PhD thesis.</span>
+</div>
+
 <div id="ref-Do 2010" class="reference">
   <span class="ref-label">[Do 2010]</span>
   <span class="ref-content">Do, B., &amp; Faff, R. (2010). Does simple pairs trading still work? Financial Analysts Journal, 66(4), 83-95. <a href="https://doi.org/10.2469/faj.v66.n4.1">https://doi.org/10.2469/faj.v66.n4.1</a></span>
@@ -349,9 +456,19 @@ Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
   <span class="ref-content">Moritz, S., &amp; Bartz-Beielstein, T. (2017). imputeTS: Time series missing value imputation in R. The R Journal, 9(1), 207-218. <a href="https://doi.org/10.32614/RJ-2017-009">https://doi.org/10.32614/RJ-2017-009</a></span>
 </div>
 
+<div id="ref-Krauss 2017" class="reference">
+  <span class="ref-label">[Krauss 2017]</span>
+  <span class="ref-content">Krauss, C., Do, X. A., &amp; Huck, N. (2017). Deep neural networks, gradient-boosted trees, random forests: Statistical arbitrage on the S&amp;P 500. European Journal of Operational Research, 259(2), 689-702. <a href="https://doi.org/10.1016/j.ejor.2016.10.031">https://doi.org/10.1016/j.ejor.2016.10.031</a></span>
+</div>
+
 <div id="ref-Carrasco Blázquez 2018" class="reference">
   <span class="ref-label">[Carrasco Blázquez 2018]</span>
   <span class="ref-content">Carrasco Blázquez, M., De la Orden De la Cruz, C., &amp; Prado Román, C. (2018). Pairs trading techniques: An empirical contrast. European Research on Management and Business Economics, 24(3), 160-167. <a href="https://doi.org/10.1016/j.iedeen.2018.05.002">https://doi.org/10.1016/j.iedeen.2018.05.002</a></span>
+</div>
+
+<div id="ref-He 2019" class="reference">
+  <span class="ref-label">[He 2019]</span>
+  <span class="ref-content">He, Z., Lin, D., Lau, T., &amp; Wu, M. (2019). Gradient boosting machine: A survey. arXiv preprint arXiv:1908.06951. <a href="https://arxiv.org/abs/1908.06951">https://arxiv.org/abs/1908.06951</a></span>
 </div>
 
 <div id="ref-Chen 2019" class="reference">
@@ -359,9 +476,24 @@ Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
   <span class="ref-content">Chen, K., Chiu, M. C., &amp; Wong, H. Y. (2019). Time-consistent mean-variance pairs-trading under regime-switching cointegration. SIAM Journal on Financial Mathematics, 10(2), 632-665. <a href="https://doi.org/10.1137/18M1209611">https://doi.org/10.1137/18M1209611</a></span>
 </div>
 
+<div id="ref-Sarmento 2020" class="reference">
+  <span class="ref-label">[Sarmento 2020]</span>
+  <span class="ref-content">Sarmento, S. M., &amp; Horta, N. (2020). Enhancing a pairs trading strategy with the application of machine learning. Expert Systems with Applications, 158, 113490. <a href="https://doi.org/10.1016/j.eswa.2020.113490">https://doi.org/10.1016/j.eswa.2020.113490</a></span>
+</div>
+
+<div id="ref-Lin 2021" class="reference">
+  <span class="ref-label">[Lin 2021]</span>
+  <span class="ref-content">Lin, T.-Y., Chen, C. W. S., &amp; Syu, F.-Y. (2021). Multi-asset pair-trading strategy: A statistical learning approach. The North American Journal of Economics and Finance, 55, 101295. <a href="https://doi.org/10.1016/j.najef.2020.101295">https://doi.org/10.1016/j.najef.2020.101295</a></span>
+</div>
+
 <div id="ref-Ma 2022" class="reference">
   <span class="ref-label">[Ma 2022]</span>
   <span class="ref-content">Ma, B., &amp; Ślepaczuk, R. (2022). The profitability of pairs trading strategies on Hong-Kong stock market: distance, cointegration, and correlation methods. Working Papers 2022-02, Faculty of Economic Sciences, University of Warsaw. <a href="https://ideas.repec.org/p/war/wpaper/2022-02.html">https://ideas.repec.org/p/war/wpaper/2022-02.html</a></span>
+</div>
+
+<div id="ref-Othman 2025" class="reference">
+  <span class="ref-label">[Othman 2025]</span>
+  <span class="ref-content">Othman, A. H. A. (2025). Enhancing pairs trading strategies in the cryptocurrency industry using machine learning clustering algorithms. London Journal of Research In Management &amp; Business, 25(1), 33-52. <a href="https://journalspress.uk/index.php/LJRMB/article/view/1179">https://journalspress.uk/index.php/LJRMB/article/view/1179</a></span>
 </div>
 <div class="footnotes" role="doc-endnotes">
 <hr>
