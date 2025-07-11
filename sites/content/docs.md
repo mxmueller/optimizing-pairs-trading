@@ -49,7 +49,7 @@ $$Z_k(t) = \frac{\sum_{s=1}^{t} \log\frac{X_k(s)}{X_k(s-1)}}{\sigma_k} \quad \te
 
 wobei $\sigma_i$ und $\sigma_j$ die Standardabweichungen der logarithmierten Renditen in der Formationsperiode sind. Der Spread zwischen den normalisierten Zeitreihen wird als Divergenz definiert: $D_{i,j}(t) = Z_i(t) - Z_j(t)$. Wenn die Divergenz einen Schwellenwert $\delta$ überschreitet werden entsprechende Handelssignale erzeugt. Long von $X_i$ und Short $X_j$ bei $D_{i,j}(t) < -\delta$ und Long von $X_j$ und Short $X_i$ bei $D_{i,j}(t) < +\delta$. Die Positionen werden geschlossen, wenn die Divergenz gegen null konvergiert ($D_{i,j}(t) \rightarrow 0$).
 
-****
+**** 
 
 # Ziel oder Motivation
 **Drei zentrale Faktoren** reduzieren die Profitabilität statischer Pairstrading-Anwendungen im modernen Marktumfeld: 
@@ -66,6 +66,14 @@ Diese Herausforderungen eröffnen spezifische Ansatzpunkte zur Weiterentwicklung
 Als explorative Arbeit ist die Vorgabe der maschinellen Lernansätze bewusst offen gehalten. Am Ende konnten zwei Ansätze erarbeitet werden: ein [Affinity propagation Clustering](#ML1) und [Gradient Boost Regressor](#ML2) Verfahren. Diese werden mit einem kointegrationsbasierten, nach {{< cite ref="Engle 1987" etal="true" noparen="true">}} implementierten Ansatz verglichen. Dieser erhält jedoch zur Vergleichbarkeit ebenfalls die Anwendung des [Sliding Window Ansatzes](#Window). Vergleichsstudien begründen die Auswahl durch validierte Überlegenheit der Kointegrationsverfahren gegenüber der Korrelation {{< cite ref="Rad 2016">}}; {{< cite ref="Carrasco Blázquez 2018">}}; {{< cite ref="Ma 2022">}}.
 
 ****
+# Ablauf oder Methodik
+
+![Alt-Text](/images/ablauf.drawio.png "Abbildung 1: Systematische Darstellung der Wirtschaftsstruktur mit den Klassifikationsebenen: 1. Global Industry Classification Standard (*GICS*); 2. Nationale Sektoren (Primär-, Sekundär, Tertiärer-sektor); 3. Hierarchische Industriestruktur (Industriezweig; Industrie, Subindustrie); 4. Inländische Aktienindizes im Kontext der globalen und nationalen Wirtschaft.")
+
+
+HIER TEXT AM ENDE
+
+****
 
 # Data
 Um eine Teilmenge an Zeitreihen (Wertpapieren, Aktien oder sonstigem) zu erhalten auf die dann Verfahren zur Paarbildung angewendet werden können verwenden vergleichbare Arbeiten Vorauswahlen wie den Global Industry Classification Standard (GICS) {{< cite ref="Do 2010" page="p. 8" >}}.
@@ -76,7 +84,9 @@ Um eine Teilmenge an Zeitreihen (Wertpapieren, Aktien oder sonstigem) zu erhalte
 *GICS* bildet die Basis für S&P und MSCI Finanzmarkt-Indizes, in denen jede Firma gemäß ihrer Hauptgeschäftstätigkeit genau einer Subindustrie und damit einer Industrie, einem Industrie-Zweig und einem Sektor zugewiesen ist. Die Eingrenzung an potenziellen Paaren bildet sich dann in den jeweils durch die Klassifizierung festgelegten Sektoren bzw. Subsektoren (siehe [Abbildung 1, siehe 3](#economy-chart)). So können zwar wirtschaftliche Synergien in den Paaren vorliegen, jedoch können potenzielle Verbindungen von vornherein fälschlicherweise ausgeschlossen werden. Um diese Ausgrenzung größtmöglich zu abstrahieren, geschieht die Vorauswahl auf nationaler volkswirtschaftlicher Ebene (siehe [Abbildung 1, siehe 2](#economy-chart)). Diese bewusste Entscheidung gegen sektorspezifische Vorfilterung folgt der Hypothese, dass maschinelle Lernverfahren auch branchenübergreifende Zusammenhänge identifizieren können, die durch traditionelle GICS-basierte Einschränkungen ausgeschlossen würden. Im Rahmen dieser Arbeit geschieht dies im Rahmen des amerikanischen und britischen Marktes in Form des *NASDAQ-100* und *FTSE-100* (im Nachfolgenden abgekürzt als $N_{100}$
 ​ und $F_{100}$) (siehe [Abbildung 1, siehe 4](#economy-chart)).
 
-**Indizes:** Die Aktiendaten beider Indizes erstrecken sich über den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$, wobei $t_{\text{start}}$ dem 01.01.2020 und $t_{\text{end}}$ dem 01.01.2025 entspricht. Für jede Aktie wird an jedem Handelstag ein vollständiger Datensatz erfasst, der das Handelssymbol, das Datum sowie die wesentlichen Kursinformationen umfasst: Eröffnungskurs, Tageshöchstkurs, Tagestiefstkurs, Schlusskurs und Handelsvolumen. Da keine weiteren Einschränkungen bezüglich Marktkapitalisierung, Liquidität oder Branchenzugehörigkeit vorliegen, ergibt sich aus dem Pool aller 100 Aktien eines Index $A = \{a_1, a_2, ..., a_{100}\}$ die Menge aller zulässigen Paare durch $P = \{(a_i, a_j) \mid a_i, a_j \in A \land i < j\}$. Dies entspricht $\binom{100}{2} = 4950$ möglichen Paarkandidaten pro Index.
+**Indizes:** Die Aktiendaten beider Indizes erstrecken sich über den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$, wobei $t_{\text{start}}$ dem 01.01.2020 und $t_{\text{end}}$ dem 01.01.2025 entspricht. Dieser Zeitraum wird unterteilt in Trainings- und Testperiode: Der Trainingszeitraum umfasst $T_{\text{train}} = [01.01.2020, 31.12.2023]$. Der Testzeitraum $T_{\text{test}} = [01.01.2024, 01.01.2025]$. Für jede Aktie wird an jedem Handelstag ein vollständiger Datensatz erfasst, der das Handelssymbol, das Datum sowie die wesentlichen Kursinformationen umfasst: Eröffnungskurs, Tageshöchstkurs, Tagestiefstkurs, Schlusskurs und Handelsvolumen. Da keine weiteren Einschränkungen bezüglich Marktkapitalisierung, Liquidität oder Branchenzugehörigkeit vorliegen, ergibt sich aus dem Pool aller 100 Aktien eines Index $A = \{a_1, a_2, ..., a_{100}\}$ die Menge aller zulässigen Paare durch $P = \{(a_i, a_j) \mid a_i, a_j \in A \land i < j\}$. Dies entspricht $\binom{100}{2} = 4950$ möglichen Paarkandidaten pro Index.
+
+HIER FEHL NCOH VON WANN BIS WANN TRJAINNG UND TEXT 
 
 {{< anchor "indices" >}}
 ![Alt-Text](https://placehold.co/200 "Abbildung 2: Die Abbildung zeigt die normalisierten Marktindizes $F_{100}$ und $N_{100}$ (2020-2025, Basis=100) mit Gesamtwachstum ($F_{100}$: +30,1%, $N_{100}$: +107,1%) und hervorgehobenem Wachstum im Jahr 2024 von $F_{100}$: +7,9%, $N_{100}$: +15,8%.")
@@ -86,7 +96,7 @@ Um eine Teilmenge an Zeitreihen (Wertpapieren, Aktien oder sonstigem) zu erhalte
 ****
 
 # Affinity Propagation Clustering Approach 
-Affinity Propagation ist ein exemplarbasiertes Clustering-Verfahren, das durch iterative Nachrichtenübertragung zwischen Datenpunkten automatisch die optimale Clusteranzahl bestimmt und repräsentative Exemplare aus den Daten selbst auswählt. Der Algorithmus maximiert Ähnlichkeitssummen durch Nachrichtenaustausch, der bewertet wie gut Datenpunkte als Cluster-Zentren geeignet sind und wie bereit andere sind, diese zu akzeptieren {{< cite ref="Dueck 2009" >}}.
+Affinity Propagation ist ein exemplarbasiertes Clustering-Verfahren, das durch iterative Nachrichtenübertragung zwischen Datenpunkten automatisch die optimale Clusteranzahl bestimmt und repräsentative Exemplare aus den Daten selbst auswählt. Der Algorithmus maximiert Ähnlichkeitssummen durch Nachrichtenaustausch, der bewertet wie gut Datenpunkte als Cluster-Zentren geeignet sind und wie bereit andere sind, diese zu akzeptieren {{< cite ref="Dueck 2009" >}}.∞
 
 Die Auswahl erfolgte aus zwei Gründen: Erstens ermöglicht die automatische Clusterbestimmung beim Sliding Window Verfahren eine flexible Anpassung der Clusteranzahl zwischen Zeitfenstern. Zweitens existiert bisher nur eine dokumentierte Anwendung zur Paarfindung im Pairs Trading, aber in abgewandelter Form und im Cryptocurrency-Markt {{< cite ref="Othman 2025" >}}. Mithilfe des Silhouette Score wurde auf Basis der Hauptmerkmale Rendite und Volatilität ausgewählt. Diese werden nach Ihrer gänigen Form angewandt:
 
@@ -96,34 +106,34 @@ $$\text{Volatilität} = V_i = \sqrt{\frac{1}{T-1} \sum_{t=1}^{T} \left( \frac{P_
 Die wirtschaftliche Annahme ist, dass Aktien mit ähnlichen Risiko-Rendite-Profilen vergleichbar auf Marktbedingungen reagieren und daher stabilere statistische Beziehungen aufweisen als willkürlich gewählte Paare. Das Clustering reduziert den Suchraum wenige hundert Paarkombinationen innerhalb der Cluster, wodurch das Multiple-Testing-Problem minimiert wird. 
 
 {{< anchor "cluster2" >}}
-{{< figure src="/images/oo2.drawio.png" 
-           caption="Abbildung 3: Affinity Propagation Clustering für $F_{100}$ Aktien im Rendite-Volatilität-Raum mit exemplar-basierten Cluster-Zentren."
+{{< figure src="/images/cluster1.drawio.png" 
+           caption="Abbildung 3: Affinity Propagation Clustering für $N_{100}$ und $F_{100}$ Aktien im Rendite-Volatilität-Raum mit exemplar-basierten Cluster-Zentren und die selektierten Paare nach Kointegrationstest und Score-Bewertung im t-SNE Ähnlichkeitsraum. "
           >}}
 
-[Abbildung 3](#cluster2)) zeigt das Affinity Propagation Clustering im originalen Rendite-Volatilität-Raum für den $F_{100}$. Die Verbindungslinien verdeutlichen die exemplar-basierte Struktur: jede Aktie ist mit ihrem Cluster-Zentrum verbunden, wobei die Zentren selbst Aktien aus dem Datensatz sind (nicht berechnete Mittelwerte). Eine mögliche ökonimische interpretierbarkeit dieser Cluster ist mithilfe der Rendite-Volatilität-Quadranten auf der rechten Seite der grafik zu sehen. 
+[Abbildung 3](#cluster2)) zeigt das Affinity Propagation Clustering im originalen Rendite-Volatilität-Raum für den $F_{100}$. Die Verbindungslinien verdeutlichen die exemplar-basierte Struktur: jede Aktie ist mit ihrem Cluster-Zentrum verbunden, wobei die Zentren selbst Aktien aus dem Datensatz sind (nicht berechnete Mittelwerte). Eine mögliche ökonimische interpretierbarkeit dieser Cluster (wichitg nur der linken Seite der Grafik) ist mithilfe der Rendite-Volatilität-Quadranten in [Abbildung 4](#cluster3)) zu sehen. 
 
-Kointegrationstests bleiben notwendig, da ähnliche Rendite-Volatilität-Profile nicht automatisch langfristige Gleichgewichtsbeziehungen garantieren - das Clustering dient als ökonomisch motivierte Vorauswahl für statistisch robuste Paare mit lokaler aussagekraft(siehe [Abbildung 3](#cluster1)).
-Die Auswahl eines Paares erfolgt nach erfolgt durch einen gewichteten Score aus Cluster-Zentrumsabstand und Profil-Ähnlichkeit: 
+{{< anchor "cluster3" >}}
+{{< figure src="/images/eco.drawio.png" 
+           caption="Abbildung 4: ökonomische interpretierbarkeit der Quadranten von Rendite im Verhältnis zur Volatitlität."
+           width="300" 
+           style="text-align: center; margin: 0 auto;" >}}
+
+Als weiteren Verarbeitungsschrit Kointegrationstests bleiben notwendig, da ähnliche Rendite-Volatilität-Profile nicht automatisch langfristige Gleichgewichtsbeziehungen garantieren - das Clustering dient als ökonomisch motivierte Vorauswahl für statistisch robuste Paare mit lokaler aussagekraft. Die Auswahl eines Paares erfolgt nach erfolgt durch einen gewichteten Score aus Cluster-Zentrumsabstand und Profil-Ähnlichkeit: 
 
 {{< anchor "score" >}}
 $$S_{i,j} = 0.6 \cdot D_{center,norm} + 0.4 \cdot D_{profile,norm}$$
 
 
-wobei $D_{center}$ den durchschnittlichen euklidischen Abstand beider Aktien zum Cluster-Zentrum $C$ und $D_{profile}$ die direkte euklidische Distanz zwischen den Aktien im standardisierten Rendite-Volatilität-Raum misst. Beide Komponenten werden min-max-normalisiert und nur Paare mit [Kointegrations](#cointpair)-$p$-Wert $< 0.05$ werden für das Trading ausgewählt.
+wobei $D_{center}$ den durchschnittlichen euklidischen Abstand beider Aktien zum Cluster-Zentrum $C$ und $D_{profile}$ die direkte euklidische Distanz zwischen den Aktien im standardisierten Rendite-Volatilität-Raum misst. Beide Komponenten werden min-max-normalisiert und nur Paare mit [Kointegrations](#cointpair)-$p$-Wert $< 0.05$ kommen für das Trading in Frage. Die Endauswahl ergibt sich aus der Top 20 der besten Scores und der erfüllung der statistischen eigenschaften.
 
-{{< anchor "cluster3" >}}
-{{< figure src="/images/output4.png" 
-           caption="Abbildung 4: Selektierte Trading-Paare nach Kointegrationstest und Score-Bewertung im t-SNE Ähnlichkeitsraum."
-           width="650" 
-           style="text-align: center; margin: 0 auto;" >}}
+[Abbildung 3](#cluster2)) zeigt auf jeweils der Rechten Seite reduziert nach der [Score Bewertung](#score) und [Kointegrationstest](#cointpair) selektierten Akien. Die t-SNE Transformation projiziert diese in einen Ähnlichkeitsraum, der lokale Nachbarschaften besser sichtbar macht und die entgültigen Paare eines Fensters beispielhaft zeigt. 
 
-[Abbildung 4](#cluster3) reduziert in ihrer Darstellung nach der [Score Bewertung](#score) und [Kointegrationstest](#cointpair) selektierten Akien. Die t-SNE Transformation projiziert diese in einen Ähnlichkeitsraum, der lokale Nachbarschaften besser sichtbar macht und die entgültigen Paare eines Fensters beispielhaft zeigt.
+Auf die Konfiguration des `preference` Paramters wird verzichtet da die Cluster Anzahl automatisch bestimmt werden soll. 
+Der $N_{100}$ wieß in der Enwicklung `Silhouette Score` von `0.415`,  `Calinski-Harabasz Score` von `93.58` und `Davies-Bouldin Score` von `0.712`. Der $F_{100}$ `Silhouette Score` von `0.377`,  `Calinski-Harabasz Score` von `80.66` und `Davies-Bouldin Score` von `0.742`.
 
-HIER NOCH KONFIGURATION??
 
 # Gradient Boost Regressor Verfahren
 Der Gradient Boost Regressor versucht schrittweise viele schwache Entscheidungsbäume zu einem starken Vorhersagemodell zu kombinieren, wobei jeder neue Baum die Residuen (Differenz zwischen tatsächlichen und vorhergesagten Werten) der vorherigen Bäume als Zielvariable verwendet. Das Verfahren analysiert in jeder Iteration systematisch, in welche Richtung die Vorhersagen korrigiert werden müssen, um die Fehler zu minimieren, und trainiert einen neuen Entscheidungsbaum, der genau diese Korrekturen lernt und zur Gesamtvorhersage hinzuaddiert wird {{< cite ref="He 2019" >}}.
-
 
 Zum Zeitpunkt der Erstellung dieser Arbeit gibt es keinen vergleichbaren Einsatz zur Parrfindung in der Literatur. Arbeiten wie die von {{< cite ref="Krauss 2017" etal="true" cf="true" noparen="true" >}} mit dem Titel *"Deep neural networks, gradient-boosted trees, random forests: Statistical arbitrage on the S&P 500"* zeigen dass Gradient-Boosted Trees mit 0.37% täglichen Renditen vor Transaktionskosten sowohl Deep Neural Networks (0.33%) als auch Random Forests (0.43%) in Statistical Arbitrage Strategien übertreffen. Daher zeigt das Verfahren Potential auch im Pairs Trading erfolgreich angewendet werden zu können. 
 
@@ -146,7 +156,6 @@ Die finale Feature-Matrix umfasst 32 Dimensionen. 3 statistische Basis-Features,
 
 Die auswahl dieser Features und ihrer Zeitfenster ergab sich aus einem zweistufigem Optimierungsprozess. Ein Feature-Set von 80 technischen Indikatoren mit unterschiedlichen Zeitfenster wurde mithilfe der `Gradient Boosting Feature Importance Analyse` evaluiert. Aus der initialen Feature Importance Rangfolge wurden die 32 leistungsstärksten Merkmale selektiert, wobei redundante Features mit hoher Korrelation eliminiert wurden.
 
-##### Implementierung
 Die Hyperparameter des finalen Models umfassen `learning_rat` von `0.2`, `max_depth` von `2` und `n_estimators` von `300` Bäumen, sowie `n_estimators` und `min_samples_leaf` von jeweil `2`. Die Parameterauswahl erfolgte durch eine Grid Search `learning_rate` $∈ {0.01, 0.1, 0.2}$, `max_depth` $∈ {2, 3, 4}$, `n_estimators` $∈ {100, 200, 300}$ und Regularisierungsparameter `min_samples_split` $∈ {2, 4}$ sowie `min_samples_leaf` $∈ {1, 2}$. Eine 5 Fache Kreuzvalidierung mit $R²$-Score als Optimierungsmetrik ergab die finale Konfiguration. Das Training erfolgt auf 80% der verfügbaren Daten  20% Test-Set-Evaluation.
 
 {{< anchor "regressor" >}}
@@ -154,12 +163,20 @@ Die Hyperparameter des finalen Models umfassen `learning_rat` von `0.2`, `max_de
            caption="Abbildung 5: Predicted vs Actual Darstellung der Gradient Boosting Modelle für $N_{100}$ (links) und $F_{100}$ (rechts). Die lineare Beziehung zwischen vorhergesagten und tatsächlichen Spread-Abweichungen bestätigt die Vorhersagequalität beider Modelle."
            style="text-align: center; margin: 0 auto;" >}}
 
+Im letzten Schritt werden auch in diesem Verfahren die Paare statistisch mit [Kointegrations](#cointpair)-$p$-Wert $< 0.05$ geprüft und absteigend nach den Top 20 nach ihere mean-revsion eigenschaft für das Trading ausgewählt.
+
  Die Predicted vs Actual Darstellungen in [Abbildung 5](#regressor) bestätigen die solide Vorhersageleistung beider Modelle. Das $N_{100}$ Modell erreicht ein `R²` von `0.707` mit einem `MSE` von `0.068` und `MAE` von `0.201`, während das $F_{100}$ Modell ein `R²` von `0.652` bei einem `MSE` von `0.084` und `MAE` von `0.227` erzielt.
 
-
-
 # Window
+Der in dieser Arbeit angewandete Sliding Window ansatz verschiebt sowohl das Traings als auch das Trading Fenster. Für jede Iteration $i \in \{1, 2, ..., 12\}$ werden beide Zeiträume synchron um $\Delta t = 1$ Monat verschoben. Das Trainingsfenster wird definiert als $T_{train}^{(i)} = [t_{start} + (i-1) \cdot \Delta t, t_{train\_end} + (i-1) \cdot \Delta t]$, während das nachgelagerte Trading-Fenster $T_{trade}^{(i)} = [t_{train\_end} + (i-1) \cdot \Delta t + 1, t_{train\_end} + (i-1) \cdot \Delta t + \Delta_{trade}]$ mit $t_{train\_end} = 01.01.2024$ und $\Delta_{trade} = 1$ Monat umfasst.
 
+
+{{< anchor "window" >}}
+{{< figure src="/images/window.drawio.png" 
+           caption="Abbildung 3: Affinity Propagation Clustering für $N_{100}$ und $F_{100}$ Aktien im Rendite-Volatilität-Raum mit exemplar-basierten Cluster-Zentren und die selektierten Paare nach Kointegrationstest und Score-Bewertung im t-SNE Ähnlichkeitsraum. "
+          >}}
+
+Die zeitliche Zuordnung zwischen Paaridentifikation und Trade-Ausführung folgt einer strikten Heuristik: Die im Trainingsfenster $T_{train}^{(i)}$ identifizierten Aktienpaare dürfen ausschließlich im direkt nachfolgenden Trading-Fenster $T_{trade}^{(i)}$ eröffnet werden. Bereits eröffnete Trades können jedoch in späteren Fenstern $T_{trade}^{(j)}$ mit $j > i$ geschlossen werden, solange die Ausstiegsbedingungen erfüllt sind.
 # Data
 
 
