@@ -165,7 +165,7 @@
 $$X_i(t) = \alpha_{i,j} + \beta_{i,j} X_j(t) + \varepsilon_{i,j}(t)$$</p>
 <p>Die Residuen $\varepsilon_{i,j}(t)$ dieser Regression müssen stationär sein, auch wenn die ursprünglichen Zeitreihen $X_i(t)$ und $X_j(t)$ selbst nichtstationär sind. Ein stationärer Prozess kehrt zu seinem Mittelwert zurück und weist konstante Varianz auf. Mit dem Engle-Granger-Verfahren <a href="#ref-Engle%20Granger%201987" id="cite-Engle Granger 1987">(cf. Engle Granger 1987)</a> wird diese Stationarität der Residuen mittels Augmented Dickey-Fuller-Test <a href="#ref-Dickey%201979" id="cite-Dickey 1979">(cf. Dickey 1979)</a> geprüft. Die Nullhypothese lautet, dass die Residuen eine Einheitswurzel besitzen (nichtstationär sind). Wird diese Nullhypothese bei einem Signifikanzniveau $\alpha_{\text{sig}}$ verworfen ($p$-Wert $&lt; \alpha_{\text{sig}}$), liegt Kointegration vor.</p>
 <p><strong>Cointegrierte Paare handeln:</strong> Aufgrund ihrer statistischen Eigenschaften (stabilisieren die Varianz) werden die Preise logarithmisch mit $\log X_i(t)$ und $\log X_j(t)$ angewandt. Um das optimale Verhältnis für einen Trade zu finden, wird die Hedge Ratio durch lineare Regression bestimmt:
-<!-- raw HTML omitted --><!-- raw HTML omitted -->
+<span id="f2"></span>
 $$\log X_i(t) = \alpha_{i,j} + \beta_{i,j} \log X_j(t) + \varepsilon_{i,j}(t)$$</p>
 <p>Wobei $\alpha_{i,j}$ die Konstante (Intercept der Regression), $\beta_{i,j}$ das Hedge Ratio (gibt an, wie viele Einheiten von $X_j$ pro Einheit $X_i$ gehandelt werden) und $\varepsilon_{i,j}(t)$ der Fehlerterm (Residuen) ist. Das Hedge Ratio $\beta_{i,j}$ hat den Zweck, dass Long- und Short-Positionen marktneutral sind. Mit dem Hedge Ratio kann nun ein marktneutraler Spread konstruiert werden:
 <!-- raw HTML omitted --><!-- raw HTML omitted -->
@@ -173,8 +173,8 @@ $$Spread_{i,j}(t) = \log X_i(t) - \beta_{i,j} \log X_j(t)$$</p>
 <p>Dieser Spread eliminiert die gemeinsame Marktbewegung. Damit Trading damit aber profitabel ist, muss der Spread mean-reverting (mittelwertrückkehrend) sein:
 <!-- raw HTML omitted --><!-- raw HTML omitted -->
 $$Spread_{i,j}(t) = \mu_{i,j} + u_{i,j}(t)$$</p>
-<p>wobei $u_{i,j}(t)$ ein stationärer Prozess mit $E[u_{i,j}(t)] = 0$ ist. Im Handel können profitable Abweichungen nur realisiert werden, wenn der Spread zum Mittelwert zurückkehrt. Um feststellen zu können, wann der Spread zu weit von seinem Mittelwert entfernt ist, wird er normalisiert:
-<!-- raw HTML omitted --><!-- raw HTML omitted -->
+<p>wobei $u_{i,j}(t)$ ein stationärer Prozess mit $E[u_{i,j}(t)] = 0$ ist. Im Handel können profitable Abweichungen nur realisiert werden, wenn der Spread zum Mittelwert zurückkehrt. Um feststellen zu können, wann der Spread zu weit von seinem Mittelwert entfernt ist, wird er normalisiert:</p>
+<p><span id="f5"></span>
 $$Z_{i,j}(t) = \frac{Spread_{i,j}(t) - \mu_{i,j}}{\sigma_{i,j}}$$
 Der Z-Score macht Abweichungen vergleichbar und definiert klare Ein- und Ausstiegssignale. Als Beispiel bei $\theta = 2$: Long bei $Z_{i,j}(t) &lt; -\theta$ mit Long $X_i$, Short $\beta_{i,j} \cdot X_j$ oder Short bei $Z_{i,j}(t) &gt; +\theta$ dann vice versa Short $X_i$, Long $\beta_{i,j} \cdot X_j$. Der Exit solcher Trades erfolgt bei $Z_{i,j}(t) \rightarrow 0$, da der Spread zur historischen Mitte zurückkehrt.</p>
 <h3 class="heading" id="der-korrelationsansatz">
@@ -411,19 +411,42 @@ Der $N_{100}$ wieß in der Enwicklung <code>Silhouette Score</code> von <code>0.
   Window
   <a class="anchor" href="#window">#</a>
 </h1>
-<p>Der in dieser Arbeit angewandete Sliding Window ansatz verschiebt sowohl das Traings als auch das Trading Fenster. Für jede Iteration $i \in {1, 2, &hellip;, 12}$ werden beide Zeiträume synchron um $\Delta t = 1$ Monat verschoben. Das Trainingsfenster wird definiert als $T_{train}^{(i)} = [t_{start} + (i-1) \cdot \Delta t, t_{train_end} + (i-1) \cdot \Delta t]$, während das nachgelagerte Trading-Fenster $T_{trade}^{(i)} = [t_{train_end} + (i-1) \cdot \Delta t + 1, t_{train_end} + (i-1) \cdot \Delta t + \Delta_{trade}]$ mit $t_{train_end} = 01.01.2024$ und $\Delta_{trade} = 1$ Monat umfasst.</p>
-<p><span id="window"></span>
+<p>Der in dieser Arbeit angewandete Sliding Window ansatz verschiebt sowohl das Traings als auch das Trading Fenster. Für jede Iteration $i \in {1, 2, &hellip;, 12}$ werden beide Zeiträume synchron um $\Delta t = 1$ Monat verschoben. Das Trainings- und Tradingfenster werden jeweils  definiert als:</p>
+<p>$$T_{train}^{(i)} = [t_{start} + (i-1) \cdot \Delta t, t_{train_end} + (i-1) \cdot \Delta t]$$
+$$T_{trade}^{(i)} = [t_{train_end} + (i-1) \cdot \Delta t + 1, t_{train_end} + (i-1) \cdot \Delta t + \Delta_{trade}]$$</p>
+<p>mit $t_{train_end} = 01.01.2024$ und $\Delta_{trade} = 1$ Monat umfasst. Diese gekoppelte Verschiebung gewährleistet, dass das Trainingsfenster seine 3-Jahres-Länge beibehält, visualisiert in <a href="#window">Abbildung 6</a>.</p>
+<p>VORLESUNG
+<span id="window"></span>
 <figure><img src="/images/window.drawio.png"
-    alt="Abbildung 3: Affinity Propagation Clustering für $N_{100}$ und $F_{100}$ Aktien im Rendite-Volatilität-Raum mit exemplar-basierten Cluster-Zentren und die selektierten Paare nach Kointegrationstest und Score-Bewertung im t-SNE Ähnlichkeitsraum."><figcaption>
-      <p>Abbildung 3: Affinity Propagation Clustering für $N_{100}$ und $F_{100}$ Aktien im Rendite-Volatilität-Raum mit exemplar-basierten Cluster-Zentren und die selektierten Paare nach Kointegrationstest und Score-Bewertung im t-SNE Ähnlichkeitsraum.</p>
+    alt="Abbildung 6: Gekoppelte Verschiebung beider Fenster in 12 iterationen.$"><figcaption>
+      <p>Abbildung 6: Gekoppelte Verschiebung beider Fenster in 12 iterationen.$</p>
     </figcaption>
 </figure>
 </p>
 <p>Die zeitliche Zuordnung zwischen Paaridentifikation und Trade-Ausführung folgt einer strikten Heuristik: Die im Trainingsfenster $T_{train}^{(i)}$ identifizierten Aktienpaare dürfen ausschließlich im direkt nachfolgenden Trading-Fenster $T_{trade}^{(i)}$ eröffnet werden. Bereits eröffnete Trades können jedoch in späteren Fenstern $T_{trade}^{(j)}$ mit $j &gt; i$ geschlossen werden, solange die Ausstiegsbedingungen erfüllt sind.</p>
-<h1 class="heading" id="data-1">
-  Data
-  <a class="anchor" href="#data-1">#</a>
+<h1 class="heading" id="strategies">
+  Strategies
+  <a class="anchor" href="#strategies">#</a>
 </h1>
+<p>Zur Bewertung der identifizierten Paare werden zwei etablierte technische Handelsstrategien angewendet: eine <strong>Z-Score</strong>- sowie eine <strong>Bollinger-Band</strong>-basierte Strategie. Z-Score hat sich als weit verbreitete Methode im Pairs Trading etabliert <a href="#ref-Quantinsti%202025" id="cite-Quantinsti 2025">(Quantinsti 2025)</a>, da Pairs Trading zu den am häufigsten verwendeten marktneutralen Strategien gehört <a href="#ref-Carrasco%20Bl%c3%a1zquez%202018" id="cite-Carrasco Blázquez 2018">(Carrasco Blázquez 2018)</a>. Bollinger Bands werden als ergänzende Strategie implementiert, da sie im Gegensatz zu den festen Schwellenwerten des Z-Scores dynamische Bänder verwenden, die sich an die Marktvolatilität anpassen <a href="#ref-Leung%202020" id="cite-Leung 2020">(Leung 2020)</a>; <a href="#ref-Syril%202025" id="cite-Syril 2025">(Syril 2025)</a>.</p>
+<h4 class="heading" id="z-score-strategie">
+  Z-Score Strategie
+  <a class="anchor" href="#z-score-strategie">#</a>
+</h4>
+<p>Die Z-Score Strategie nutzt die bereits eingeführte <a href="#f5">Z-Score Normalisierung</a> mit rollierenden Fenstern von $w_2 = 60$ Handelstagen zur Berechnung von $\mu_{i,j}$ und $\sigma_{i,j}$. Dieser Schwellwert gilt für die Auswertung und wurde als mittelwert ausgewählt (kann aber angepasst werden). Laut <a href="#ref-Krauss%202015" id="cite-Krauss 2015">cf. Krauss et al. 2015</a> vom Institute for Economics der Universität Erlangen-Nuremberg liegen typische Fenstergrößen für historische Mittelwerte und Standardabweichungen bei Pairs-Trading-Strategien zwischen 30 und 90 Tagen.</p>
+<p><strong>Handelssignale:</strong></p>
+<ul>
+<li><strong>Einstieg Long</strong>: $Z_{i,j}(t) &lt; -2.0$ → Long $X_i$, Short $\beta_{i,j} \cdot X_j$</li>
+<li><strong>Einstieg Short</strong>: $Z_{i,j}(t) &gt; +2.0$ → Short $X_i$, Long $\beta_{i,j} \cdot X_j$</li>
+<li><strong>Ausstieg</strong>: $|Z_{i,j}(t)| &lt; 0.5$</li>
+</ul>
+<h4 class="heading" id="bollinger-bands-strategie">
+  Bollinger Bands Strategie
+  <a class="anchor" href="#bollinger-bands-strategie">#</a>
+</h4>
+<p>Die Bollinger Band Strategie weicht in drei wesentlichen Punkten von der Z-Score Implementierung ab. Das Hedge Ratio wird alle $r = 3$ Handelstage neu geschätzt basierend auf den letzten $w_{hr} = 25$ Beobachtungen:
+$$\beta_{i,j}(t) = \arg\min_{\beta} \sum_{k=t-25+1}^{t} [X_i(k) - \beta \cdot X_j(k)]^2$$</p>
+<p>Die Verwendung kurzer Rolling Windows für Hedge Ratio-Schätzungen ist in der quantitativen Finanzliteratur etabliert <a href="#ref-QuantStart%202020" id="cite-QuantStart 2020">(QuantStart 2020)</a> und ermöglicht eine schnellere Anpassung der Strategie an sich ändernde Marktbedingungen <a href="#ref-Feng%202023" id="cite-Feng 2023">(Feng 2023)</a>.</p>
 <h2 class="heading" id="cite-example">
   Cite Example
   <a class="anchor" href="#cite-example">#</a>
@@ -478,6 +501,11 @@ Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
   <span class="ref-content">Miao, G. J. (2014). High frequency and dynamic pairs trading based on statistical arbitrage using a two-stage correlation and cointegration approach. International Journal of Economics and Finance, 6, 96. <a href="https://api.semanticscholar.org/CorpusID:54175142">https://api.semanticscholar.org/CorpusID:54175142</a></span>
 </div>
 
+<div id="ref-Krauss 2015" class="reference">
+  <span class="ref-label">[Krauss 2015]</span>
+  <span class="ref-content">Krauss, C. (2015). Statistical arbitrage pairs trading strategies: Review and outlook. IWQW Discussion Papers, No. 09/2015, Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut für Wirtschaftspolitik und Quantitative Wirtschaftsforschung (IWQW), Nürnberg. <a href="https://hdl.handle.net/10419/116783">https://hdl.handle.net/10419/116783</a></span>
+</div>
+
 <div id="ref-Jacobs 2015" class="reference">
   <span class="ref-label">[Jacobs 2015]</span>
   <span class="ref-content">Jacobs, H., &amp; Weber, M. (2015). On the determinants of pairs trading profitability. Journal of Financial Markets, 23, 75-97. <a href="https://doi.org/10.1016/j.finmar.2014.12.001">https://doi.org/10.1016/j.finmar.2014.12.001</a></span>
@@ -513,6 +541,16 @@ Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
   <span class="ref-content">Chen, K., Chiu, M. C., &amp; Wong, H. Y. (2019). Time-consistent mean-variance pairs-trading under regime-switching cointegration. SIAM Journal on Financial Mathematics, 10(2), 632-665. <a href="https://doi.org/10.1137/18M1209611">https://doi.org/10.1137/18M1209611</a></span>
 </div>
 
+<div id="ref-" class="reference">
+  <span class="ref-label">[]</span>
+  <span class="ref-content">QuantStart. (2020). Dynamic Hedge Ratio Between ETF Pairs Using the Kalman Filter. Retrieved from <a href="https://www.quantstart.com/articles/Dynamic-Hedge-Ratio-Between-ETF-Pairs-Using-the-Kalman-Filter/">https://www.quantstart.com/articles/Dynamic-Hedge-Ratio-Between-ETF-Pairs-Using-the-Kalman-Filter/</a></span>
+</div>
+
+<div id="ref-Leung 2020" class="reference">
+  <span class="ref-label">[Leung 2020]</span>
+  <span class="ref-content">Leung, J. M. J., &amp; Chong, T. T. L. (2020). The profitability of Bollinger Bands: Evidence from the constituent stocks of Taiwan 50. Physica A: Statistical Mechanics and its Applications, 539, 122949.</span>
+</div>
+
 <div id="ref-Sarmento 2020" class="reference">
   <span class="ref-label">[Sarmento 2020]</span>
   <span class="ref-content">Sarmento, S. M., &amp; Horta, N. (2020). Enhancing a pairs trading strategy with the application of machine learning. Expert Systems with Applications, 158, 113490. <a href="https://doi.org/10.1016/j.eswa.2020.113490">https://doi.org/10.1016/j.eswa.2020.113490</a></span>
@@ -528,9 +566,24 @@ Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
   <span class="ref-content">Ma, B., &amp; Ślepaczuk, R. (2022). The profitability of pairs trading strategies on Hong-Kong stock market: distance, cointegration, and correlation methods. Working Papers 2022-02, Faculty of Economic Sciences, University of Warsaw. <a href="https://ideas.repec.org/p/war/wpaper/2022-02.html">https://ideas.repec.org/p/war/wpaper/2022-02.html</a></span>
 </div>
 
+<div id="ref-Feng 2023" class="reference">
+  <span class="ref-label">[Feng 2023]</span>
+  <span class="ref-content">Feng, Y., Zhang, Y., &amp; Wang, Y. (2023). Out‐of‐sample volatility prediction: Rolling window, expanding window, or both? Journal of Forecasting, 43, 567-582. <a href="https://doi.org/10.1002/for.3046">https://doi.org/10.1002/for.3046</a></span>
+</div>
+
+<div id="ref-Quantinsti 2025" class="reference">
+  <span class="ref-label">[Quantinsti 2025]</span>
+  <span class="ref-content">QuantInsti. (2025). Pairs Trading for Beginners: Correlation, Cointegration, Examples, and Strategy Steps. Retrieved from <a href="https://blog.quantinsti.com/pairs-trading-basics/">https://blog.quantinsti.com/pairs-trading-basics/</a></span>
+</div>
+
 <div id="ref-Othman 2025" class="reference">
   <span class="ref-label">[Othman 2025]</span>
   <span class="ref-content">Othman, A. H. A. (2025). Enhancing pairs trading strategies in the cryptocurrency industry using machine learning clustering algorithms. London Journal of Research In Management &amp; Business, 25(1), 33-52. <a href="https://journalspress.uk/index.php/LJRMB/article/view/1179">https://journalspress.uk/index.php/LJRMB/article/view/1179</a></span>
+</div>
+
+<div id="ref-Syril 2025" class="reference">
+  <span class="ref-label">[Syril 2025]</span>
+  <span class="ref-content">Syril, W. M., &amp; Nagarajan, C. D. (2025). Optimizing commodity futures trading in the financial market: Fine-tuning Bollinger Bands strategy. Global Business Review. <a href="https://doi.org/10.1177/09721509251328555">https://doi.org/10.1177/09721509251328555</a></span>
 </div>
 <div class="footnotes" role="doc-endnotes">
 <hr>
