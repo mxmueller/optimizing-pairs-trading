@@ -21,7 +21,8 @@ Die Residuen $\varepsilon_{i,j}(t)$ dieser Regression müssen stationär sein, a
 $$\log X_i(t) = \alpha_{i,j} + \beta_{i,j} \log X_j(t) + \varepsilon_{i,j}(t)$$
 
 Wobei $\alpha_{i,j}$ die Konstante (Intercept der Regression), $\beta_{i,j}$ das Hedge Ratio (gibt an, wie viele Einheiten von $X_j$ pro Einheit $X_i$ gehandelt werden) und $\varepsilon_{i,j}(t)$ der Fehlerterm (Residuen) ist. Das Hedge Ratio $\beta_{i,j}$ hat den Zweck, dass Long- und Short-Positionen marktneutral sind. Mit dem Hedge Ratio kann nun ein marktneutraler Spread konstruiert werden:
-<a id="f3"></a>
+
+{{< anchor "f3" >}}
 $$Spread_{i,j}(t) = \log X_i(t) - \beta_{i,j} \log X_j(t)$$
 
 Dieser Spread eliminiert die gemeinsame Marktbewegung. Damit Trading damit aber profitabel ist, muss der Spread mean-reverting (mittelwertrückkehrend) sein:
@@ -191,19 +192,37 @@ Zur Bewertung der identifizierten Paare werden zwei etablierte technische Handel
 
 Die Z-Score Strategie nutzt die bereits eingeführte [Z-Score Normalisierung](#f5) mit rollierenden Fenstern von $w_2 = 60$ Handelstagen zur Berechnung von $\mu_{i,j}$ und $\sigma_{i,j}$. Dieser Schwellwert gilt für die Auswertung und wurde als mittelwert ausgewählt (kann aber angepasst werden). Laut {{< cite ref="Krauss 2015" etal="true" cf="true" noparen="true">}} vom Institute for Economics der Universität Erlangen-Nuremberg liegen typische Fenstergrößen für historische Mittelwerte und Standardabweichungen bei Pairs-Trading-Strategien zwischen 30 und 90 Tagen.
  
-**Handelssignale:**
-- **Einstieg Long**: $Z_{i,j}(t) < -2.0$ → Long $X_i$, Short $\beta_{i,j} \cdot X_j$
-- **Einstieg Short**: $Z_{i,j}(t) > +2.0$ → Short $X_i$, Long $\beta_{i,j} \cdot X_j$  
-- **Ausstieg**: $|Z_{i,j}(t)| < 0.5$
+| Signal | Bedingung |
+|--------|-----------|
+| Long | $Z_{i,j}(t) < -2.0$ → Long $X_i$, Short $\beta_{i,j} \cdot X_j$ |
+| Short | $Z_{i,j}(t) > +2.0$ → Short $X_i$, Long $\beta_{i,j} \cdot X_j$ |
+| Ausstieg | $\|Z_{i,j}(t)\| < 0.5$ |
 
 #### Bollinger Bands Strategie
 Die Bollinger Band Strategie weicht in drei wesentlichen Punkten von der Z-Score Implementierung ab. Das Hedge Ratio wird alle $r = 3$ Handelstage neu geschätzt basierend auf den letzten $w_{hr} = 25$ Beobachtungen:
 $$\beta_{i,j}(t) = \arg\min_{\beta} \sum_{k=t-25+1}^{t} [X_i(k) - \beta \cdot X_j(k)]^2$$
 
-Die Verwendung kurzer Rolling Windows für Hedge Ratio-Schätzungen ist in der quantitativen Finanzliteratur etabliert {{< cite ref="QuantStart 2020" >}} und ermöglicht eine schnellere Anpassung der Strategie an sich ändernde Marktbedingungen {{< cite ref="Feng 2023" >}}.
+Dabei bezeichnet $\arg\min$ den β-Wert, der die Summe der quadrierten Residuen minimiert (OLS-Regression), und $t-25+1$ bis $t$ umfasst die letzten 25 Handelstage einschließlich des aktuellen Zeitpunkts. Die Verwendung kurzer Rolling Windows für Hedge Ratio-Schätzungen ist in der quantitativen Finanzliteratur etabliert {{< cite ref="QuantStart 2020" >}} und ermöglicht eine schnellere Anpassung der Strategie an sich ändernde Marktbedingungen {{< cite ref="Feng 2023" >}}. Für den absoluten Preis-basierten Spread wird anders ald die logarithmierte [Spread-Konstruktion](#f3) hier verwendet:
 
+$$Spread_{i,j}(t) = X_i(t) - \beta_{i,j}(t) \cdot X_j(t)$$
 
+Die adaptiven Bänder werden mit einem roll rollierendem Fenster $w = 20$ Handelstage von 20 Handelstagen angewandt:
 
+$$Upper_{i,j}(t) = \mu_{spread}(t) + 2.0 \cdot \sigma_{spread}(t)$$
+$$Lower_{i,j}(t) = \mu_{spread}(t) - 2.0 \cdot \sigma_{spread}(t)$$
+
+Die Bänder definieren dynamische Ein- und Ausstiegsschwellen, die sich automatisch an veränderte Volatilitätsbedingungen anpassen. Positionen werden eröffnet bei Bandüberschreitungen und geschlossen bei Konvergenz zum Mittelwert.
+
+| Signal | Bedingung |
+|--------|-----------|
+| Long | $Spread_{i,j}(t) < Lower_{i,j}(t)$ |
+| Short | $Spread_{i,j}(t) > Upper_{i,j}(t)$ |
+| Ausstieg | $\|Spread_{i,j}(t) - \mu_{spread}(t)\| < 0.5 \cdot \sigma_{spread}(t)$ |
+
+GRAFIK VORLESUNG
+
+# Market Sim 
+Alle Paare werden unter einheitlichen Marktbedingungen getestet. Das Startkapital beträgt €100.000 mit einer festen Positionsgröße von 1% des verfügbaren Kapitals pro Trade. Realistische Transaktionskosten werden durch eine fixe Kommission von €1,00 pro Trade sowie eine variable Gebühr von 0,018% des Handelsvolumens simuliert. Zusätzlich wird ein Bid-Ask-Spread von 0,1% berücksichtigt, der sowohl beim Einstieg als auch Ausstieg anfällt. Diese Kostenstuktur entspricht typischen Retail-Brokerage-Bedingungen und gewährleistet eine realistische Performance-Bewertung {{< cite ref="Interactive Brokers 2024" >}}. Der risikofreie Zinssatz wird mit 0% angesetzt, da Opportunitätskosten durch die marktneutrale Natur des Pairs Trading minimiert werden. 
 
 
 ## Cite Example

@@ -167,8 +167,8 @@ $$X_i(t) = \alpha_{i,j} + \beta_{i,j} X_j(t) + \varepsilon_{i,j}(t)$$</p>
 <p><strong>Cointegrierte Paare handeln:</strong> Aufgrund ihrer statistischen Eigenschaften (stabilisieren die Varianz) werden die Preise logarithmisch mit $\log X_i(t)$ und $\log X_j(t)$ angewandt. Um das optimale Verhältnis für einen Trade zu finden, wird die Hedge Ratio durch lineare Regression bestimmt:
 <span id="f2"></span>
 $$\log X_i(t) = \alpha_{i,j} + \beta_{i,j} \log X_j(t) + \varepsilon_{i,j}(t)$$</p>
-<p>Wobei $\alpha_{i,j}$ die Konstante (Intercept der Regression), $\beta_{i,j}$ das Hedge Ratio (gibt an, wie viele Einheiten von $X_j$ pro Einheit $X_i$ gehandelt werden) und $\varepsilon_{i,j}(t)$ der Fehlerterm (Residuen) ist. Das Hedge Ratio $\beta_{i,j}$ hat den Zweck, dass Long- und Short-Positionen marktneutral sind. Mit dem Hedge Ratio kann nun ein marktneutraler Spread konstruiert werden:
-<!-- raw HTML omitted --><!-- raw HTML omitted -->
+<p>Wobei $\alpha_{i,j}$ die Konstante (Intercept der Regression), $\beta_{i,j}$ das Hedge Ratio (gibt an, wie viele Einheiten von $X_j$ pro Einheit $X_i$ gehandelt werden) und $\varepsilon_{i,j}(t)$ der Fehlerterm (Residuen) ist. Das Hedge Ratio $\beta_{i,j}$ hat den Zweck, dass Long- und Short-Positionen marktneutral sind. Mit dem Hedge Ratio kann nun ein marktneutraler Spread konstruiert werden:</p>
+<p><span id="f3"></span>
 $$Spread_{i,j}(t) = \log X_i(t) - \beta_{i,j} \log X_j(t)$$</p>
 <p>Dieser Spread eliminiert die gemeinsame Marktbewegung. Damit Trading damit aber profitabel ist, muss der Spread mean-reverting (mittelwertrückkehrend) sein:
 <!-- raw HTML omitted --><!-- raw HTML omitted -->
@@ -434,19 +434,72 @@ $$T_{trade}^{(i)} = [t_{train_end} + (i-1) \cdot \Delta t + 1, t_{train_end} + (
   <a class="anchor" href="#z-score-strategie">#</a>
 </h4>
 <p>Die Z-Score Strategie nutzt die bereits eingeführte <a href="#f5">Z-Score Normalisierung</a> mit rollierenden Fenstern von $w_2 = 60$ Handelstagen zur Berechnung von $\mu_{i,j}$ und $\sigma_{i,j}$. Dieser Schwellwert gilt für die Auswertung und wurde als mittelwert ausgewählt (kann aber angepasst werden). Laut <a href="#ref-Krauss%202015" id="cite-Krauss 2015">cf. Krauss et al. 2015</a> vom Institute for Economics der Universität Erlangen-Nuremberg liegen typische Fenstergrößen für historische Mittelwerte und Standardabweichungen bei Pairs-Trading-Strategien zwischen 30 und 90 Tagen.</p>
-<p><strong>Handelssignale:</strong></p>
-<ul>
-<li><strong>Einstieg Long</strong>: $Z_{i,j}(t) &lt; -2.0$ → Long $X_i$, Short $\beta_{i,j} \cdot X_j$</li>
-<li><strong>Einstieg Short</strong>: $Z_{i,j}(t) &gt; +2.0$ → Short $X_i$, Long $\beta_{i,j} \cdot X_j$</li>
-<li><strong>Ausstieg</strong>: $|Z_{i,j}(t)| &lt; 0.5$</li>
-</ul>
-<h4 class="heading" id="bollinger-bands-strategie">
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>Signal</th>
+                <th>Bedingung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Long</td>
+                <td>$Z_{i,j}(t) &lt; -2.0$ → Long $X_i$, Short $\beta_{i,j} \cdot X_j$</td>
+            </tr>
+            <tr>
+                <td>Short</td>
+                <td>$Z_{i,j}(t) &gt; +2.0$ → Short $X_i$, Long $\beta_{i,j} \cdot X_j$</td>
+            </tr>
+            <tr>
+                <td>Ausstieg</td>
+                <td>$|Z_{i,j}(t)| &lt; 0.5$</td>
+            </tr>
+        </tbody>
+    </table>
+</div><h4 class="heading" id="bollinger-bands-strategie">
   Bollinger Bands Strategie
   <a class="anchor" href="#bollinger-bands-strategie">#</a>
 </h4>
 <p>Die Bollinger Band Strategie weicht in drei wesentlichen Punkten von der Z-Score Implementierung ab. Das Hedge Ratio wird alle $r = 3$ Handelstage neu geschätzt basierend auf den letzten $w_{hr} = 25$ Beobachtungen:
 $$\beta_{i,j}(t) = \arg\min_{\beta} \sum_{k=t-25+1}^{t} [X_i(k) - \beta \cdot X_j(k)]^2$$</p>
-<p>Die Verwendung kurzer Rolling Windows für Hedge Ratio-Schätzungen ist in der quantitativen Finanzliteratur etabliert <a href="#ref-QuantStart%202020" id="cite-QuantStart 2020">(QuantStart 2020)</a> und ermöglicht eine schnellere Anpassung der Strategie an sich ändernde Marktbedingungen <a href="#ref-Feng%202023" id="cite-Feng 2023">(Feng 2023)</a>.</p>
+<p>Dabei bezeichnet $\arg\min$ den β-Wert, der die Summe der quadrierten Residuen minimiert (OLS-Regression), und $t-25+1$ bis $t$ umfasst die letzten 25 Handelstage einschließlich des aktuellen Zeitpunkts. Die Verwendung kurzer Rolling Windows für Hedge Ratio-Schätzungen ist in der quantitativen Finanzliteratur etabliert <a href="#ref-QuantStart%202020" id="cite-QuantStart 2020">(QuantStart 2020)</a> und ermöglicht eine schnellere Anpassung der Strategie an sich ändernde Marktbedingungen <a href="#ref-Feng%202023" id="cite-Feng 2023">(Feng 2023)</a>. Für den absoluten Preis-basierten Spread wird anders ald die logarithmierte <a href="#f3">Spread-Konstruktion</a> hier verwendet:</p>
+<p>$$Spread_{i,j}(t) = X_i(t) - \beta_{i,j}(t) \cdot X_j(t)$$</p>
+<p>Die adaptiven Bänder werden mit einem roll rollierendem Fenster $w = 20$ Handelstage von 20 Handelstagen angewandt:</p>
+<p>$$Upper_{i,j}(t) = \mu_{spread}(t) + 2.0 \cdot \sigma_{spread}(t)$$
+$$Lower_{i,j}(t) = \mu_{spread}(t) - 2.0 \cdot \sigma_{spread}(t)$$</p>
+<p>Die Bänder definieren dynamische Ein- und Ausstiegsschwellen, die sich automatisch an veränderte Volatilitätsbedingungen anpassen. Positionen werden eröffnet bei Bandüberschreitungen und geschlossen bei Konvergenz zum Mittelwert.</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>Signal</th>
+                <th>Bedingung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Long</td>
+                <td>$Spread_{i,j}(t) &lt; Lower_{i,j}(t)$</td>
+            </tr>
+            <tr>
+                <td>Short</td>
+                <td>$Spread_{i,j}(t) &gt; Upper_{i,j}(t)$</td>
+            </tr>
+            <tr>
+                <td>Ausstieg</td>
+                <td>$|Spread_{i,j}(t) - \mu_{spread}(t)| &lt; 0.5 \cdot \sigma_{spread}(t)$</td>
+            </tr>
+        </tbody>
+    </table>
+</div><p>GRAFIK VORLESUNG</p>
+<h1 class="heading" id="market-sim">
+  Market Sim
+  <a class="anchor" href="#market-sim">#</a>
+</h1>
+<p>Alle Paare werden unter einheitlichen Marktbedingungen getestet. Das Startkapital beträgt €100.000 mit einer festen Positionsgröße von 1% des verfügbaren Kapitals pro Trade. Realistische Transaktionskosten werden durch eine fixe Kommission von €1,00 pro Trade sowie eine variable Gebühr von 0,018% des Handelsvolumens simuliert. Zusätzlich wird ein Bid-Ask-Spread von 0,1% berücksichtigt, der sowohl beim Einstieg als auch Ausstieg anfällt. Diese Kostenstuktur entspricht typischen Retail-Brokerage-Bedingungen und gewährleistet eine realistische Performance-Bewertung <a href="#ref-Interactive%20Brokers%202024" id="cite-Interactive Brokers 2024">(Interactive Brokers 2024)</a>. Der risikofreie Zinssatz wird mit 0% angesetzt, da Opportunitätskosten durch die marktneutrale Natur des Pairs Trading minimiert werden.</p>
 <h2 class="heading" id="cite-example">
   Cite Example
   <a class="anchor" href="#cite-example">#</a>
