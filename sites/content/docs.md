@@ -1,6 +1,9 @@
 ---
 title: "Ausarbeitung"
 math: true  # Das aktiviert KaTeX (ist schon im Theme)
+toc: true
+readTime: true
+
 ---
 
 Pairstrading ist eine nichtdirektionale Handelsstrategie, die unabhängig von der Marktrichtung funktioniert {{< cite ref="Vidyamurthy 2004" page="p. 8" >}}. Sie basiert auf historischen Zusammenhängen zwischen zwei Wertpapieren (Zeitreihen) $X_i(t)$ und $X_j(t)$ und nutzt temporäre Abweichungen in deren Preisbeziehung zur Gewinnerzielung aus. Im verbreiteten, statistischen Pairstrading werden zwei Hauptansätze unterschieden: kointegrationsbasierte und korrelationsbasierte Verfahren. {{< cite ref="Engle 1987" etal="true" noparen="true">}} legten die theoretischen Grundlagen der Kointegration, {{< cite ref="Vidyamurthy 2004" etal="true" noparen="true">}} entwickelten deren Anwendung im Pairstrading, und {{< cite ref="Gatev 2006" etal="true" noparen="true">}} etablierten den korrelationsbasierten Ansatz. Pairstrading umfasst zwei fundamentale Schritte: das Identifizieren geeigneter Paare und deren Handel.
@@ -187,6 +190,12 @@ Die zeitliche Zuordnung zwischen Paaridentifikation und Trade-Ausführung folgt 
 
 # Strategies 
 Zur Bewertung der identifizierten Paare werden zwei etablierte technische Handelsstrategien angewendet: eine **Z-Score**- sowie eine **Bollinger-Band**-basierte Strategie. Z-Score hat sich als weit verbreitete Methode im Pairs Trading etabliert {{< cite ref="Quantinsti 2025" >}}, da Pairs Trading zu den am häufigsten verwendeten marktneutralen Strategien gehört {{< cite ref="Carrasco Blázquez 2018" >}}. Bollinger Bands werden als ergänzende Strategie implementiert, da sie im Gegensatz zu den festen Schwellenwerten des Z-Scores dynamische Bänder verwenden, die sich an die Marktvolatilität anpassen {{< cite ref="Leung 2020" >}}; {{< cite ref="Syril 2025" >}}.
+
+{{< anchor "window" >}}
+{{< figure src="/images/strategies.drawio.png" 
+           caption="Abbildung 6: Gekoppelte Verschiebung beider Fenster in 12 iterationen.$"
+           width="800" 
+          >}}
 
 #### Z-Score Strategie
 

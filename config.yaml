@@ -7,26 +7,69 @@ storage:
   markets:
     - name: FTSE100
       data_file: market_data.parquet
-      data_path: ./data/raw/ftse_daily.parquet
+      data_path: /host-data/raw/ftse_daily.parquet
       strategies:
-        - file: version_1.parquet
-          source_path: ./data/evaluation/ftse100/ftse_trades.parquet
-          type: Z-Score
-          description: Initial Setup Version
+        - file: Cluster_Bollinger_Sliding.parquet
+          source_path: /host-data/results/ftse100/Cluster_Bollinger_Sliding.parquet
+          type: Bollinger
+          description: Cluster Bollinger Sliding Strategy
           pair_finding: Clustering
-        - file: version_2.parquet
-          source_path: ./data/evaluation/ftse100/ftse_trades2.parquet
+        - file: Cluster_Z-Score_Sliding.parquet
+          source_path: /host-data/results/ftse100/Cluster_Z-Score_Sliding.parquet
           type: Z-Score
-          description: Initial Setup Version Test
+          description: Cluster Z-Score Sliding Strategy
           pair_finding: Clustering
+        - file: CoInt_Bollinger_Sliding.parquet
+          source_path: /host-data/results/ftse100/CoInt_Bollinger_Sliding.parquet
+          type: Bollinger
+          description: CoInt Bollinger Sliding Strategy
+          pair_finding: Cointegration
+        - file: CoInt_Z-Score_Sliding.parquet
+          source_path: /host-data/results/ftse100/CoInt_Z-Score_Sliding.parquet
+          type: Z-Score
+          description: CoInt Z-Score Sliding Strategy
+          pair_finding: Cointegration
+        - file: GradientBoost_Bollinger_Sliding.parquet
+          source_path: /host-data/results/ftse100/GradientBoost_Bollinger_Sliding.parquet
+          type: Bollinger
+          description: GradientBoost Bollinger Sliding Strategy
+          pair_finding: GradientBoost
+        - file: GradientBoost_Z-Score_Sliding.parquet
+          source_path: /host-data/results/ftse100/GradientBoost_Z-Score_Sliding.parquet
+          type: Z-Score
+          description: GradientBoost Z-Score Sliding Strategy
+          pair_finding: GradientBoost
     - name: NASDAQ100
       data_file: market_data.parquet
-      data_path: ./data/raw/nasdaq_daily.parquet
-
-markup:
-  goldmark:
-    parser:
-      wrapStandAloneImageWithinParagraph: false
-      attribute:
-        block: true
-        title: true
+      data_path: /host-data/raw/nasdaq_daily.parquet
+      strategies:
+        - file: Cluster_Bollinger_Sliding.parquet
+          source_path: /host-data/results/nasdaq100/Cluster_Bollinger_Sliding.parquet
+          type: Bollinger
+          description: Cluster Bollinger Sliding Strategy
+          pair_finding: Clustering
+        - file: Cluster_Z-Score_Sliding.parquet
+          source_path: /host-data/results/nasdaq100/Cluster_Z-Score_Sliding.parquet
+          type: Z-Score
+          description: Cluster Z-Score Sliding Strategy
+          pair_finding: Clustering
+        - file: CoInt_Bollinger_Sliding.parquet
+          source_path: /host-data/results/nasdaq100/CoInt_Bollinger_Sliding.parquet
+          type: Bollinger
+          description: CoInt Bollinger Sliding Strategy
+          pair_finding: Cointegration
+        - file: CoInt_Z-Score_Sliding.parquet
+          source_path: /host-data/results/nasdaq100/CoInt_Z-Score_Sliding.parquet
+          type: Z-Score
+          description: CoInt Z-Score Sliding Strategy
+          pair_finding: Cointegration
+        - file: GradientBoost_Bollinger_Sliding.parquet
+          source_path: /host-data/results/nasdaq100/GradientBoost_Bollinger_Sliding.parquet
+          type: Bollinger
+          description: GradientBoost Bollinger Sliding Strategy
+          pair_finding: GradientBoost
+        - file: GradientBoost_Z-Score_Sliding.parquet
+          source_path: /host-data/results/nasdaq100/GradientBoost_Z-Score_Sliding.parquet
+          type: Z-Score
+          description: GradientBoost Z-Score Sliding Strategy
+          pair_finding: GradientBoost

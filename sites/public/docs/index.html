@@ -111,16 +111,8 @@
 
         <p
             class="small ">
-            <a href="/posts" >
-                /posts
-            </a>
-        </p>
-        
-
-        <p
-            class="small ">
-            <a href="/about" >
-                /about
+            <a href="/setup/" >
+                /Setup
             </a>
         </p>
         
@@ -149,8 +141,43 @@
         
         <h1 class="single-title">Ausarbeitung</h1>
         
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              20 min read
+            </p>
+          </div>
+        </div>
         
     </header>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#der-kointegrationsansatz">Der Kointegrationsansatz</a></li>
+        <li><a href="#der-korrelationsansatz">Der Korrelationsansatz</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#cite-example">Cite Example</a></li>
+    <li><a href="#literatur">Literatur</a></li>
+  </ul>
+</nav>
+      </aside>
     
     <div class="single-content">
       <p>Pairstrading ist eine nichtdirektionale Handelsstrategie, die unabhängig von der Marktrichtung funktioniert <a href="#ref-Vidyamurthy%202004" id="cite-Vidyamurthy 2004">(Vidyamurthy 2004, p. 8)</a>. Sie basiert auf historischen Zusammenhängen zwischen zwei Wertpapieren (Zeitreihen) $X_i(t)$ und $X_j(t)$ und nutzt temporäre Abweichungen in deren Preisbeziehung zur Gewinnerzielung aus. Im verbreiteten, statistischen Pairstrading werden zwei Hauptansätze unterschieden: kointegrationsbasierte und korrelationsbasierte Verfahren. <a href="#ref-Engle%201987" id="cite-Engle 1987">Engle et al. 1987</a> legten die theoretischen Grundlagen der Kointegration, <a href="#ref-Vidyamurthy%202004" id="cite-Vidyamurthy 2004">Vidyamurthy et al. 2004</a> entwickelten deren Anwendung im Pairstrading, und <a href="#ref-Gatev%202006" id="cite-Gatev 2006">Gatev et al. 2006</a> etablierten den korrelationsbasierten Ansatz. Pairstrading umfasst zwei fundamentale Schritte: das Identifizieren geeigneter Paare und deren Handel.</p>
@@ -429,6 +456,13 @@ $$T_{trade}^{(i)} = [t_{train_end} + (i-1) \cdot \Delta t + 1, t_{train_end} + (
   <a class="anchor" href="#strategies">#</a>
 </h1>
 <p>Zur Bewertung der identifizierten Paare werden zwei etablierte technische Handelsstrategien angewendet: eine <strong>Z-Score</strong>- sowie eine <strong>Bollinger-Band</strong>-basierte Strategie. Z-Score hat sich als weit verbreitete Methode im Pairs Trading etabliert <a href="#ref-Quantinsti%202025" id="cite-Quantinsti 2025">(Quantinsti 2025)</a>, da Pairs Trading zu den am häufigsten verwendeten marktneutralen Strategien gehört <a href="#ref-Carrasco%20Bl%c3%a1zquez%202018" id="cite-Carrasco Blázquez 2018">(Carrasco Blázquez 2018)</a>. Bollinger Bands werden als ergänzende Strategie implementiert, da sie im Gegensatz zu den festen Schwellenwerten des Z-Scores dynamische Bänder verwenden, die sich an die Marktvolatilität anpassen <a href="#ref-Leung%202020" id="cite-Leung 2020">(Leung 2020)</a>; <a href="#ref-Syril%202025" id="cite-Syril 2025">(Syril 2025)</a>.</p>
+<p><span id="window"></span>
+<figure><img src="/images/strategies.drawio.png"
+    alt="Abbildung 6: Gekoppelte Verschiebung beider Fenster in 12 iterationen.$" width="800"><figcaption>
+      <p>Abbildung 6: Gekoppelte Verschiebung beider Fenster in 12 iterationen.$</p>
+    </figcaption>
+</figure>
+</p>
 <h4 class="heading" id="z-score-strategie">
   Z-Score Strategie
   <a class="anchor" href="#z-score-strategie">#</a>
@@ -656,6 +690,35 @@ Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
 
   
   
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/setup/">
+                        Backtesting Demonstrator Setup Guide
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
 
   
 

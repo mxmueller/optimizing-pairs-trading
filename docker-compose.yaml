@@ -10,8 +10,14 @@ services:
     volumes:
       - minio-data:/data
       - ./config.yaml:/config/config.yaml
-      - ./data:/data
+      - ./data:/host-data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mc", "ls", "myminio/markets/"]
+      interval: 5s
+      timeout: 10s
+      retries: 12
+      start_period: 30s
 
   analytics:
     build: ./src/backtester/services/analytics
@@ -22,7 +28,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - minio
+      minio:
+        condition: service_healthy
     restart: unless-stopped
 
   notebook_runner:
@@ -36,7 +43,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - minio
+      minio:
+        condition: service_healthy
     restart: unless-stopped
 
   streamlit:
@@ -49,8 +57,10 @@ services:
     ports:
       - "8501:8501"
     depends_on:
-      - minio
-      - analytics
+      minio:
+        condition: service_healthy
+      analytics:
+        condition: service_started
     environment:
       - ANALYTICS_URL=http://analytics-service:8000
     restart: unless-stopped

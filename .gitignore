@@ -78,3 +78,6 @@ data/.idea/vcs.xml
 /data/.minio.sys/
 /data/markets/
 .idea/workspace.xml
+.DS_Store
+.DS_Store
+data/.DS_Store

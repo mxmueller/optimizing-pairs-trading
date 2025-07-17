@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    Backtesting Demonstrator Setup Guide | Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/setup/"/>
+
+<meta property="og:url" content="http://localhost:1313/setup/">
+  <meta property="og:site_name" content="Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading">
+  <meta property="og:title" content="Backtesting Demonstrator Setup Guide">
+  <meta property="og:description" content="clone
+git clone --recurse-submodules https://github.com/mxmueller/optimizing-pairs-trading check if docker is setup and running
+docker --version docker compose version docker-compose up --build --detach Costum Setup # Configuration (config.yaml) # MinIO Credentials # minio: user: minioadmin password: minioadmin Storage Configuration # storage: base_bucket: markets # Root bucket name markets: - name: FTSE100 # Market identifier data_file: market_data.parquet # Target filename in bucket data_path: /host-data/raw/ftse_daily.parquet # Source file path strategies: - file: Cluster_Bollinger_Sliding.parquet # Target filename source_path: /host-data/results/ftse100/Cluster_Bollinger_Sliding.parquet # Source path type: Bollinger # Strategy type (metadata) description: Cluster Bollinger Sliding Strategy # Description (metadata) pair_finding: Clustering # Pair finding method (metadata) Storage Structure # MinIO Bucket Layout # markets/ # base_bucket ├── FTSE100/ # markets[].name │ ├── market_data.parquet # markets[].data_file │ └── strategies/ │ ├── strategy1.parquet # strategies[].file │ └── strategy2.parquet └── NASDAQ100/ ├── market_data.parquet └── strategies/ ├── strategy1.parquet └── strategy2.parquet Host Filesystem Requirements # data/ # Mounted as /host-data in container ├── raw/ # Market data source │ ├── ftse_daily.parquet # → data_path │ └── nasdaq_daily.parquet └── results/ # Strategy data source ├── ftse100/ # → source_path │ ├── Cluster_Bollinger_Sliding.parquet │ ├── Cluster_Z-Score_Sliding.parquet │ └── ... └── nasdaq100/ ├── Cluster_Bollinger_Sliding.parquet ├── Cluster_Z-Score_Sliding.parquet └── ...">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.0d41f7df4b254b9ea5ad925d84046d60c8636d6630d18497be726888dbd86312.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="light">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/docs/" >
+                /Docs
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/setup/" >
+                /Setup
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span>
+        <a href="/setup/">Backtesting Demonstrator Setup Guide</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Backtesting Demonstrator Setup Guide</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              1 min read
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <p>clone</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone --recurse-submodules https://github.com/mxmueller/optimizing-pairs-trading
+</span></span></code></pre></div><p>check if docker is setup and running</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker --version
+</span></span><span style="display:flex;"><span>docker compose version
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up --build --detach
+</span></span></code></pre></div><h1 class="heading" id="costum-setup">
+  Costum Setup
+  <a class="anchor" href="#costum-setup">#</a>
+</h1>
+<h4 class="heading" id="configuration-configyaml">
+  Configuration (<code>config.yaml</code>)
+  <a class="anchor" href="#configuration-configyaml">#</a>
+</h4>
+<h3 class="heading" id="minio-credentials">
+  MinIO Credentials
+  <a class="anchor" href="#minio-credentials">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>minio:
+</span></span><span style="display:flex;"><span>  user: minioadmin       
+</span></span><span style="display:flex;"><span>  password: minioadmin   
+</span></span></code></pre></div><h3 class="heading" id="storage-configuration">
+  Storage Configuration
+  <a class="anchor" href="#storage-configuration">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>storage:
+</span></span><span style="display:flex;"><span>  base_bucket: markets    <span style="color:#888;font-style:italic"># Root bucket name</span>
+</span></span><span style="display:flex;"><span>  markets:
+</span></span><span style="display:flex;"><span>    - name: FTSE100       <span style="color:#888;font-style:italic"># Market identifier</span>
+</span></span><span style="display:flex;"><span>      data_file: market_data.parquet          <span style="color:#888;font-style:italic"># Target filename in bucket</span>
+</span></span><span style="display:flex;"><span>      data_path: /host-data/raw/ftse_daily.parquet  <span style="color:#888;font-style:italic"># Source file path</span>
+</span></span><span style="display:flex;"><span>      strategies:
+</span></span><span style="display:flex;"><span>        - file: Cluster_Bollinger_Sliding.parquet   <span style="color:#888;font-style:italic"># Target filename</span>
+</span></span><span style="display:flex;"><span>          source_path: /host-data/results/ftse100/Cluster_Bollinger_Sliding.parquet  <span style="color:#888;font-style:italic"># Source path</span>
+</span></span><span style="display:flex;"><span>          type: Bollinger                     <span style="color:#888;font-style:italic"># Strategy type (metadata)</span>
+</span></span><span style="display:flex;"><span>          description: Cluster Bollinger Sliding Strategy  <span style="color:#888;font-style:italic"># Description (metadata)</span>
+</span></span><span style="display:flex;"><span>          pair_finding: Clustering            <span style="color:#888;font-style:italic"># Pair finding method (metadata)</span>
+</span></span></code></pre></div><h2 class="heading" id="storage-structure">
+  Storage Structure
+  <a class="anchor" href="#storage-structure">#</a>
+</h2>
+<h3 class="heading" id="minio-bucket-layout">
+  MinIO Bucket Layout
+  <a class="anchor" href="#minio-bucket-layout">#</a>
+</h3>
+<pre tabindex="0"><code>markets/                          # base_bucket
+├── FTSE100/                      # markets[].name
+│   ├── market_data.parquet       # markets[].data_file
+│   └── strategies/
+│       ├── strategy1.parquet     # strategies[].file
+│       └── strategy2.parquet
+└── NASDAQ100/
+    ├── market_data.parquet
+    └── strategies/
+        ├── strategy1.parquet
+        └── strategy2.parquet
+</code></pre><h3 class="heading" id="host-filesystem-requirements">
+  Host Filesystem Requirements
+  <a class="anchor" href="#host-filesystem-requirements">#</a>
+</h3>
+<pre tabindex="0"><code>data/                            # Mounted as /host-data in container
+├── raw/                         # Market data source
+│   ├── ftse_daily.parquet       # → data_path
+│   └── nasdaq_daily.parquet
+└── results/                     # Strategy data source
+    ├── ftse100/                 # → source_path
+    │   ├── Cluster_Bollinger_Sliding.parquet
+    │   ├── Cluster_Z-Score_Sliding.parquet
+    │   └── ...
+    └── nasdaq100/
+        ├── Cluster_Bollinger_Sliding.parquet
+        ├── Cluster_Z-Score_Sliding.parquet
+        └── ...
+</code></pre>
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/docs/">
+                        Ausarbeitung
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>

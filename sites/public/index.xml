@@ -14,5 +14,12 @@
       <guid>http://localhost:1313/docs/</guid>
       <description>&lt;p&gt;Pairstrading ist eine nichtdirektionale Handelsstrategie, die unabhängig von der Marktrichtung funktioniert &lt;a href=&#34;#ref-Vidyamurthy%202004&#34; id=&#34;cite-Vidyamurthy 2004&#34;&gt;(Vidyamurthy 2004, p. 8)&lt;/a&gt;. Sie basiert auf historischen Zusammenhängen zwischen zwei Wertpapieren (Zeitreihen) $X_i(t)$ und $X_j(t)$ und nutzt temporäre Abweichungen in deren Preisbeziehung zur Gewinnerzielung aus. Im verbreiteten, statistischen Pairstrading werden zwei Hauptansätze unterschieden: kointegrationsbasierte und korrelationsbasierte Verfahren. &lt;a href=&#34;#ref-Engle%201987&#34; id=&#34;cite-Engle 1987&#34;&gt;Engle et al. 1987&lt;/a&gt; legten die theoretischen Grundlagen der Kointegration, &lt;a href=&#34;#ref-Vidyamurthy%202004&#34; id=&#34;cite-Vidyamurthy 2004&#34;&gt;Vidyamurthy et al. 2004&lt;/a&gt; entwickelten deren Anwendung im Pairstrading, und &lt;a href=&#34;#ref-Gatev%202006&#34; id=&#34;cite-Gatev 2006&#34;&gt;Gatev et al. 2006&lt;/a&gt; etablierten den korrelationsbasierten Ansatz. Pairstrading umfasst zwei fundamentale Schritte: das Identifizieren geeigneter Paare und deren Handel.&lt;/p&gt;</description>
     </item>
+    <item>
+      <title>Setup</title>
+      <link>http://localhost:1313/setup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/setup/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

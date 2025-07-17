@@ -50,14 +50,9 @@ url = "https://github.com/user"
 name = "Docs"
 url = "/docs/"
 
-
 [[params.menu]]
-name = "posts"
-url = "/posts"
-
-[[params.menu]]
-name = "about"
-url = "/about"
+name = "Setup"
+url = "/setup/"
 
 # Syntax highlight on code blocks
 [markup]
