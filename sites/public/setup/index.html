@@ -41,9 +41,9 @@
 <meta property="og:url" content="http://localhost:1313/setup/">
   <meta property="og:site_name" content="Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading">
   <meta property="og:title" content="Backtesting Demonstrator Setup Guide">
-  <meta property="og:description" content="clone
-git clone --recurse-submodules https://github.com/mxmueller/optimizing-pairs-trading check if docker is setup and running
-docker --version docker compose version docker-compose up --build --detach Costum Setup # Configuration (config.yaml) # MinIO Credentials # minio: user: minioadmin password: minioadmin Storage Configuration # storage: base_bucket: markets # Root bucket name markets: - name: FTSE100 # Market identifier data_file: market_data.parquet # Target filename in bucket data_path: /host-data/raw/ftse_daily.parquet # Source file path strategies: - file: Cluster_Bollinger_Sliding.parquet # Target filename source_path: /host-data/results/ftse100/Cluster_Bollinger_Sliding.parquet # Source path type: Bollinger # Strategy type (metadata) description: Cluster Bollinger Sliding Strategy # Description (metadata) pair_finding: Clustering # Pair finding method (metadata) Storage Structure # MinIO Bucket Layout # markets/ # base_bucket ├── FTSE100/ # markets[].name │ ├── market_data.parquet # markets[].data_file │ └── strategies/ │ ├── strategy1.parquet # strategies[].file │ └── strategy2.parquet └── NASDAQ100/ ├── market_data.parquet └── strategies/ ├── strategy1.parquet └── strategy2.parquet Host Filesystem Requirements # data/ # Mounted as /host-data in container ├── raw/ # Market data source │ ├── ftse_daily.parquet # → data_path │ └── nasdaq_daily.parquet └── results/ # Strategy data source ├── ftse100/ # → source_path │ ├── Cluster_Bollinger_Sliding.parquet │ ├── Cluster_Z-Score_Sliding.parquet │ └── ... └── nasdaq100/ ├── Cluster_Bollinger_Sliding.parquet ├── Cluster_Z-Score_Sliding.parquet └── ...">
+  <meta property="og:description" content="The microservices architecture demonstrates a complete backtesting pipeline for pairs trading strategies. Each service fulfills a specific role in the data processing and analysis workflow.
+The Notebook Runner (notebook_runner) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions.
+The MinIO blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
 
@@ -148,7 +148,7 @@ docker --version docker compose version docker-compose up --build --detach Costu
           <div>
             
             <p class="single-date">
-              1 min read
+              5 min read
             </p>
           </div>
         </div>
@@ -156,80 +156,206 @@ docker --version docker compose version docker-compose up --build --detach Costu
     </header>
     
     <div class="single-content">
-      <p>clone</p>
+      <p>The microservices architecture demonstrates a complete backtesting pipeline for pairs trading strategies. Each service fulfills a specific role in the data processing and analysis workflow.</p>
+<figure><img src="/images/archi.drawio.png" width="800">
+</figure>
+
+<p>The <strong>Notebook Runner</strong> (<code>notebook_runner</code>) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions.</p>
+<p>The <strong>MinIO</strong> blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results.</p>
+<p>The <strong>Analytics</strong> (<code>analytics</code>) service processes trade data from the blob storage along with raw market data to calculate comprehensive performance metrics. This backend service handles all computational-heavy operations including risk metrics, return calculations, and portfolio statistics.</p>
+<p>The <strong>Streamlit</strong> application provides a unified interface for data visualization, performance analysis, and strategy management. Users can explore raw data, examine trading results, analyze performance metrics, and commission new notebook runs directly through the web interface.</p>
+<p>All services are located under <code>src/backtester/services/</code> and communicate through REST APIs and shared storage.</p>
+<h2 class="heading" id="quick-setup">
+  Quick Setup
+  <a class="anchor" href="#quick-setup">#</a>
+</h2>
+<p>The following steps will deploy the complete backtesting environment with all required services and pre-configured data. The initial setup automatically provisions MinIO storage, loads market data, and prepares the analytical backend for immediate use.</p>
+<h3 class="heading" id="clone-repository">
+  Clone Repository
+  <a class="anchor" href="#clone-repository">#</a>
+</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone --recurse-submodules https://github.com/mxmueller/optimizing-pairs-trading
-</span></span></code></pre></div><p>check if docker is setup and running</p>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">cd</span> optimizing-pairs-trading
+</span></span></code></pre></div><h3 class="heading" id="verify-docker-installation">
+  Verify Docker Installation
+  <a class="anchor" href="#verify-docker-installation">#</a>
+</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker --version
 </span></span><span style="display:flex;"><span>docker compose version
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up --build --detach
-</span></span></code></pre></div><h1 class="heading" id="costum-setup">
-  Costum Setup
-  <a class="anchor" href="#costum-setup">#</a>
-</h1>
-<h4 class="heading" id="configuration-configyaml">
-  Configuration (<code>config.yaml</code>)
-  <a class="anchor" href="#configuration-configyaml">#</a>
-</h4>
-<h3 class="heading" id="minio-credentials">
-  MinIO Credentials
-  <a class="anchor" href="#minio-credentials">#</a>
+</span></span></code></pre></div><h3 class="heading" id="start-services">
+  Start Services
+  <a class="anchor" href="#start-services">#</a>
 </h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>minio:
-</span></span><span style="display:flex;"><span>  user: minioadmin       
-</span></span><span style="display:flex;"><span>  password: minioadmin   
-</span></span></code></pre></div><h3 class="heading" id="storage-configuration">
-  Storage Configuration
-  <a class="anchor" href="#storage-configuration">#</a>
-</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>storage:
-</span></span><span style="display:flex;"><span>  base_bucket: markets    <span style="color:#888;font-style:italic"># Root bucket name</span>
-</span></span><span style="display:flex;"><span>  markets:
-</span></span><span style="display:flex;"><span>    - name: FTSE100       <span style="color:#888;font-style:italic"># Market identifier</span>
-</span></span><span style="display:flex;"><span>      data_file: market_data.parquet          <span style="color:#888;font-style:italic"># Target filename in bucket</span>
-</span></span><span style="display:flex;"><span>      data_path: /host-data/raw/ftse_daily.parquet  <span style="color:#888;font-style:italic"># Source file path</span>
-</span></span><span style="display:flex;"><span>      strategies:
-</span></span><span style="display:flex;"><span>        - file: Cluster_Bollinger_Sliding.parquet   <span style="color:#888;font-style:italic"># Target filename</span>
-</span></span><span style="display:flex;"><span>          source_path: /host-data/results/ftse100/Cluster_Bollinger_Sliding.parquet  <span style="color:#888;font-style:italic"># Source path</span>
-</span></span><span style="display:flex;"><span>          type: Bollinger                     <span style="color:#888;font-style:italic"># Strategy type (metadata)</span>
-</span></span><span style="display:flex;"><span>          description: Cluster Bollinger Sliding Strategy  <span style="color:#888;font-style:italic"># Description (metadata)</span>
-</span></span><span style="display:flex;"><span>          pair_finding: Clustering            <span style="color:#888;font-style:italic"># Pair finding method (metadata)</span>
-</span></span></code></pre></div><h2 class="heading" id="storage-structure">
-  Storage Structure
-  <a class="anchor" href="#storage-structure">#</a>
+<p>The Docker Compose configuration handles service dependencies and health checks automatically. MinIO will initialize first, followed by the analytics backend, notebook runner, and finally the Streamlit frontend. The initial startup may take several minutes as Docker builds images and provisions storage.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up --build --detach
+</span></span></code></pre></div><h5 class="heading" id="verify-deployment">
+  Verify Deployment
+  <a class="anchor" href="#verify-deployment">#</a>
+</h5>
+<p>Monitor the deployment progress and ensure all services reach healthy status. The MinIO service includes a health check that verifies data loading completion before dependent services start.</p>
+<p>Check service health:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose ps
+</span></span></code></pre></div><p>All services should show <code>healthy</code> or <code>running</code> status.</p>
+<h2 class="heading" id="service-access">
+  Service Access
+  <a class="anchor" href="#service-access">#</a>
 </h2>
-<h3 class="heading" id="minio-bucket-layout">
-  MinIO Bucket Layout
-  <a class="anchor" href="#minio-bucket-layout">#</a>
+<p>The following services will be available once deployment completes. Each service provides different capabilities for strategy development, backtesting, and analysis. Access credentials for MinIO are configured in the setup and can be modified in the configuration file.</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Streamlit</strong></td>
+                <td>http://localhost:8501</td>
+            </tr>
+            <tr>
+                <td><strong>Analytics API</strong></td>
+                <td>http://localhost:8000/docs</td>
+            </tr>
+            <tr>
+                <td><strong>Notebook Runner API</strong></td>
+                <td>http://localhost:8080/docs</td>
+            </tr>
+            <tr>
+                <td><strong>MinIO Console</strong></td>
+                <td>http://localhost:9001</td>
+            </tr>
+        </tbody>
+    </table>
+</div><hr>
+<h2 class="heading" id="troubleshooting">
+  Troubleshooting
+  <a class="anchor" href="#troubleshooting">#</a>
+</h2>
+<p>Common deployment issues often relate to Docker resource constraints, port conflicts, or data file accessibility. The containerized architecture includes health checks and dependency management, but initial setup may require troubleshooting depending on your local environment configuration.</p>
+<h3 class="heading" id="service-wont-start">
+  Service Won&rsquo;t Start
+  <a class="anchor" href="#service-wont-start">#</a>
 </h3>
-<pre tabindex="0"><code>markets/                          # base_bucket
-├── FTSE100/                      # markets[].name
-│   ├── market_data.parquet       # markets[].data_file
-│   └── strategies/
-│       ├── strategy1.parquet     # strategies[].file
-│       └── strategy2.parquet
-└── NASDAQ100/
-    ├── market_data.parquet
-    └── strategies/
-        ├── strategy1.parquet
-        └── strategy2.parquet
-</code></pre><h3 class="heading" id="host-filesystem-requirements">
-  Host Filesystem Requirements
-  <a class="anchor" href="#host-filesystem-requirements">#</a>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Check logs</span>
+</span></span><span style="display:flex;"><span>docker-compose logs [service-name]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Restart specific service</span>
+</span></span><span style="display:flex;"><span>docker-compose restart [service-name]
+</span></span></code></pre></div><h3 class="heading" id="data-not-loading">
+  Data Not Loading
+  <a class="anchor" href="#data-not-loading">#</a>
 </h3>
-<pre tabindex="0"><code>data/                            # Mounted as /host-data in container
-├── raw/                         # Market data source
-│   ├── ftse_daily.parquet       # → data_path
+<ul>
+<li>Verify data files exist in <code>./data/</code> directory</li>
+<li>Check file paths in <code>config.yaml</code> match actual structure</li>
+<li>Ensure MinIO has read access to mounted volumes</li>
+</ul>
+<h3 class="heading" id="port-conflicts">
+  Port Conflicts
+  <a class="anchor" href="#port-conflicts">#</a>
+</h3>
+<p>Modify port mappings in <code>docker-compose.yaml</code> if defaults are occupied:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>ports:
+</span></span><span style="display:flex;"><span>  - <span style="color:#666;font-style:italic">&#34;8501:8501&#34;</span>  <span style="color:#888;font-style:italic"># Change first number only</span>
+</span></span></code></pre></div><hr>
+<h2 class="heading" id="configuration-expert-mode">
+  Configuration (Expert Mode)
+  <a class="anchor" href="#configuration-expert-mode">#</a>
+</h2>
+<p>The system configuration is centralized in a single YAML file that defines storage locations, access credentials, and data mapping between the host filesystem and MinIO buckets. This configuration drives the automatic setup process and determines how market data and strategies are organized within the storage layer.</p>
+<h3 class="heading" id="basic-configuration-configyaml">
+  Basic Configuration (<code>config.yaml</code>)
+  <a class="anchor" href="#basic-configuration-configyaml">#</a>
+</h3>
+<p>The configuration file maps local data sources to MinIO bucket structures and includes metadata for strategy classification. Each market requires both raw price data and any pre-computed trading strategies that should be loaded during initialization.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>minio:
+</span></span><span style="display:flex;"><span>  user: minioadmin
+</span></span><span style="display:flex;"><span>  password: minioadmin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>storage:
+</span></span><span style="display:flex;"><span>  base_bucket: markets
+</span></span><span style="display:flex;"><span>  markets:
+</span></span><span style="display:flex;"><span>    - name: FTSE100
+</span></span><span style="display:flex;"><span>      data_file: market_data.parquet
+</span></span><span style="display:flex;"><span>      data_path: /host-data/raw/ftse_daily.parquet
+</span></span><span style="display:flex;"><span>      strategies:
+</span></span><span style="display:flex;"><span>        - file: Cluster_Bollinger_Sliding.parquet
+</span></span><span style="display:flex;"><span>          source_path: /host-data/results/ftse100/Cluster_Bollinger_Sliding.parquet
+</span></span><span style="display:flex;"><span>          type: Bollinger
+</span></span><span style="display:flex;"><span>          description: Cluster Bollinger Sliding Strategy
+</span></span><span style="display:flex;"><span>          pair_finding: Clustering
+</span></span></code></pre></div><h3 class="heading" id="required-data-structure">
+  Required Data Structure
+  <a class="anchor" href="#required-data-structure">#</a>
+</h3>
+<p>The host filesystem must be organized according to the expected directory structure. Raw market data files contain OHLCV price series for all symbols in each market, while the results directory stores pre-computed strategy outputs from previous backtesting runs. This separation allows for efficient data management and version control of both input data and generated strategies.</p>
+<pre tabindex="0"><code>data/                                    
+├── raw/
+│   ├── ftse_daily.parquet              
 │   └── nasdaq_daily.parquet
-└── results/                     # Strategy data source
-    ├── ftse100/                 # → source_path
+└── results/
+    ├── ftse100/                        
     │   ├── Cluster_Bollinger_Sliding.parquet
     │   ├── Cluster_Z-Score_Sliding.parquet
     │   └── ...
     └── nasdaq100/
-        ├── Cluster_Bollinger_Sliding.parquet
-        ├── Cluster_Z-Score_Sliding.parquet
         └── ...
-</code></pre>
+</code></pre><h3 class="heading" id="minio-storage-layout">
+  MinIO Storage Layout
+  <a class="anchor" href="#minio-storage-layout">#</a>
+</h3>
+<p>The MinIO object storage organizes data in a hierarchical bucket structure that mirrors the analytical requirements of the backtesting system. Each market maintains its own namespace with dedicated areas for raw data and strategy results. This organization enables efficient data retrieval and supports parallel processing of multiple markets and strategies.</p>
+<pre tabindex="0"><code>markets/                                
+├── FTSE100/
+│   ├── market_data.parquet            
+│   └── strategies/
+│       ├── strategy1.parquet          
+│       └── strategy2.parquet
+└── NASDAQ100/
+    ├── market_data.parquet
+    └── strategies/
+        └── ...
+</code></pre><p>Strategy files within MinIO include embedded metadata tags that classify the pair-finding algorithm (Clustering, Distance-based, Correlation), trading strategy type (Bollinger, Z-Score, Cointegration), and descriptive information for analysis workflows.</p>
+<h2 class="heading" id="custom-markets">
+  Custom Markets
+  <a class="anchor" href="#custom-markets">#</a>
+</h2>
+<p>The system supports dynamic addition of new markets through configuration updates. Adding custom markets enables backtesting strategies across different geographical regions, market segments, or asset classes. The process requires preparing market data in the expected format and updating the central configuration to register the new market with the storage and analytical services.</p>
+<p>To add new markets, update <code>config.yaml</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>storage:
+</span></span><span style="display:flex;"><span>  markets:
+</span></span><span style="display:flex;"><span>    - name: SP500
+</span></span><span style="display:flex;"><span>      data_file: market_data.parquet
+</span></span><span style="display:flex;"><span>      data_path: /host-data/raw/sp500_daily.parquet
+</span></span><span style="display:flex;"><span>      strategies: []  <span style="color:#888;font-style:italic"># Initially empty, strategies added via notebook runs</span>
+</span></span></code></pre></div><p>Place corresponding data file in <code>./data/raw/</code> and restart services. The market data should follow the standardized schema with date indexing and symbol-based columns for OHLCV data. Once registered, the new market becomes available for strategy generation through the notebook runner and analysis through the Streamlit interface.</p>
+<h2 class="heading" id="development">
+  Development
+  <a class="anchor" href="#development">#</a>
+</h2>
+<p>The containerized development environment supports real-time code changes and debugging across all services. Log aggregation and service introspection capabilities facilitate development workflows and system monitoring during strategy development and testing phases.</p>
+<h3 class="heading" id="accessing-service-logs">
+  Accessing Service Logs
+  <a class="anchor" href="#accessing-service-logs">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose logs -f [service-name]
+</span></span></code></pre></div><h3 class="heading" id="rebuilding-after-changes">
+  Rebuilding After Changes
+  <a class="anchor" href="#rebuilding-after-changes">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose down
+</span></span><span style="display:flex;"><span>docker-compose up --build
+</span></span></code></pre></div><h3 class="heading" id="direct-service-access">
+  Direct Service Access
+  <a class="anchor" href="#direct-service-access">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Execute commands in running container</span>
+</span></span><span style="display:flex;"><span>docker-compose <span style="font-weight:bold;font-style:italic">exec</span> analytics bash
+</span></span><span style="display:flex;"><span>docker-compose <span style="font-weight:bold;font-style:italic">exec</span> streamlit bash
+</span></span></code></pre></div>
     </div>
   </article>
 
