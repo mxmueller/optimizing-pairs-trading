@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    Results | Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/results/"/>
+
+<meta property="og:url" content="http://localhost:1313/results/">
+  <meta property="og:site_name" content="Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading">
+  <meta property="og:title" content="Results">
+  <meta property="og:description" content="Die nachfolgende Auswertung der Ergebnisse Hypothese: Machine Learning-basierte Ansätze zur Paaridentifikation übertreffen traditionelle kointegrationsbasierte Verfahren im Pairs Trading. Die durch Maschine Learning Ansätze gefunden Paare schlagen im gegensatz zu den Konitegrierten verfahren in mit ihren jeweiligen Strategien den Markt ($F_{100}$: &#43;7,9%, $N_{100}$: &#43;15,8% für das Jahr 2024). Die nachfolgende Tabelle zeigt die vollständigen Performance-Kennzahlen aller sechs implementierten Strategien, sortiert nach Gesamtrendite:
+Markt Ansatz Strategy Return (%) Sharpe Ratio Max Drawdown (%) $N_{100}$ Gradient Boost Z-Score 20.90 6.16 -0.11 $N_{100}$ Gradient Boost Bollinger 20.47 6.73 -0.18 $N_{100}$ Affinity Propagation Z-Score 17.98 7.48 -0.09 $N_{100}$ Affinity Propagation Bollinger 13.53 7.01 -0.05 $N_{100}$ Kointegration Z-Score -1.13 1.03 -3.87 $N_{100}$ Kointegration Bollinger -11.21 0.63 -11.99 $F_{100}$ Affinity Propagation Z-Score 14.30 6.40 -0.09 $F_{100}$ Gradient Boost Z-Score 13.75 6.13 -0.09 $F_{100}$ Gradient Boost Bollinger 12.11 6.95 -0.09 $F_{100}$ Affinity Propagation Bollinger 11.18 6.06 -0.07 $F_{100}$ Kointegration Z-Score 0.81 2.67 -0.88 $F_{100}$ Kointegration Bollinger -12.57 0.10 -13.09 Am $N_{100}$ erreichte der Gradient Boost Regressor 20,90% Jahresrendite (Z-Score) bei einer Sharpe Ratio von 6,16. Dies entspricht einer Marktoutperformance von 5,1 Prozentpunkten gegenüber dem $N_{100}$ Index. Der Affinity Propagation Ansatz erzielte 17,98% mit einer Sharpe Ratio von 7,48. Am $F_{100}$ generierten beide Maschine-Learning-Verfahren Renditen zwischen 11,18% und 14,30%, was einer Outperformance von 3,3 bis 6,4 Prozentpunkten entspricht.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.0d41f7df4b254b9ea5ad925d84046d60c8636d6630d18497be726888dbd86312.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="light">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/docs/" >
+                /Docs
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/results/" >
+                /Results
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/setup/" >
+                /Setup
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span>
+        <a href="/results/">Results</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Results</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              2 min read
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <p>Die nachfolgende Auswertung der Ergebnisse Hypothese: <em>Machine Learning-basierte Ansätze zur Paaridentifikation übertreffen traditionelle kointegrationsbasierte Verfahren im Pairs Trading.</em> Die durch Maschine Learning Ansätze gefunden Paare schlagen im gegensatz zu den Konitegrierten verfahren in mit ihren jeweiligen Strategien den Markt ($F_{100}$: +7,9%, $N_{100}$: +15,8% für das Jahr 2024). Die nachfolgende Tabelle zeigt die vollständigen Performance-Kennzahlen aller sechs implementierten Strategien, sortiert nach Gesamtrendite:</p>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>Markt</th>
+                <th>Ansatz</th>
+                <th>Strategy</th>
+                <th>Return (%)</th>
+                <th>Sharpe Ratio</th>
+                <th>Max Drawdown (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>$N_{100}$</td>
+                <td>Gradient Boost</td>
+                <td>Z-Score</td>
+                <td>20.90</td>
+                <td>6.16</td>
+                <td>-0.11</td>
+            </tr>
+            <tr>
+                <td>$N_{100}$</td>
+                <td>Gradient Boost</td>
+                <td>Bollinger</td>
+                <td>20.47</td>
+                <td>6.73</td>
+                <td>-0.18</td>
+            </tr>
+            <tr>
+                <td>$N_{100}$</td>
+                <td>Affinity Propagation</td>
+                <td>Z-Score</td>
+                <td>17.98</td>
+                <td>7.48</td>
+                <td>-0.09</td>
+            </tr>
+            <tr>
+                <td>$N_{100}$</td>
+                <td>Affinity Propagation</td>
+                <td>Bollinger</td>
+                <td>13.53</td>
+                <td>7.01</td>
+                <td>-0.05</td>
+            </tr>
+            <tr>
+                <td>$N_{100}$</td>
+                <td>Kointegration</td>
+                <td>Z-Score</td>
+                <td>-1.13</td>
+                <td>1.03</td>
+                <td>-3.87</td>
+            </tr>
+            <tr>
+                <td>$N_{100}$</td>
+                <td>Kointegration</td>
+                <td>Bollinger</td>
+                <td>-11.21</td>
+                <td>0.63</td>
+                <td>-11.99</td>
+            </tr>
+            <tr>
+                <td>$F_{100}$</td>
+                <td>Affinity Propagation</td>
+                <td>Z-Score</td>
+                <td>14.30</td>
+                <td>6.40</td>
+                <td>-0.09</td>
+            </tr>
+            <tr>
+                <td>$F_{100}$</td>
+                <td>Gradient Boost</td>
+                <td>Z-Score</td>
+                <td>13.75</td>
+                <td>6.13</td>
+                <td>-0.09</td>
+            </tr>
+            <tr>
+                <td>$F_{100}$</td>
+                <td>Gradient Boost</td>
+                <td>Bollinger</td>
+                <td>12.11</td>
+                <td>6.95</td>
+                <td>-0.09</td>
+            </tr>
+            <tr>
+                <td>$F_{100}$</td>
+                <td>Affinity Propagation</td>
+                <td>Bollinger</td>
+                <td>11.18</td>
+                <td>6.06</td>
+                <td>-0.07</td>
+            </tr>
+            <tr>
+                <td>$F_{100}$</td>
+                <td>Kointegration</td>
+                <td>Z-Score</td>
+                <td>0.81</td>
+                <td>2.67</td>
+                <td>-0.88</td>
+            </tr>
+            <tr>
+                <td>$F_{100}$</td>
+                <td>Kointegration</td>
+                <td>Bollinger</td>
+                <td>-12.57</td>
+                <td>0.10</td>
+                <td>-13.09</td>
+            </tr>
+        </tbody>
+    </table>
+</div><p>Am $N_{100}$ erreichte der Gradient Boost Regressor 20,90% Jahresrendite (Z-Score) bei einer Sharpe Ratio von 6,16. Dies entspricht einer Marktoutperformance von 5,1 Prozentpunkten gegenüber dem $N_{100}$ Index. Der Affinity Propagation Ansatz erzielte 17,98% mit einer Sharpe Ratio von 7,48. Am $F_{100}$ generierten beide Maschine-Learning-Verfahren Renditen zwischen 11,18% und 14,30%, was einer Outperformance von 3,3 bis 6,4 Prozentpunkten entspricht.</p>
+<p><span id="window"></span>
+<figure><img src="/images/rolling.png"
+    alt="Rolling-Window-Analyse der Strategieperformance mit 252-Tage-Fenster (entspricht einem Handelsjahr). Jeder Datenpunkt repräsentiert die kumulative Rendite der vorangegangenen 252 Handelstage, wodurch kurzfristige Volatilität geglättet und langfristige Trends sichtbar werden."><figcaption>
+      <p>Rolling-Window-Analyse der Strategieperformance mit 252-Tage-Fenster (entspricht einem Handelsjahr). Jeder Datenpunkt repräsentiert die kumulative Rendite der vorangegangenen 252 Handelstage, wodurch kurzfristige Volatilität geglättet und langfristige Trends sichtbar werden.</p>
+    </figcaption>
+</figure>
+</p>
+<p>Die traditionellen Kointegrationsansätze erreichten dagegen 0,81% (FTSE) bzw. -1,13% (NASDAQ) oder wiesen zweistellige Verluste auf. Die monatlichen Performance-Heatmaps zeigen die unterschiedlichen Risikoprofile der Ansätze. Die Maschine-Learning-Verfahren weisen konsistent positive monatliche Erträge auf, während die kointegrationsbasierten Strategien häufige negative Perioden verzeichnen.</p>
+<p><span id="window"></span>
+<figure><img src="/images/1.png"
+    alt="Monatliche Performance-Heatmap der sechs implementierten Trading-Strategien am $F_{100}$-Index für das Jahr 2024. Die Farbcodierung zeigt positive (grün) und negative (rot) Renditen in Prozent an. Werte repräsentieren die Differenz zwischen Monatsanfang und -ende der kumulativen Performance."><figcaption>
+      <p>Monatliche Performance-Heatmap der sechs implementierten Trading-Strategien am $F_{100}$-Index für das Jahr 2024. Die Farbcodierung zeigt positive (grün) und negative (rot) Renditen in Prozent an. Werte repräsentieren die Differenz zwischen Monatsanfang und -ende der kumulativen Performance.</p>
+    </figcaption>
+</figure>
+</p>
+<p><span id="window"></span>
+<figure><img src="/images/2.png"
+    alt="Monatliche Performance-Heatmap der sechs Trading-Strategien am $N_{100}$-Index für 2024. Die Darstellung verdeutlicht die unterschiedliche Marktanpassung der Algorithmen zwischen amerikanischem und europäischem Aktienmarkt. Farbskala von rot (Underperformance) bis grün (Outperformance)."><figcaption>
+      <p>Monatliche Performance-Heatmap der sechs Trading-Strategien am $N_{100}$-Index für 2024. Die Darstellung verdeutlicht die unterschiedliche Marktanpassung der Algorithmen zwischen amerikanischem und europäischem Aktienmarkt. Farbskala von rot (Underperformance) bis grün (Outperformance).</p>
+    </figcaption>
+</figure>
+</p>
+<p>Die Ergebnisse zeigen, dass traditionelle statistische Arbitrage-Ansätze in den untersuchten Märkten ihre Profitabilität verloren haben. Die Maschine-Learning-Verfahren identifizieren dagegen weiterhin profitable Arbitragemöglichkeiten und erreichen dabei eine konsistente Marktoutperformance bei niedrigen Drawdowns. Diese Ergebnisse und tiefergehende Analysen sowie anpassungen der Handels und Paarfindungsparamter der jeweiligen Ansäzte können im Backtester nachgestellt werden. Die Funktionsweise und das Setup können hier gesehen werden.</p>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/setup/">
+                        Backtesting Demonstrator Setup Guide
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
