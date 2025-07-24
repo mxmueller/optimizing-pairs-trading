@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content=""/>
+
+
+
+<title>
+    
+    Backtester | Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/backtester/"/>
+
+<meta property="og:url" content="http://localhost:1313/backtester/">
+  <meta property="og:site_name" content="Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading">
+  <meta property="og:title" content="Backtester">
+  <meta property="og:description" content="Konfiguration Sidebar # Die Konfiguration Sidebar ist der zentrale Steuerbereich der Backtesting-Anwendung. Alle Analysen basieren auf diesen Einstellungen.
+Markt &amp; Strategie # Wählen Sie zunächst einen Markt aus dem Select Market Dropdown. Dies bestimmt, welche Aktien und Strategien verfügbar sind. Nach der Marktauswahl erscheinen im Select Strategy Dropdown nur kompatible Strategien. Ohne gültige Auswahl zeigt die Anwendung “No strategies available for selected market”.
+Parameter &amp; Kosten # Die Trading Parameters umfassen das Initial Capital (Startkapital für die Simulation, Standard: $100,000, Mindestbetrag $1,000) und die Position Size als Prozentsatz des Kapitals pro Position (Standard: 1.0%, Bereich: 0.1% bis 10.0%). Die Position Size kontrolliert das Risiko und die Anzahl gleichzeitiger Positionen.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.0d41f7df4b254b9ea5ad925d84046d60c8636d6630d18497be726888dbd86312.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="light">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/docs/" >
+                /Docs
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/results/" >
+                /Results
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/setup/" >
+                /Setup
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/backtester/" >
+                /Backtester
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span>
+        <a href="/backtester/">Backtester</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Backtester</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              9 min read
+            </p>
+          </div>
+        </div>
+        
+    </header>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#konfiguration-sidebar">Konfiguration Sidebar</a>
+      <ul>
+        <li><a href="#markt--strategie">Markt &amp; Strategie</a></li>
+        <li><a href="#parameter--kosten">Parameter &amp; Kosten</a></li>
+      </ul>
+    </li>
+    <li><a href="#market-overview">Market Overview</a>
+      <ul>
+        <li><a href="#market-index">Market Index</a></li>
+        <li><a href="#symbol-liste">Symbol Liste</a></li>
+      </ul>
+    </li>
+    <li><a href="#symbol-analysis">Symbol Analysis</a>
+      <ul>
+        <li><a href="#chart-analyse">Chart-Analyse</a></li>
+        <li><a href="#trade-details--performance">Trade-Details &amp; Performance</a></li>
+      </ul>
+    </li>
+    <li><a href="#strategy-performance">Strategy Performance</a>
+      <ul>
+        <li><a href="#performance-over-time">Performance Over Time</a></li>
+        <li><a href="#performance-metrics">Performance Metrics</a></li>
+      </ul>
+    </li>
+    <li><a href="#pairs-analysis">Pairs Analysis</a>
+      <ul>
+        <li><a href="#symbol-auswahl--trades">Symbol-Auswahl &amp; Trades</a></li>
+        <li><a href="#pairs-overview">Pairs Overview</a></li>
+      </ul>
+    </li>
+    <li><a href="#strategy-comparison">Strategy Comparison</a>
+      <ul>
+        <li><a href="#performance-metrics-1">Performance Metrics</a></li>
+        <li><a href="#equity-curves--returns">Equity Curves &amp; Returns</a></li>
+        <li><a href="#drawdowns-analysis">Drawdowns Analysis</a></li>
+        <li><a href="#pair-analysis">Pair Analysis</a></li>
+        <li><a href="#export">Export</a></li>
+      </ul>
+    </li>
+    <li><a href="#strategy-creator-tab">Strategy Creator Tab</a>
+      <ul>
+        <li><a href="#workflow">Workflow</a></li>
+        <li><a href="#job-monitoring">Job Monitoring</a></li>
+      </ul>
+    </li>
+    <li><a href="#strategy-templates--parameter-guide">Strategy Templates &amp; Parameter Guide</a>
+      <ul>
+        <li><a href="#cointegration-z-score-evolution">Cointegration Z-Score Evolution</a></li>
+        <li><a href="#cointegration-mit-bollinger-bands">Cointegration mit Bollinger Bands</a></li>
+        <li><a href="#affinity-propagation-clustering-mit-z-score">Affinity Propagation Clustering mit Z-Score</a></li>
+        <li><a href="#affinity-propagation-mit-bollinger-bands">Affinity Propagation mit Bollinger Bands</a></li>
+        <li><a href="#gradient-boosting-z-score-evolution">Gradient Boosting Z-Score Evolution</a></li>
+        <li><a href="#gradient-boosting-mit-bollinger-bands">Gradient Boosting mit Bollinger Bands</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </aside>
+    
+    <div class="single-content">
+      <h2 class="heading" id="konfiguration-sidebar">
+  Konfiguration Sidebar
+  <a class="anchor" href="#konfiguration-sidebar">#</a>
+</h2>
+<p>Die Konfiguration Sidebar ist der zentrale Steuerbereich der Backtesting-Anwendung. Alle Analysen basieren auf diesen Einstellungen.</p>
+<p><span id="window"></span>
+<figure><img src="/images/gif/config.gif">
+</figure>
+</p>
+<h3 class="heading" id="markt--strategie">
+  Markt &amp; Strategie
+  <a class="anchor" href="#markt--strategie">#</a>
+</h3>
+<p>Wählen Sie zunächst einen Markt aus dem <code>Select Market</code> Dropdown. Dies bestimmt, welche Aktien und Strategien verfügbar sind. Nach der Marktauswahl erscheinen im <code>Select Strategy</code> Dropdown nur kompatible Strategien. Ohne gültige Auswahl zeigt die Anwendung &ldquo;No strategies available for selected market&rdquo;.</p>
+<h3 class="heading" id="parameter--kosten">
+  Parameter &amp; Kosten
+  <a class="anchor" href="#parameter--kosten">#</a>
+</h3>
+<p>Die <strong>Trading Parameters</strong> umfassen das <strong>Initial Capital</strong> (Startkapital für die Simulation, Standard: <code>$100,000</code>, Mindestbetrag <code>$1,000</code>) und die <strong>Position Size</strong> als Prozentsatz des Kapitals pro Position (Standard: <code>1.0%</code>, Bereich: <code>0.1%</code> bis <code>10.0%</code>). Die Position Size kontrolliert das Risiko und die Anzahl gleichzeitiger Positionen.</p>
+<p>Der erweiterbarer Bereich <strong>Trading Costs</strong> enthält vier wichtige Kostenparameter: <strong>Fixed Commission</strong> (<code>$1.00</code> Standard) als feste Gebühr pro Trade, <strong>Variable Fee</strong> (<code>0.018%</code> Standard) als prozentuale Gebühr auf den Handelswert, <strong>Bid-Ask Spread</strong> (<code>0.1%</code> Standard) für die Geld-Brief-Spanne und <strong>Risk-Free Rate</strong> (<code>0.0%</code> Standard) als risikoloser Zinssatz für die Sharpe Ratio Berechnung.</p>
+<p>Alle Parameter werden sofort in allen Analyse-Tabs übernommen. Die Tabs sind erst nach Auswahl von Markt und Strategie zugänglich.</p>
+<hr>
+<h2 class="heading" id="market-overview">
+  Market Overview
+  <a class="anchor" href="#market-overview">#</a>
+</h2>
+<p>Der Market Overview Tab bietet einen schnellen Überblick über den gewählten Markt und ermöglicht den Vergleich einzelner Aktien.</p>
+<p><span id="window"></span>
+<figure><img src="/images/gif/overview.gif">
+</figure>
+</p>
+<h3 class="heading" id="market-index">
+  Market Index
+  <a class="anchor" href="#market-index">#</a>
+</h3>
+<p>Die linke Seite zeigt den <strong>Market Index</strong> als Zeitreihen-Chart mit der aktuellen Indexbewertung und der absoluten Veränderung seit Beginn. Die <strong>Current</strong> Metrik zeigt den aktuellen Indexwert, während die grüne/rote Zahl die Gesamtveränderung anzeigt. Der Chart visualisiert die historische Entwicklung des Marktindex über den verfügbaren Zeitraum.</p>
+<p>Darunter befindet sich die <strong>Symbol Comparison</strong> Sektion. Wählen Sie bis zu 5 Aktien aus dem <code>Compare symbols</code> Multiselect aus, um deren Kursentwicklung zu vergleichen. Der resultierende Linien-Chart zeigt die Schlusskurse aller ausgewählten Symbole über die Zeit, mit unterschiedlichen Farben für jede Aktie.</p>
+<h3 class="heading" id="symbol-liste">
+  Symbol Liste
+  <a class="anchor" href="#symbol-liste">#</a>
+</h3>
+<p>Die rechte Spalte enthält die <strong>Symbols</strong> Liste mit allen verfügbaren Aktien des gewählten Marktes. Die Anzeige <code>Total: X</code> gibt die Gesamtanzahl der Symbole an. Die scrollbare Tabelle zeigt alle Symbole alphabetisch sortiert und dient als Referenz für die verfügbaren Aktien im Markt.</p>
+<p>Alle Daten basieren auf dem in der Configuration Sidebar gewählten Markt und aktualisieren sich automatisch bei Marktänderungen.</p>
+<hr>
+<h2 class="heading" id="symbol-analysis">
+  Symbol Analysis
+  <a class="anchor" href="#symbol-analysis">#</a>
+</h2>
+<p>Der Symbol Analysis Tab vergleicht die Handelsstrategie mit einer Buy &amp; Hold Strategie für einzelne Aktien und zeigt detaillierte Trade-Informationen.</p>
+<p><span id="window"></span>
+<figure><img src="/images/gif/symbol.gif">
+</figure>
+</p>
+<h3 class="heading" id="chart-analyse">
+  Chart-Analyse
+  <a class="anchor" href="#chart-analyse">#</a>
+</h3>
+<p>Wählen Sie eine Aktie aus dem <code>Select Symbol</code> Dropdown. Der obere Chart zeigt drei Linien: die <strong>Price History</strong> (goldene Linie) mit dem historischen Kursverlauf, die <strong>Buy &amp; Hold Return</strong> (grüne Linie) als prozentuale Rendite einer einfachen Kaufen-und-Halten-Strategie, und die <strong>Trading Strategy Return</strong> (magenta Linie) als kumulative Rendite der gewählten Handelsstrategie.</p>
+<p>Der untere Chart visualisiert einzelne Trades mit <strong>Profitable Trades</strong> (blaue Punkte) und <strong>Losing Trades</strong> (rote Punkte). Jeder Punkt repräsentiert einen Trade mit seiner individuellen Rendite. Eine gestrichelte graue Linie bei 0% trennt profitable von verlustbringenden Trades.</p>
+<h3 class="heading" id="trade-details--performance">
+  Trade-Details &amp; Performance
+  <a class="anchor" href="#trade-details--performance">#</a>
+</h3>
+<p>Unterhalb der Charts befindet sich die vollständige <strong>All Trades</strong> Tabelle mit allen ausgeführten Trades, sortierbar nach Datum, Entry/Exit-Preisen, Performance und Trade-Typ. Die Tabelle zeigt <code>entry_date</code>, <code>exit_date</code>, <code>position_type</code>, <code>entry_price</code>, <code>exit_price</code>, <code>performance</code> und <code>exit_type</code>.</p>
+<p>Die <strong>Symbol Trades</strong> Sektion zeigt grundlegende Metriken wie <code>Total Trades</code> und <code>Win Rate</code>. Daneben werden detaillierte Performance-Kennzahlen angezeigt: <code>Total Performance</code>, <code>Avg Performance</code>, <code>Max Gain</code> und <code>Max Loss</code> der ausgewählten Aktie basierend auf den konfigurierten Trading-Parametern.</p>
+<h2 class="heading" id="strategy-performance">
+  Strategy Performance
+  <a class="anchor" href="#strategy-performance">#</a>
+</h2>
+<p>Der Strategy Performance Tab analysiert die Gesamtperformance der gewählten Handelsstrategie mit detaillierten Zeitreihen und Kennzahlen.</p>
+<p><span id="window"></span>
+<figure><img src="/images/gif/performance.gif">
+</figure>
+</p>
+<h3 class="heading" id="performance-over-time">
+  Performance Over Time
+  <a class="anchor" href="#performance-over-time">#</a>
+</h3>
+<p>Die linke Seite zeigt die <strong>Portfolio Equity Curve</strong> als Hauptchart mit der Entwicklung des Gesamtkapitals über die Zeit. Die blaue Linie stellt das <code>Total Capital</code> dar, während eine gestrichelte rote Linie das <code>Initial Capital</code> markiert. Unterhalb befindet sich der <strong>Daily Profit/Loss</strong> Chart als Balkendiagramm, wobei grüne Balken profitable Tage und rote Balken Verlusttage darstellen.</p>
+<p>Drei Metriken fassen die wichtigsten Ergebnisse zusammen: <code>Cumulative P&amp;L</code> als absoluter Gewinn/Verlust, <code>Net P&amp;L (after costs)</code> nach Abzug aller Handelskosten, und <code>Total Return</code> als prozentuale Gesamtrendite. Der <strong>Active Positions Over Time</strong> Chart zeigt zusätzlich die Anzahl gleichzeitiger Positionen über den Handelszeitraum.</p>
+<h3 class="heading" id="performance-metrics">
+  Performance Metrics
+  <a class="anchor" href="#performance-metrics">#</a>
+</h3>
+<p>Die rechte Spalte enthält wichtige Kennzahlen wie <code>Total Trades</code>, <code>Final Capital</code> mit prozentualer Veränderung, <code>Win Rate</code>, <code>Profitable Days</code>, <code>Sharpe Ratio</code> und <code>Max Drawdown</code>.</p>
+<p>Drei Tabs strukturieren die detaillierten Metriken: <strong>Performance</strong> zeigt <code>Total Performance</code>, <code>Avg Performance</code>, <code>Max Gain/Loss</code> und Trade-Statistiken. <strong>Costs</strong> listet <code>Total Costs</code>, <code>Avg Cost per Trade</code> und eine Aufschlüsselung nach Entry/Exit-Kosten (Commission, Variable Fee, Spread). <strong>Portfolio</strong> zeigt Kapital-Kennzahlen wie <code>Initial/Final/Max/Min Capital</code> sowie <code>Current Invested</code> und <code>Current Available</code>.</p>
+<hr>
+<h2 class="heading" id="pairs-analysis">
+  Pairs Analysis
+  <a class="anchor" href="#pairs-analysis">#</a>
+</h2>
+<p>Der Pairs Analysis Tab analysiert Pair-Trading-Strategien für ausgewählte Aktienpaare innerhalb spezifischer Trading-Windows.</p>
+<p><span id="window"></span>
+<figure><img src="/images/gif/pair.gif">
+</figure>
+</p>
+<h3 class="heading" id="symbol-auswahl--trades">
+  Symbol-Auswahl &amp; Trades
+  <a class="anchor" href="#symbol-auswahl--trades">#</a>
+</h3>
+<p>Wählen Sie zunächst ein <strong>Trading Window</strong> aus dem Dropdown - dies bestimmt den Analysezeitraum. Anschließend wählen Sie in der zweispaltigen Auswahl das <strong>erste Symbol</strong> (links) und das <strong>zweite Symbol</strong> (rechts). Die Dropdowns zeigen nur Aktien, die tatsächlich in diesem Window gehandelt wurden.</p>
+<p>Die <strong>Trades Visualization</strong> zeigt eine Statistik-Zeile mit <code>Total Trades</code>, <code>Profit Trades</code>, <code>Loss Trades</code> und <code>Break-Even</code> Trades für das gewählte Paar. Darunter befinden sich <strong>Display Options</strong> zum Wechseln zwischen &ldquo;Active Trade Periods Only&rdquo; und &ldquo;All Data&rdquo;. Die Timeline-Charts für beide Symbole visualisieren Entry-Punkte (blaue Dreiecke), Exit-Punkte (farbige Kreise je nach Ergebnis) und Verbindungslinien zwischen Entry/Exit. Die <strong>Trades Details</strong> Tabelle listet alle Pair-Trades mit Datum, Preisen, Performance und Trade-Typ.</p>
+<h3 class="heading" id="pairs-overview">
+  Pairs Overview
+  <a class="anchor" href="#pairs-overview">#</a>
+</h3>
+<p>Die <strong>Pairs Overview</strong> Sektion zeigt eine Metriken-Zeile mit <code>Window</code>, <code>Total Pairs</code>, <code>Total Trades</code> und <code>Selected Pair</code> Information. Der <strong>Top 20 Pairs</strong> Balken-Chart visualisiert die aktivsten Paare nach Anzahl Trades, farbkodiert nach Handelsvolumen. Die vollständige Pairs-Tabelle darunter listet alle verfügbaren Paare des Windows sortiert nach Trade-Anzahl, mit den Spalten <code>Pair</code>, <code>Symbol 1</code>, <code>Symbol 2</code> und <code>Trades</code>.</p>
+<hr>
+<h2 class="heading" id="strategy-comparison">
+  Strategy Comparison
+  <a class="anchor" href="#strategy-comparison">#</a>
+</h2>
+<p>Der Strategy Comparison Tab vergleicht mehrere Handelsstrategien direkt miteinander und bietet umfassende Export-Funktionen für statistische Analysen.</p>
+<p><span id="window"></span>
+<figure><img src="/images/gif/last.gif">
+</figure>
+</p>
+<h3 class="heading" id="performance-metrics-1">
+  Performance Metrics
+  <a class="anchor" href="#performance-metrics-1">#</a>
+</h3>
+<p>Wählen Sie mindestens 2 Strategien aus dem <code>Select Strategies to Compare</code> Multiselect. Die Vergleichstabelle zeigt <code>Total Return</code>, <code>Sharpe Ratio</code>, <code>Max Drawdown</code>, <code>Win Rate</code>, <code>Total Trades</code> und <code>Profitable Days</code> für alle gewählten Strategien. Darunter werden separate Balken-Charts für jeden Kennwert angezeigt, um direkte Vergleiche zu visualisieren.</p>
+<h3 class="heading" id="equity-curves--returns">
+  Equity Curves &amp; Returns
+  <a class="anchor" href="#equity-curves--returns">#</a>
+</h3>
+<p>Der <strong>Equity Curves</strong> Tab visualisiert die Kapitalentwicklung aller Strategien in einem gemeinsamen Chart mit verschiedenen Farben pro Strategie und einer gestrichelten Linie für das Initial Capital.</p>
+<p><strong>Returns Distribution</strong> zeigt Histogramme der täglichen Renditen aller Strategien überlagert und eine Statistik-Tabelle mit <code>Mean Return</code>, <code>Std Dev</code>, <code>Min/Max Return</code> und <code>Positive Days</code> für jede Strategie.</p>
+<h3 class="heading" id="drawdowns-analysis">
+  Drawdowns Analysis
+  <a class="anchor" href="#drawdowns-analysis">#</a>
+</h3>
+<p>Zeitreihen-Chart aller Drawdowns mit umgekehrter Y-Achse (tiefere Drawdowns weiter unten) und ein Balken-Chart der maximalen Drawdowns pro Strategie. Drawdowns werden als negative Prozentpunkte dargestellt.</p>
+<h3 class="heading" id="pair-analysis">
+  Pair Analysis
+  <a class="anchor" href="#pair-analysis">#</a>
+</h3>
+<p>Nach Trading Window-Auswahl zeigt eine Tabelle alle Paare mit Trade-Anzahlen pro Strategie. <strong>Common Pairs</strong> listet Paare auf, die in allen Strategien vorkommen. Für ausgewählte Common Pairs werden detaillierte Performance-Vergleiche mit <code>Total Return</code>, <code>Win Rate</code>, <code>Total Trades</code> und <code>Avg Trade Return</code> als Balken-Charts visualisiert.</p>
+<h3 class="heading" id="export">
+  Export
+  <a class="anchor" href="#export">#</a>
+</h3>
+<p><strong>Performance Summary</strong> exportiert alle Kennzahlen und Trading-Parameter als CSV. <strong>Timeseries Data</strong> enthält tägliche Kapitalwerte aller Strategien. <strong>Pairs Analysis</strong> bietet detaillierte Pair-Performance-Daten nach Window-Auswahl. Zusätzlich werden Code-Beispiele für statistische Analysen wie t-Tests, Konsistenz-Analysen und Sharpe Ratio Berechnungen bereitgestellt.</p>
+<hr>
+<h2 class="heading" id="strategy-creator-tab">
+  Strategy Creator Tab
+  <a class="anchor" href="#strategy-creator-tab">#</a>
+</h2>
+<p>Der Strategy Creator ermöglicht die automatisierte Erstellung von Trading-Strategien durch die Ausführung vorkonfigurierter Jupyter Notebooks mit anpassbaren Parametern.</p>
+<p><span id="window"></span>
+<figure><img src="/images/gif/fin.gif">
+</figure>
+</p>
+<h3 class="heading" id="workflow">
+  Workflow
+  <a class="anchor" href="#workflow">#</a>
+</h3>
+<p>Der Strategy Creator führt Sie durch einen strukturierten Prozess zur Strategieerstellung. Wählen Sie zunächst den gewünschten Markt und das Strategy Template aus den verfügbaren Jupyter Notebooks. Die Parameter werden automatisch aus dem Notebook extrahiert und als Eingabefelder angezeigt - passen Sie diese nach Ihren Anforderungen an.</p>
+<p>Vergeben Sie einen aussagekräftigen Namen für Ihre Strategie über <strong>Strategy Type</strong> und <strong>Strategy Description</strong>. Der <strong>Output Filename</strong> wird automatisch generiert, kann aber manuell angepasst werden. Nach dem Klick auf <strong>&quot;🚀 Run Strategy Creation&quot;</strong> wird ein Background-Job gestartet, der das Notebook mit Ihren Parametern ausführt.</p>
+<p>Der Ausführungsprozess läuft vollständig im Hintergrund ab: Zuerst werden die Marktdaten aus dem MinIO Storage heruntergeladen, dann wird das Jupyter Notebook mit Ihren konfigurierten Parametern ausgeführt, und schließlich wird die generierte Strategie-Datei mit entsprechenden Metadaten-Tags zurück in den Storage hochgeladen. Sie können die Seite während der Ausführung verlassen - die Jobs laufen weiter.</p>
+<h3 class="heading" id="job-monitoring">
+  Job Monitoring
+  <a class="anchor" href="#job-monitoring">#</a>
+</h3>
+<p>Nach dem Klick auf <strong>&ldquo;Run Strategy Creation&rdquo;</strong> wird ein Background-Job gestartet. Die <strong>Active Jobs</strong> Tabelle zeigt alle laufenden und abgeschlossenen Jobs mit farbkodierten Status-Pills: <code>pending</code> (gelb), <code>running</code> (blau), <code>completed</code> (grün) und <code>failed</code> (rot). Zusätzlich werden Progress-Informationen und Status-Meldungen angezeigt.</p>
+<p>Jobs durchlaufen folgende Phasen: Download der Marktdaten aus MinIO, Notebook-Ausführung mit konfigurierten Parametern, Upload der generierten Strategie-Datei zurück zu MinIO mit entsprechenden Metadaten-Tags. Der <strong>&ldquo;Refresh Jobs&rdquo;</strong> Button aktualisiert die Job-Liste manuell, zusätzlich erfolgt eine automatische Aktualisierung alle 10 Requests.</p>
+<hr>
+<h2 class="heading" id="strategy-templates--parameter-guide">
+  Strategy Templates &amp; Parameter Guide
+  <a class="anchor" href="#strategy-templates--parameter-guide">#</a>
+</h2>
+<p>Übersicht über verfügbare Trading-Strategien und deren konfigurierbare Parameter.</p>
+<h3 class="heading" id="cointegration-z-score-evolution">
+  Cointegration Z-Score Evolution
+  <a class="anchor" href="#cointegration-z-score-evolution">#</a>
+</h3>
+<p>Diese Strategie identifiziert kointegrierte Aktienpaare und handelt basierend auf Z-Score-Schwellenwerten. Der <code>p_threshold</code> (Standard: 0.05) bestimmt das Signifikanzniveau für den Kointegrationstest, wobei niedrigere Werte eine strengere Paarauswahl bedeuten. Die <code>min_pairs</code> (20) legt die Mindestanzahl zu handelnder Paare pro Window fest, während <code>window_shifts</code> (12) die Anzahl rollierender Analysefenster für das Walk-Forward-Backtesting definiert. Die Handelssignale werden durch <code>entry_threshold</code> (2.0) und <code>exit_threshold</code> (0.5) als Z-Score-Schwellenwerte gesteuert. Für die Z-Score-Berechnung werden <code>window1</code> (5) als kurzes und <code>window2</code> (60) als langes gleitendes Mittel verwendet. Der <code>shift_size</code> (1) bestimmt die Verschiebung zwischen den Analysefenstern in Monaten.</p>
+<h3 class="heading" id="cointegration-mit-bollinger-bands">
+  Cointegration mit Bollinger Bands
+  <a class="anchor" href="#cointegration-mit-bollinger-bands">#</a>
+</h3>
+<p>Diese Variante nutzt Bollinger Bänder anstatt fixer Z-Score-Schwellenwerte für dynamischere Handelssignale. Der <code>std_dev</code> (2.0) fungiert als Standardabweichungs-Multiplikator für die Bollinger Bänder, während <code>exit_std_dev</code> (0.5) die Ausstiegsschwelle definiert. Das <code>window_size</code> (20) bestimmt das Berechnungsfenster für die Bollinger Bänder. Zusätzlich werden Hedge Ratios dynamisch angepasst: <code>hr_window</code> (25) definiert das Neuberechnungsfenster und <code>hr_recalc</code> (3) das Intervall für die Neuberechnung in Tagen. Dies ermöglicht eine bessere Anpassung an sich ändernde Marktbedingungen.</p>
+<h3 class="heading" id="affinity-propagation-clustering-mit-z-score">
+  Affinity Propagation Clustering mit Z-Score
+  <a class="anchor" href="#affinity-propagation-clustering-mit-z-score">#</a>
+</h3>
+<p>Diese Methode verwendet Clustering für die Paarfindung statt direkter Kointegration. Die Strategie kombiniert die Cluster-Analyse mit klassischen Z-Score-Handelssignalen. Die Parameter <code>entry_threshold</code> (2.0) und <code>exit_threshold</code> (0.5) funktionieren wie bei der Standard-Z-Score-Strategie, jedoch werden die Paare intelligent über Clustering vorsortiert, was zu stabileren Handelsbeziehungen führen kann.</p>
+<h3 class="heading" id="affinity-propagation-mit-bollinger-bands">
+  Affinity Propagation mit Bollinger Bands
+  <a class="anchor" href="#affinity-propagation-mit-bollinger-bands">#</a>
+</h3>
+<p>Diese Strategie kombiniert Clustering-basierte Paarfindung mit Bollinger Band-Signalen. Der <code>std_dev</code> (2) und <code>exit_std_dev</code> (0.5) Parameter steuern die Bollinger Band-Breite für Entry und Exit-Signale. Das <code>window</code> (50) definiert das Berechnungsfenster für die Bollinger Bänder. Die dynamische Hedge Ratio-Anpassung erfolgt über <code>hr_window</code> (25) und <code>hr_recalc</code> (3), was besonders bei cluster-basierten Paaren wichtig ist, da diese möglicherweise verschiedene Beta-Verhältnisse aufweisen.</p>
+<h3 class="heading" id="gradient-boosting-z-score-evolution">
+  Gradient Boosting Z-Score Evolution
+  <a class="anchor" href="#gradient-boosting-z-score-evolution">#</a>
+</h3>
+<p>Diese Machine Learning-basierte Strategie nutzt Gradient Boosting für intelligente Paarpriorisierung. Die ML-Parameter umfassen <code>learning_rate</code> (0.2) für die Lerngeschwindigkeit, <code>max_depth</code> (2) für die maximale Baumtiefe zur Overfitting-Vermeidung, sowie <code>min_samples_leaf</code> (2) und <code>min_samples_split</code> (2) zur Kontrolle der Baumkomplexität. Der <code>n_estimators</code> (300) Parameter bestimmt die Anzahl der Bäume im Ensemble. Das Modell lernt aus historischen Daten, welche Paare die besten Handelsergebnisse liefern, und priorisiert diese entsprechend.</p>
+<h3 class="heading" id="gradient-boosting-mit-bollinger-bands">
+  Gradient Boosting mit Bollinger Bands
+  <a class="anchor" href="#gradient-boosting-mit-bollinger-bands">#</a>
+</h3>
+<p>Diese Strategie kombiniert ML-basierte Paarauswahl mit Bollinger Band-Trading. Der <code>bb_window</code> (50) definiert das Bollinger Band-Fenster, während <code>std_dev</code> (1.5) einen konservativeren Multiplikator verwendet als andere Strategien. Die Gradient Boosting-Parameter sind identisch zur Z-Score-Variante, jedoch wird das Modell auf Bollinger Band-spezifische Features trainiert, was zu präziseren Entry- und Exit-Zeitpunkten führen kann.</p>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/setup/">
+                        Backtesting Demonstrator Setup Guide
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/docs/">
+                        Ausarbeitung
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
