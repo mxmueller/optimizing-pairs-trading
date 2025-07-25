@@ -7,188 +7,129 @@ readTime: true
 ---
 
 
-## Konfiguration Sidebar
-
-Die Konfiguration Sidebar ist der zentrale Steuerbereich der Backtesting-Anwendung. Alle Analysen basieren auf diesen Einstellungen.
+## Configuration Sidebar
+The Configuration Sidebar serves as the central control panel for the backtesting application. All analyses rely on these settings.
 
 {{< anchor "window" >}}
 {{< figure src="/images/gif/config.gif" 
           >}}
 
-### Markt & Strategie
+### Market & Strategy
+The first step involves selecting a market from the `Select Market` dropdown. This choice determines which stocks and strategies become available. After market selection, the `Select Strategy` dropdown displays only compatible strategies. Without a valid selection, the application shows "No strategies available for selected market".
 
-Wählen Sie zunächst einen Markt aus dem `Select Market` Dropdown. Dies bestimmt, welche Aktien und Strategien verfügbar sind. Nach der Marktauswahl erscheinen im `Select Strategy` Dropdown nur kompatible Strategien. Ohne gültige Auswahl zeigt die Anwendung "No strategies available for selected market".
+### Parameters & Costs
+The **Trading Parameters** include **Initial Capital** (starting capital for the simulation, defaults to `$100,000` with a minimum of `$1,000`) and **Position Size** as a percentage of capital allocated per position (defaults to `1.0%`, ranging from `0.1%` to `10.0%`). Position Size controls both risk exposure and the number of simultaneous positions.
 
-### Parameter & Kosten
-
-Die **Trading Parameters** umfassen das **Initial Capital** (Startkapital für die Simulation, Standard: `$100,000`, Mindestbetrag `$1,000`) und die **Position Size** als Prozentsatz des Kapitals pro Position (Standard: `1.0%`, Bereich: `0.1%` bis `10.0%`). Die Position Size kontrolliert das Risiko und die Anzahl gleichzeitiger Positionen.
-
-Der erweiterbarer Bereich **Trading Costs** enthält vier wichtige Kostenparameter: **Fixed Commission** (`$1.00` Standard) als feste Gebühr pro Trade, **Variable Fee** (`0.018%` Standard) als prozentuale Gebühr auf den Handelswert, **Bid-Ask Spread** (`0.1%` Standard) für die Geld-Brief-Spanne und **Risk-Free Rate** (`0.0%` Standard) als risikoloser Zinssatz für die Sharpe Ratio Berechnung.
-
-Alle Parameter werden sofort in allen Analyse-Tabs übernommen. Die Tabs sind erst nach Auswahl von Markt und Strategie zugänglich.
-
+The expandable **Trading Costs** section covers four key cost parameters: **Fixed Commission** (defaults to `$1.00`) as a flat fee per trade, **Variable Fee** (defaults to `0.018%`) as a percentage of trade value, **Bid-Ask Spread** (defaults to `0.1%`) representing the bid-ask spread, and **Risk-Free Rate** (defaults to `0.0%`) used for Sharpe ratio calculations. All parameter changes take effect immediately across all analysis tabs. These tabs become accessible only after selecting both market and strategy.
 ****
-
 ## Market Overview
-
-Der Market Overview Tab bietet einen schnellen Überblick über den gewählten Markt und ermöglicht den Vergleich einzelner Aktien.
+The Market Overview tab provides a quick overview of the selected market and enables comparison of individual stocks.
 
 {{< anchor "window" >}}
 {{< figure src="/images/gif/overview.gif" 
           >}}
 
 ### Market Index
+The left side displays the **Market Index** as a time series chart showing the current index value and absolute change since inception. The **Current** metric shows the current index value, while the green/red number indicates the total change. The chart visualizes the historical development of the market index over the available time period. Below this is the **Symbol Comparison** section. Up to 5 stocks can be selected from the `Compare symbols` multiselect to compare their price development. The resulting line chart displays the closing prices of all selected symbols over time, with different colors for each stock.
 
-Die linke Seite zeigt den **Market Index** als Zeitreihen-Chart mit der aktuellen Indexbewertung und der absoluten Veränderung seit Beginn. Die **Current** Metrik zeigt den aktuellen Indexwert, während die grüne/rote Zahl die Gesamtveränderung anzeigt. Der Chart visualisiert die historische Entwicklung des Marktindex über den verfügbaren Zeitraum.
-
-Darunter befindet sich die **Symbol Comparison** Sektion. Wählen Sie bis zu 5 Aktien aus dem `Compare symbols` Multiselect aus, um deren Kursentwicklung zu vergleichen. Der resultierende Linien-Chart zeigt die Schlusskurse aller ausgewählten Symbole über die Zeit, mit unterschiedlichen Farben für jede Aktie.
-
-### Symbol Liste
-
-Die rechte Spalte enthält die **Symbols** Liste mit allen verfügbaren Aktien des gewählten Marktes. Die Anzeige `Total: X` gibt die Gesamtanzahl der Symbole an. Die scrollbare Tabelle zeigt alle Symbole alphabetisch sortiert und dient als Referenz für die verfügbaren Aktien im Markt.
-
-Alle Daten basieren auf dem in der Configuration Sidebar gewählten Markt und aktualisieren sich automatisch bei Marktänderungen.
-
+### Symbol List
+The right column contains the **Symbols** list with all available stocks of the selected market. The display `Total: X` shows the total number of symbols. The scrollable table displays all symbols in alphabetical order and serves as a reference for available stocks in the market. All data is based on the market selected in the Configuration Sidebar and updates automatically when the market changes.
 ****
 
 ## Symbol Analysis
-
-Der Symbol Analysis Tab vergleicht die Handelsstrategie mit einer Buy & Hold Strategie für einzelne Aktien und zeigt detaillierte Trade-Informationen.
+The Symbol Analysis tab compares the trading strategy with a Buy & Hold strategy for individual stocks and displays detailed trade information.
 
 {{< anchor "window" >}}
 {{< figure src="/images/gif/symbol.gif" 
           >}}
+### Chart Analysis
+A stock can be selected from the `Select Symbol` dropdown. The upper chart displays three lines: the **Price History** (golden line) showing the historical price movement, the **Buy & Hold Return** (green line) as the percentage return of a simple buy-and-hold strategy, and the **Trading Strategy Return** (magenta line) as the cumulative return of the selected trading strategy. The lower chart visualizes individual trades with **Profitable Trades** (blue dots) and **Losing Trades** (red dots). Each dot represents a trade with its individual return. A dashed gray line at 0% separates profitable from losing trades.
 
-### Chart-Analyse
+### Trade Details & Performance
+Below the charts is the complete **All Trades** table containing all executed trades, sortable by date, entry/exit prices, performance, and trade type. The table shows `entry_date`, `exit_date`, `position_type`, `entry_price`, `exit_price`, `performance`, and `exit_type`. The **Symbol Trades** section displays basic metrics such as `Total Trades` and `Win Rate`. Additionally, detailed performance metrics are shown: `Total Performance`, `Avg Performance`, `Max Gain`, and `Max Loss` of the selected stock based on the configured trading parameters.
 
-Wählen Sie eine Aktie aus dem `Select Symbol` Dropdown. Der obere Chart zeigt drei Linien: die **Price History** (goldene Linie) mit dem historischen Kursverlauf, die **Buy & Hold Return** (grüne Linie) als prozentuale Rendite einer einfachen Kaufen-und-Halten-Strategie, und die **Trading Strategy Return** (magenta Linie) als kumulative Rendite der gewählten Handelsstrategie.
-
-Der untere Chart visualisiert einzelne Trades mit **Profitable Trades** (blaue Punkte) und **Losing Trades** (rote Punkte). Jeder Punkt repräsentiert einen Trade mit seiner individuellen Rendite. Eine gestrichelte graue Linie bei 0% trennt profitable von verlustbringenden Trades.
-
-### Trade-Details & Performance
-
-Unterhalb der Charts befindet sich die vollständige **All Trades** Tabelle mit allen ausgeführten Trades, sortierbar nach Datum, Entry/Exit-Preisen, Performance und Trade-Typ. Die Tabelle zeigt `entry_date`, `exit_date`, `position_type`, `entry_price`, `exit_price`, `performance` und `exit_type`.
-
-Die **Symbol Trades** Sektion zeigt grundlegende Metriken wie `Total Trades` und `Win Rate`. Daneben werden detaillierte Performance-Kennzahlen angezeigt: `Total Performance`, `Avg Performance`, `Max Gain` und `Max Loss` der ausgewählten Aktie basierend auf den konfigurierten Trading-Parametern.
+****
 
 ## Strategy Performance
-
-Der Strategy Performance Tab analysiert die Gesamtperformance der gewählten Handelsstrategie mit detaillierten Zeitreihen und Kennzahlen.
-
+The Strategy Performance tab analyzes the overall performance of the selected trading strategy with detailed time series and metrics.
 {{< anchor "window" >}}
 {{< figure src="/images/gif/performance.gif" 
           >}}
-
 ### Performance Over Time
-
-Die linke Seite zeigt die **Portfolio Equity Curve** als Hauptchart mit der Entwicklung des Gesamtkapitals über die Zeit. Die blaue Linie stellt das `Total Capital` dar, während eine gestrichelte rote Linie das `Initial Capital` markiert. Unterhalb befindet sich der **Daily Profit/Loss** Chart als Balkendiagramm, wobei grüne Balken profitable Tage und rote Balken Verlusttage darstellen.
-
-Drei Metriken fassen die wichtigsten Ergebnisse zusammen: `Cumulative P&L` als absoluter Gewinn/Verlust, `Net P&L (after costs)` nach Abzug aller Handelskosten, und `Total Return` als prozentuale Gesamtrendite. Der **Active Positions Over Time** Chart zeigt zusätzlich die Anzahl gleichzeitiger Positionen über den Handelszeitraum.
+The left side displays the **Portfolio Equity Curve** as the main chart showing the development of total capital over time. The blue line represents `Total Capital`, while a dashed red line marks the `Initial Capital`. Below this, the **Daily Profit/Loss** chart appears as a bar chart, where green bars represent profitable days and red bars represent losing days. Three metrics summarize the key results: `Cumulative P&L` as absolute profit/loss, `Net P&L (after costs)` after deducting all trading costs, and `Total Return` as the percentage total return. The **Active Positions Over Time** chart additionally shows the number of simultaneous positions throughout the trading period.
 
 ### Performance Metrics
-
-Die rechte Spalte enthält wichtige Kennzahlen wie `Total Trades`, `Final Capital` mit prozentualer Veränderung, `Win Rate`, `Profitable Days`, `Sharpe Ratio` und `Max Drawdown`. 
-
-Drei Tabs strukturieren die detaillierten Metriken: **Performance** zeigt `Total Performance`, `Avg Performance`, `Max Gain/Loss` und Trade-Statistiken. **Costs** listet `Total Costs`, `Avg Cost per Trade` und eine Aufschlüsselung nach Entry/Exit-Kosten (Commission, Variable Fee, Spread). **Portfolio** zeigt Kapital-Kennzahlen wie `Initial/Final/Max/Min Capital` sowie `Current Invested` und `Current Available`.
+The right column contains key metrics such as `Total Trades`, `Final Capital` with percentage change, `Win Rate`, `Profitable Days`, `Sharpe Ratio`, and `Max Drawdown`. Three tabs organize the detailed metrics: **Performance** displays `Total Performance`, `Avg Performance`, `Max Gain/Loss`, and trade statistics. **Costs** lists `Total Costs`, `Avg Cost per Trade`, and a breakdown by entry/exit costs (Commission, Variable Fee, Spread). **Portfolio** shows capital metrics such as `Initial/Final/Max/Min Capital` as well as `Current Invested` and `Current Available`.
 
 ****
 
 ## Pairs Analysis
-
-Der Pairs Analysis Tab analysiert Pair-Trading-Strategien für ausgewählte Aktienpaare innerhalb spezifischer Trading-Windows.
-
+The Pairs Analysis tab analyzes pair-trading strategies for selected stock pairs within specific trading windows.
 {{< anchor "window" >}}
 {{< figure src="/images/gif/pair.gif" 
           >}}
 
-### Symbol-Auswahl & Trades
+### Symbol Selection & Trades
+The analysis begins with selecting a **Trading Window** from the dropdown, which determines the analysis period. Subsequently, the two-column selection involves choosing the **first symbol** (left) and **second symbol** (right). The dropdowns display only stocks that were actually traded within this window.
 
-Wählen Sie zunächst ein **Trading Window** aus dem Dropdown - dies bestimmt den Analysezeitraum. Anschließend wählen Sie in der zweispaltigen Auswahl das **erste Symbol** (links) und das **zweite Symbol** (rechts). Die Dropdowns zeigen nur Aktien, die tatsächlich in diesem Window gehandelt wurden.
-
-Die **Trades Visualization** zeigt eine Statistik-Zeile mit `Total Trades`, `Profit Trades`, `Loss Trades` und `Break-Even` Trades für das gewählte Paar. Darunter befinden sich **Display Options** zum Wechseln zwischen "Active Trade Periods Only" und "All Data". Die Timeline-Charts für beide Symbole visualisieren Entry-Punkte (blaue Dreiecke), Exit-Punkte (farbige Kreise je nach Ergebnis) und Verbindungslinien zwischen Entry/Exit. Die **Trades Details** Tabelle listet alle Pair-Trades mit Datum, Preisen, Performance und Trade-Typ.
+The **Trades Visualization** displays a statistics line showing `Total Trades`, `Profit Trades`, `Loss Trades`, and `Break-Even` trades for the selected pair. Below are **Display Options** for switching between "Active Trade Periods Only" and "All Data". The timeline charts for both symbols visualize entry points (blue triangles), exit points (colored circles based on outcome), and connecting lines between entry/exit. The **Trades Details** table lists all pair trades with date, prices, performance, and trade type.
 
 ### Pairs Overview
-
-Die **Pairs Overview** Sektion zeigt eine Metriken-Zeile mit `Window`, `Total Pairs`, `Total Trades` und `Selected Pair` Information. Der **Top 20 Pairs** Balken-Chart visualisiert die aktivsten Paare nach Anzahl Trades, farbkodiert nach Handelsvolumen. Die vollständige Pairs-Tabelle darunter listet alle verfügbaren Paare des Windows sortiert nach Trade-Anzahl, mit den Spalten `Pair`, `Symbol 1`, `Symbol 2` und `Trades`.
+The **Pairs Overview** section displays a metrics line with `Window`, `Total Pairs`, `Total Trades`, and `Selected Pair` information. The **Top 20 Pairs** bar chart visualizes the most active pairs by number of trades, color-coded by trading volume. The complete pairs table below lists all available pairs for the window sorted by trade count, with columns `Pair`, `Symbol 1`, `Symbol 2`, and `Trades`.
 
 ****
 
 ## Strategy Comparison
-
-Der Strategy Comparison Tab vergleicht mehrere Handelsstrategien direkt miteinander und bietet umfassende Export-Funktionen für statistische Analysen.
-
+The Strategy Comparison tab enables direct comparison of multiple trading strategies and provides comprehensive export functions for statistical analysis.
 {{< anchor "window" >}}
 {{< figure src="/images/gif/last.gif" 
           >}}
-
 ### Performance Metrics
-
-Wählen Sie mindestens 2 Strategien aus dem `Select Strategies to Compare` Multiselect. Die Vergleichstabelle zeigt `Total Return`, `Sharpe Ratio`, `Max Drawdown`, `Win Rate`, `Total Trades` und `Profitable Days` für alle gewählten Strategien. Darunter werden separate Balken-Charts für jeden Kennwert angezeigt, um direkte Vergleiche zu visualisieren.
+At least 2 strategies must be selected from the `Select Strategies to Compare` multiselect. The comparison table displays `Total Return`, `Sharpe Ratio`, `Max Drawdown`, `Win Rate`, `Total Trades`, and `Profitable Days` for all selected strategies. Below this, separate bar charts for each metric provide visual comparisons.
 
 ### Equity Curves & Returns
-
-Der **Equity Curves** Tab visualisiert die Kapitalentwicklung aller Strategien in einem gemeinsamen Chart mit verschiedenen Farben pro Strategie und einer gestrichelten Linie für das Initial Capital.
-
-**Returns Distribution** zeigt Histogramme der täglichen Renditen aller Strategien überlagert und eine Statistik-Tabelle mit `Mean Return`, `Std Dev`, `Min/Max Return` und `Positive Days` für jede Strategie.
+The **Equity Curves** tab visualizes the capital development of all strategies in a combined chart with different colors per strategy and a dashed line representing the initial capital. **Returns Distribution** shows overlaid histograms of daily returns for all strategies and a statistics table with `Mean Return`, `Std Dev`, `Min/Max Return`, and `Positive Days` for each strategy.
 
 ### Drawdowns Analysis
-
-Zeitreihen-Chart aller Drawdowns mit umgekehrter Y-Achse (tiefere Drawdowns weiter unten) und ein Balken-Chart der maximalen Drawdowns pro Strategie. Drawdowns werden als negative Prozentpunkte dargestellt.
+A time series chart displays all drawdowns with an inverted Y-axis (deeper drawdowns positioned lower) and a bar chart showing maximum drawdowns per strategy. Drawdowns are represented as negative percentage points.
 
 ### Pair Analysis
-
-Nach Trading Window-Auswahl zeigt eine Tabelle alle Paare mit Trade-Anzahlen pro Strategie. **Common Pairs** listet Paare auf, die in allen Strategien vorkommen. Für ausgewählte Common Pairs werden detaillierte Performance-Vergleiche mit `Total Return`, `Win Rate`, `Total Trades` und `Avg Trade Return` als Balken-Charts visualisiert.
+After trading window selection, a table shows all pairs with trade counts per strategy. **Common Pairs** lists pairs that appear across all strategies. For selected common pairs, detailed performance comparisons are visualized with `Total Return`, `Win Rate`, `Total Trades`, and `Avg Trade Return` as bar charts.
 
 ### Export
-
-**Performance Summary** exportiert alle Kennzahlen und Trading-Parameter als CSV. **Timeseries Data** enthält tägliche Kapitalwerte aller Strategien. **Pairs Analysis** bietet detaillierte Pair-Performance-Daten nach Window-Auswahl. Zusätzlich werden Code-Beispiele für statistische Analysen wie t-Tests, Konsistenz-Analysen und Sharpe Ratio Berechnungen bereitgestellt.
+**Performance Summary** exports all metrics and trading parameters as CSV. **Timeseries Data** contains daily capital values for all strategies. **Pairs Analysis** provides detailed pair performance data after window selection. Additionally, code examples for statistical analyses such as t-tests, consistency analyses, and Sharpe ratio calculations are provided.
 
 ****
 
 ## Strategy Creator Tab
-
-Der Strategy Creator ermöglicht die automatisierte Erstellung von Trading-Strategien durch die Ausführung vorkonfigurierter Jupyter Notebooks mit anpassbaren Parametern.
-
+The Strategy Creator enables automated creation of trading strategies through the execution of preconfigured Jupyter Notebooks with customizable parameters.
 {{< anchor "window" >}}
 {{< figure src="/images/gif/fin.gif" 
           >}}
-
 ### Workflow 
-
-Der Strategy Creator führt Sie durch einen strukturierten Prozess zur Strategieerstellung. Wählen Sie zunächst den gewünschten Markt und das Strategy Template aus den verfügbaren Jupyter Notebooks. Die Parameter werden automatisch aus dem Notebook extrahiert und als Eingabefelder angezeigt - passen Sie diese nach Ihren Anforderungen an.
-
-Vergeben Sie einen aussagekräftigen Namen für Ihre Strategie über **Strategy Type** und **Strategy Description**. Der **Output Filename** wird automatisch generiert, kann aber manuell angepasst werden. Nach dem Klick auf **"🚀 Run Strategy Creation"** wird ein Background-Job gestartet, der das Notebook mit Ihren Parametern ausführt.
-
-Der Ausführungsprozess läuft vollständig im Hintergrund ab: Zuerst werden die Marktdaten aus dem MinIO Storage heruntergeladen, dann wird das Jupyter Notebook mit Ihren konfigurierten Parametern ausgeführt, und schließlich wird die generierte Strategie-Datei mit entsprechenden Metadaten-Tags zurück in den Storage hochgeladen. Sie können die Seite während der Ausführung verlassen - die Jobs laufen weiter.
+The Strategy Creator provides a structured process for strategy creation. The workflow begins with selecting the desired market and strategy template from the available Jupyter Notebooks. Parameters are automatically extracted from the notebook and displayed as input fields, which can be adjusted according to requirements. A meaningful name for the strategy is assigned through **Strategy Type** and **Strategy Description**. The **Output Filename** is generated automatically but can be manually adjusted. After clicking **"Run Strategy Creation"**, a background job starts that executes the notebook with the configured parameters. The execution process runs entirely in the background: First, market data is downloaded from MinIO Storage, then the Jupyter Notebook is executed with the configured parameters, and finally the generated strategy file is uploaded back to storage with appropriate metadata tags. The page can be left during execution as jobs continue running.
 
 ### Job Monitoring 
-
-Nach dem Klick auf **"Run Strategy Creation"** wird ein Background-Job gestartet. Die **Active Jobs** Tabelle zeigt alle laufenden und abgeschlossenen Jobs mit farbkodierten Status-Pills: `pending` (gelb), `running` (blau), `completed` (grün) und `failed` (rot). Zusätzlich werden Progress-Informationen und Status-Meldungen angezeigt.
-
-Jobs durchlaufen folgende Phasen: Download der Marktdaten aus MinIO, Notebook-Ausführung mit konfigurierten Parametern, Upload der generierten Strategie-Datei zurück zu MinIO mit entsprechenden Metadaten-Tags. Der **"Refresh Jobs"** Button aktualisiert die Job-Liste manuell, zusätzlich erfolgt eine automatische Aktualisierung alle 10 Requests.
-
+After clicking **"Run Strategy Creation"**, a background job is initiated. The **Active Jobs** table displays all running and completed jobs with color-coded status pills: `pending` (yellow), `running` (blue), `completed` (green), and `failed` (red). Additionally, progress information and status messages are shown. Jobs progress through the following phases: downloading market data from MinIO, notebook execution with configured parameters, uploading the generated strategy file back to MinIO with corresponding metadata tags. The **"Refresh Jobs"** button manually updates the job list, while automatic updates occur every 10 requests.
 ****
 
 ## Strategy Templates & Parameter Guide
-
-Übersicht über verfügbare Trading-Strategien und deren konfigurierbare Parameter.
+Overview of available trading strategies and their configurable parameters.
 
 ### Cointegration Z-Score Evolution
+This strategy identifies cointegrated stock pairs and trades based on Z-score thresholds. The `p_threshold` (default: 0.05) determines the significance level for the cointegration test, where lower values indicate stricter pair selection. The `min_pairs` (20) sets the minimum number of pairs to trade per window, while `window_shifts` (12) defines the number of rolling analysis windows for walk-forward backtesting. Trading signals are controlled by `entry_threshold` (2.0) and `exit_threshold` (0.5) as Z-score thresholds. For Z-score calculation, `window1` (5) serves as the short moving average and `window2` (60) as the long moving average. The `shift_size` (1) determines the shift between analysis windows in months.
 
-Diese Strategie identifiziert kointegrierte Aktienpaare und handelt basierend auf Z-Score-Schwellenwerten. Der `p_threshold` (Standard: 0.05) bestimmt das Signifikanzniveau für den Kointegrationstest, wobei niedrigere Werte eine strengere Paarauswahl bedeuten. Die `min_pairs` (20) legt die Mindestanzahl zu handelnder Paare pro Window fest, während `window_shifts` (12) die Anzahl rollierender Analysefenster für das Walk-Forward-Backtesting definiert. Die Handelssignale werden durch `entry_threshold` (2.0) und `exit_threshold` (0.5) als Z-Score-Schwellenwerte gesteuert. Für die Z-Score-Berechnung werden `window1` (5) als kurzes und `window2` (60) als langes gleitendes Mittel verwendet. Der `shift_size` (1) bestimmt die Verschiebung zwischen den Analysefenstern in Monaten.
+### Cointegration with Bollinger Bands
+This variant uses Bollinger Bands instead of fixed Z-score thresholds for more dynamic trading signals. The `std_dev` (2.0) acts as the standard deviation multiplier for the Bollinger Bands, while `exit_std_dev` (0.5) defines the exit threshold. The `window_size` (20) determines the calculation window for the Bollinger Bands. Additionally, hedge ratios are dynamically adjusted: `hr_window` (25) defines the recalculation window and `hr_recalc` (3) the recalculation interval in days. This enables better adaptation to changing market conditions.
 
-### Cointegration mit Bollinger Bands
-Diese Variante nutzt Bollinger Bänder anstatt fixer Z-Score-Schwellenwerte für dynamischere Handelssignale. Der `std_dev` (2.0) fungiert als Standardabweichungs-Multiplikator für die Bollinger Bänder, während `exit_std_dev` (0.5) die Ausstiegsschwelle definiert. Das `window_size` (20) bestimmt das Berechnungsfenster für die Bollinger Bänder. Zusätzlich werden Hedge Ratios dynamisch angepasst: `hr_window` (25) definiert das Neuberechnungsfenster und `hr_recalc` (3) das Intervall für die Neuberechnung in Tagen. Dies ermöglicht eine bessere Anpassung an sich ändernde Marktbedingungen.
+### Affinity Propagation Clustering with Z-Score
+This method uses clustering for pair discovery instead of direct cointegration. The strategy combines cluster analysis with classical Z-score trading signals. The parameters `entry_threshold` (2.0) and `exit_threshold` (0.5) function like the standard Z-score strategy, but pairs are intelligently pre-sorted through clustering, which can lead to more stable trading relationships.
 
-### Affinity Propagation Clustering mit Z-Score
-
-Diese Methode verwendet Clustering für die Paarfindung statt direkter Kointegration. Die Strategie kombiniert die Cluster-Analyse mit klassischen Z-Score-Handelssignalen. Die Parameter `entry_threshold` (2.0) und `exit_threshold` (0.5) funktionieren wie bei der Standard-Z-Score-Strategie, jedoch werden die Paare intelligent über Clustering vorsortiert, was zu stabileren Handelsbeziehungen führen kann.
-
-### Affinity Propagation mit Bollinger Bands
-Diese Strategie kombiniert Clustering-basierte Paarfindung mit Bollinger Band-Signalen. Der `std_dev` (2) und `exit_std_dev` (0.5) Parameter steuern die Bollinger Band-Breite für Entry und Exit-Signale. Das `window` (50) definiert das Berechnungsfenster für die Bollinger Bänder. Die dynamische Hedge Ratio-Anpassung erfolgt über `hr_window` (25) und `hr_recalc` (3), was besonders bei cluster-basierten Paaren wichtig ist, da diese möglicherweise verschiedene Beta-Verhältnisse aufweisen.
+### Affinity Propagation with Bollinger Bands
+This strategy combines clustering-based pair discovery with Bollinger Band signals. The `std_dev` (2) and `exit_std_dev` (0.5) parameters control the Bollinger Band width for entry and exit signals. The `window` (50) defines the calculation window for the Bollinger Bands. Dynamic hedge ratio adjustment occurs through `hr_window` (25) and `hr_recalc` (3), which is particularly important for cluster-based pairs as they may exhibit different beta relationships.
 
 ### Gradient Boosting Z-Score Evolution
-Diese Machine Learning-basierte Strategie nutzt Gradient Boosting für intelligente Paarpriorisierung. Die ML-Parameter umfassen `learning_rate` (0.2) für die Lerngeschwindigkeit, `max_depth` (2) für die maximale Baumtiefe zur Overfitting-Vermeidung, sowie `min_samples_leaf` (2) und `min_samples_split` (2) zur Kontrolle der Baumkomplexität. Der `n_estimators` (300) Parameter bestimmt die Anzahl der Bäume im Ensemble. Das Modell lernt aus historischen Daten, welche Paare die besten Handelsergebnisse liefern, und priorisiert diese entsprechend.
+This machine learning-based strategy uses gradient boosting for intelligent pair prioritization. The ML parameters include `learning_rate` (0.2) for learning speed, `max_depth` (2) for maximum tree depth to prevent overfitting, as well as `min_samples_leaf` (2) and `min_samples_split` (2) to control tree complexity. The `n_estimators` (300) parameter determines the number of trees in the ensemble. The model learns from historical data which pairs deliver the best trading results and prioritizes them accordingly.
 
-### Gradient Boosting mit Bollinger Bands
-Diese Strategie kombiniert ML-basierte Paarauswahl mit Bollinger Band-Trading. Der `bb_window` (50) definiert das Bollinger Band-Fenster, während `std_dev` (1.5) einen konservativeren Multiplikator verwendet als andere Strategien. Die Gradient Boosting-Parameter sind identisch zur Z-Score-Variante, jedoch wird das Modell auf Bollinger Band-spezifische Features trainiert, was zu präziseren Entry- und Exit-Zeitpunkten führen kann.
+### Gradient Boosting with Bollinger Bands
+This strategy combines ML-based pair selection with Bollinger Band trading. The `bb_window` (50) defines the Bollinger Band window, while `std_dev` (1.5) uses a more conservative multiplier than other strategies. The gradient boosting parameters are identical to the Z-score variant, but the model is trained on Bollinger Band-specific features, which can lead to more precise entry and exit timing.

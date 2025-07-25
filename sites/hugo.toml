@@ -48,7 +48,7 @@ url = "https://github.com/user"
 # Main menu pages
 [[params.menu]]
 name = "Docs"
-url = "/docs/"
+url = "/docs"
 
 [[params.menu]]
 name = "Results"

@@ -3,7 +3,6 @@ title: "Ausarbeitung"
 math: true  # Das aktiviert KaTeX (ist schon im Theme)
 toc: true
 readTime: true
-
 ---
 
 Pairstrading ist eine nichtdirektionale Handelsstrategie, die unabhängig von der Marktrichtung funktioniert {{< cite ref="Vidyamurthy 2004" page="p. 8" >}}. Sie basiert auf historischen Zusammenhängen zwischen zwei Wertpapieren (Zeitreihen) $X_i(t)$ und $X_j(t)$ und nutzt temporäre Abweichungen in deren Preisbeziehung zur Gewinnerzielung aus. Im verbreiteten, statistischen Pairstrading werden zwei Hauptansätze unterschieden: kointegrationsbasierte und korrelationsbasierte Verfahren. {{< cite ref="Engle 1987" etal="true" noparen="true">}} legten die theoretischen Grundlagen der Kointegration, {{< cite ref="Vidyamurthy 2004" etal="true" noparen="true">}} entwickelten deren Anwendung im Pairstrading, und {{< cite ref="Gatev 2006" etal="true" noparen="true">}} etablierten den korrelationsbasierten Ansatz. Pairstrading umfasst zwei fundamentale Schritte: das Identifizieren geeigneter Paare und deren Handel.
@@ -71,12 +70,15 @@ Diese Herausforderungen eröffnen spezifische Ansatzpunkte zur Weiterentwicklung
 Als explorative Arbeit ist die Vorgabe der maschinellen Lernansätze bewusst offen gehalten. Am Ende konnten zwei Ansätze erarbeitet werden: ein [Affinity propagation Clustering](#ML1) und [Gradient Boost Regressor](#ML2) Verfahren. Diese werden mit einem kointegrationsbasierten, nach {{< cite ref="Engle 1987" etal="true" noparen="true">}} implementierten Ansatz verglichen. Dieser erhält jedoch zur Vergleichbarkeit ebenfalls die Anwendung des [Sliding Window Ansatzes](#Window). Vergleichsstudien begründen die Auswahl durch validierte Überlegenheit der Kointegrationsverfahren gegenüber der Korrelation {{< cite ref="Rad 2016">}}; {{< cite ref="Carrasco Blázquez 2018">}}; {{< cite ref="Ma 2022">}}.
 
 ****
-# Ablauf oder Methodik
+# Ablauf oder Methods
 
-![Alt-Text](/images/ablauf.drawio.png "Abbildung 1: Systematische Darstellung der Wirtschaftsstruktur mit den Klassifikationsebenen: 1. Global Industry Classification Standard (*GICS*); 2. Nationale Sektoren (Primär-, Sekundär, Tertiärer-sektor); 3. Hierarchische Industriestruktur (Industriezweig; Industrie, Subindustrie); 4. Inländische Aktienindizes im Kontext der globalen und nationalen Wirtschaft.")
+Die systematische Evaluierung der Machine Learning-Ansätze folgt einem strukturierten Verfahren, das in [Abbildung 1](#ablauf) dargestellt ist. Drei verschiedene Paaridentifikationsverfahren werden parallel implementiert: der traditionelle [Kointegrationsansatz](#cointpair) als Benchmark sowie zwei Machine Learning-Verfahren - [Affinity Propagation Clustering](#ML1) und [Gradient Boost Regressor](#ML2). 
 
+Alle Ansätze durchlaufen zunächst ihre spezifische Paarauswahl, wobei die Machine Learning-Verfahren zusätzliche Merkmalsextraktionen und Modelltraining umfassen. Anschließend werden die identifizierten Paare statistisch validiert - sowohl Machine Learning- als auch Kointegrations-Paare müssen den [Engle-Granger-Test](#cointpair) mit $p < 0.05$ bestehen. Aus den validierten Paaren werden die Top 20 mit den besten statistischen Eigenschaften für das Trading ausgewählt.
 
-HIER TEXT AM ENDE
+![Alt-Text](/images/ablauf.drawio.png "Abbildung 1: Systematischer Ablauf der Pairs Trading Evaluierung mit drei Paaridentifikationsansätzen, statistischer Validierung, monatlich verschiebbaren Fenstern und paralleler Strategievalidierung auf $N_{100}$ und $F_{100}$ Märkten.")
+
+Der [Sliding Window Ansatz](#Window) verschiebt monatlich sowohl Trainings- als auch Trading-Fenster, wodurch 12 iterative Bewertungszyklen entstehen. Jede Paarauswahl wird mit zwei etablierten Handelsstrategien - [Z-Score](#zscore) und [Bollinger Bands](#bollinger) - auf beiden Märkten ($N_{100}$ und $F_{100}$) unter einheitlichen [Marktbedingungen](#MarketSim) getestet. Diese systematische Evaluierung ermöglicht eine robuste Leistungsbewertung aller Ansätze über verschiedene Marktregime hinweg.
 
 ****
 
@@ -86,17 +88,17 @@ Um eine Teilmenge an Zeitreihen (Wertpapieren, Aktien oder sonstigem) zu erhalte
 {{< anchor "economy-chart" >}}
 ![Alt-Text](/images/economy.drawio.png "Abbildung 1: Systematische Darstellung der Wirtschaftsstruktur mit den Klassifikationsebenen: 1. Global Industry Classification Standard (*GICS*); 2. Nationale Sektoren (Primär-, Sekundär, Tertiärer-sektor); 3. Hierarchische Industriestruktur (Industriezweig; Industrie, Subindustrie); 4. Inländische Aktienindizes im Kontext der globalen und nationalen Wirtschaft.")
 
-*GICS* bildet die Basis für S&P und MSCI Finanzmarkt-Indizes, in denen jede Firma gemäß ihrer Hauptgeschäftstätigkeit genau einer Subindustrie und damit einer Industrie, einem Industrie-Zweig und einem Sektor zugewiesen ist. Die Eingrenzung an potenziellen Paaren bildet sich dann in den jeweils durch die Klassifizierung festgelegten Sektoren bzw. Subsektoren (siehe [Abbildung 1, siehe 3](#economy-chart)). So können zwar wirtschaftliche Synergien in den Paaren vorliegen, jedoch können potenzielle Verbindungen von vornherein fälschlicherweise ausgeschlossen werden. Um diese Ausgrenzung größtmöglich zu abstrahieren, geschieht die Vorauswahl auf nationaler volkswirtschaftlicher Ebene (siehe [Abbildung 1, siehe 2](#economy-chart)). Diese bewusste Entscheidung gegen sektorspezifische Vorfilterung folgt der Hypothese, dass maschinelle Lernverfahren auch branchenübergreifende Zusammenhänge identifizieren können, die durch traditionelle GICS-basierte Einschränkungen ausgeschlossen würden. Im Rahmen dieser Arbeit geschieht dies im Rahmen des amerikanischen und britischen Marktes in Form des *NASDAQ-100* und *FTSE-100* (im Nachfolgenden abgekürzt als $N_{100}$
-​ und $F_{100}$) (siehe [Abbildung 1, siehe 4](#economy-chart)).
+*GICS* bildet die Basis für S&P und MSCI Finanzmarkt-Indizes, in denen jede Firma gemäß ihrer Hauptgeschäftstätigkeit genau einer Subindustrie und damit einer Industrie, einem Industrie-Zweig und einem Sektor zugewiesen ist. Die Eingrenzung an potenziellen Paaren bildet sich dann in den jeweils durch die Klassifizierung festgelegten Sektoren bzw. Subsektoren (siehe [Abbildung 1, siehe 3](#economy-chart)). So können zwar wirtschaftliche Synergien in den Paaren vorliegen, jedoch können potenzielle Verbindungen von vornherein fälschlicherweise ausgeschlossen werden. Um diese Ausgrenzung größtmöglich zu abstrahieren, geschieht die Vorauswahl auf nationaler volkswirtschaftlicher Ebene (siehe [Abbildung 1, siehe 2](#economy-chart)). Diese bewusste Entscheidung gegen sektorspezifische Vorfilterung folgt der Hypothese, dass maschinelle Lernverfahren auch branchenübergreifende Zusammenhänge identifizieren können, die durch traditionelle GICS-basierte Einschränkungen ausgeschlossen würden. Im Rahmen dieser Arbeit geschieht dies im Rahmen des amerikanischen und britischen Marktes in Form des *NASDAQ-100* und *FTSE-100* (im Nachfolgenden abgekürzt als $N_{100} und $F_{100}$) (siehe [Abbildung 1, siehe 4](#economy-chart)).
 
 **Indizes:** Die Aktiendaten beider Indizes erstrecken sich über den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$, wobei $t_{\text{start}}$ dem 01.01.2020 und $t_{\text{end}}$ dem 01.01.2025 entspricht. Dieser Zeitraum wird unterteilt in Trainings- und Testperiode: Der Trainingszeitraum umfasst $T_{\text{train}} = [01.01.2020, 31.12.2023]$. Der Testzeitraum $T_{\text{test}} = [01.01.2024, 01.01.2025]$. Für jede Aktie wird an jedem Handelstag ein vollständiger Datensatz erfasst, der das Handelssymbol, das Datum sowie die wesentlichen Kursinformationen umfasst: Eröffnungskurs, Tageshöchstkurs, Tagestiefstkurs, Schlusskurs und Handelsvolumen. Da keine weiteren Einschränkungen bezüglich Marktkapitalisierung, Liquidität oder Branchenzugehörigkeit vorliegen, ergibt sich aus dem Pool aller 100 Aktien eines Index $A = \{a_1, a_2, ..., a_{100}\}$ die Menge aller zulässigen Paare durch $P = \{(a_i, a_j) \mid a_i, a_j \in A \land i < j\}$. Dies entspricht $\binom{100}{2} = 4950$ möglichen Paarkandidaten pro Index.
 
-HIER FEHL NCOH VON WANN BIS WANN TRJAINNG UND TEXT 
+{{< anchor "market" >}}
+{{< figure src="/images/market_comparison.png" 
+           caption="Abbildung 4: Comparative performance of $F_{100}$ and $N_{100}$ indices from 2020-2025, normalized to base value 100 (January 1, 2020). Gray shaded area indicates the 2024-2025 period. Arrows show total growth rates and 2024-2025 performance."
+           width="700" 
+           style="text-align: center; margin: 0 auto;" >}}
 
-{{< anchor "indices" >}}
-![Alt-Text](https://placehold.co/200 "Abbildung 2: Die Abbildung zeigt die normalisierten Marktindizes $F_{100}$ und $N_{100}$ (2020-2025, Basis=100) mit Gesamtwachstum ($F_{100}$: +30,1%, $N_{100}$: +107,1%) und hervorgehobenem Wachstum im Jahr 2024 von $F_{100}$: +7,9%, $N_{100}$: +15,8%.")
-
-**Datenbereinigung:** Zeitreihen, die nicht die vollständige Anzahl an Datenpunkten für den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$ vorweisen können, wurden ausgelassen. Das resultierte für $N_{100}$ in 94 und $F_{100}$ in 98 Aktien pro Index. Der Umgang mit vereinzelt fehlenden Werten erfolgt anhand der Kurszeitreihen $X_i(t)$ für jede Aktie $i$. Eine Vorwärtsinterpolation ersetzt fehlende Werte durch den letzten verfügbaren Wert derselben Zeitreihe: $X_i(t) = X_i(t-k)$, wobei $k$ die kleinste positive Zahl ist, für die $X_i(t-k)$ beobachtet wurde. Anschließend werden bestehende Lücken durch nachfolgende Werte aufgefüllt: $X_i(t) = X_i(t+m)$, wobei $m$ die kleinste positive Zahl ist, für die $X_i(t+m)$ beobachtet wurde. Im Vergleich zu anderen Methoden wie der linearen oder polynomialen Interpolation bietet die Vorwärts- und Rückwärtsinterpolation eine robuste Lösung für Finanzzeitreihen, da sie ausschließlich beobachtete Werte verwendet und so die Kontinuität der Daten bewahrt {{< cite ref="Moritz 2017" >}}. Der bereinigte, normalisierter Kursverlauf aller vorhanden Werte pro Indices kann [Abbildung 2](#indices) entnommen werden.
+**Datenbereinigung:** Zeitreihen, die nicht die vollständige Anzahl an Datenpunkten für den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$ vorweisen können, wurden ausgelassen. Das resultierte für $N_{100}$ in 94 und $F_{100}$ in 98 Aktien pro Index. Der Umgang mit vereinzelt fehlenden Werten erfolgt anhand der Kurszeitreihen $X_i(t)$ für jede Aktie $i$. Eine Vorwärtsinterpolation ersetzt fehlende Werte durch den letzten verfügbaren Wert derselben Zeitreihe: $X_i(t) = X_i(t-k)$, wobei $k$ die kleinste positive Zahl ist, für die $X_i(t-k)$ beobachtet wurde. Anschließend werden bestehende Lücken durch nachfolgende Werte aufgefüllt: $X_i(t) = X_i(t+m)$, wobei $m$ die kleinste positive Zahl ist, für die $X_i(t+m)$ beobachtet wurde. Im Vergleich zu anderen Methoden wie der linearen oder polynomialen Interpolation bietet die Vorwärts- und Rückwärtsinterpolation eine robuste Lösung für Finanzzeitreihen, da sie ausschließlich beobachtete Werte verwendet und so die Kontinuität der Daten bewahrt {{< cite ref="Moritz 2017" >}}. Der bereinigte, normalisierter Kursverlauf aller vorhanden Werte pro Indices kann [Abbildung 2](#market) entnommen werden.
 
 ****
 
@@ -228,29 +230,10 @@ Die Bänder definieren dynamische Ein- und Ausstiegsschwellen, die sich automati
 | Short | $Spread_{i,j}(t) > Upper_{i,j}(t)$ |
 | Ausstieg | $\|Spread_{i,j}(t) - \mu_{spread}(t)\| < 0.5 \cdot \sigma_{spread}(t)$ |
 
-GRAFIK VORLESUNG
-
 # Market Sim 
 Alle Paare werden unter einheitlichen Marktbedingungen getestet. Das Startkapital beträgt €100.000 mit einer festen Positionsgröße von 1% des verfügbaren Kapitals pro Trade. Realistische Transaktionskosten werden durch eine fixe Kommission von €1,00 pro Trade sowie eine variable Gebühr von 0,018% des Handelsvolumens simuliert. Zusätzlich wird ein Bid-Ask-Spread von 0,1% berücksichtigt, der sowohl beim Einstieg als auch Ausstieg anfällt. Diese Kostenstuktur entspricht typischen Retail-Brokerage-Bedingungen und gewährleistet eine realistische Performance-Bewertung {{< cite ref="Interactive Brokers 2024" >}}. Der risikofreie Zinssatz wird mit 0% angesetzt, da Opportunitätskosten durch die marktneutrale Natur des Pairs Trading minimiert werden. 
 
-
-## Cite Example
-
-bla [Zur Kostenfunktion](#cost-function)
-Machine Learning {{< cite "Smith 2023" >}} ist wichtig.
-
-<!-- Verlinkt zu "Engle Granger 1987" aber zeigt "et al." -->
-{{< cite ref="Engle Granger 1987" cf="true" >}}
-
-<!-- Mit Seite -->
-{{< cite ref="Engle Granger 1987" etal="true" page="S. 255" >}}
-
-<!-- Ohne Klammern -->
-Laut {{< cite ref="Jacobs 2015" etal="true" cf="true" noparen="true" page="S. 255">}} ist...
-
-<!-- FUßNOTEN -->
-[^1]: Die kumulative Summe der Log-Renditen ist die laufende Aufsummierung aller bisherigen Renditen und zeigt, wie sich der Preis insgesamt vom Startpunkt verändert hat.
-
+Die ergebnisse sind in der nachsind in der [nachfolgenden Seite](/results/) zusammengefasst.
 
 ## Literatur
 {{< reference "Sharpe 1964" >}}Sharpe, W. F. (1964). Capital Asset Prices: A Theory of Market Equilibrium Under Conditions of Risk. The Journal of Finance, 19(3), 425-442. https://doi.org/10.1111/j.1540-6261.1964.tb02865.x{{< /reference >}}

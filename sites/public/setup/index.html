@@ -42,8 +42,7 @@
   <meta property="og:site_name" content="Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading">
   <meta property="og:title" content="Backtesting Demonstrator Setup Guide">
   <meta property="og:description" content="The microservices architecture demonstrates a complete backtesting pipeline for pairs trading strategies. Each service fulfills a specific role in the data processing and analysis workflow.
-The Notebook Runner (notebook_runner) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions.
-The MinIO blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results.">
+The Notebook Runner (notebook_runner) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions. The MinIO blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results. The Analytics (analytics) service processes trade data from the blob storage along with raw market data to calculate comprehensive performance metrics. This backend service handles all computational-heavy operations including risk metrics, return calculations, and portfolio statistics. The Streamlit application provides a unified interface for data visualization, performance analysis, and strategy management. Users can explore raw data, examine trading results, analyze performance metrics, and commission new notebook runs directly through the web interface. All services are located under src/backtester/services/ and communicate through REST APIs and shared storage.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
 
@@ -105,7 +104,7 @@ The MinIO blob storage service serves as the central data repository, containing
 
         <p
             class="small ">
-            <a href="/docs/" >
+            <a href="/docs" >
                 /Docs
             </a>
         </p>
@@ -176,40 +175,25 @@ The MinIO blob storage service serves as the central data repository, containing
 <figure><img src="/images/archi.drawio.png" width="800">
 </figure>
 
-<p>The <strong>Notebook Runner</strong> (<code>notebook_runner</code>) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions.</p>
-<p>The <strong>MinIO</strong> blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results.</p>
-<p>The <strong>Analytics</strong> (<code>analytics</code>) service processes trade data from the blob storage along with raw market data to calculate comprehensive performance metrics. This backend service handles all computational-heavy operations including risk metrics, return calculations, and portfolio statistics.</p>
-<p>The <strong>Streamlit</strong> application provides a unified interface for data visualization, performance analysis, and strategy management. Users can explore raw data, examine trading results, analyze performance metrics, and commission new notebook runs directly through the web interface.</p>
-<p>All services are located under <code>src/backtester/services/</code> and communicate through REST APIs and shared storage.</p>
+<p>The <strong>Notebook Runner</strong> (<code>notebook_runner</code>) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions. The <strong>MinIO</strong> blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results. The <strong>Analytics</strong> (<code>analytics</code>) service processes trade data from the blob storage along with raw market data to calculate comprehensive performance metrics. This backend service handles all computational-heavy operations including risk metrics, return calculations, and portfolio statistics. The <strong>Streamlit</strong> application provides a unified interface for data visualization, performance analysis, and strategy management. Users can explore raw data, examine trading results, analyze performance metrics, and commission new notebook runs directly through the web interface. All services are located under <code>src/backtester/services/</code> and communicate through REST APIs and shared storage.</p>
 <h2 class="heading" id="quick-setup">
   Quick Setup
   <a class="anchor" href="#quick-setup">#</a>
 </h2>
 <p>The following steps will deploy the complete backtesting environment with all required services and pre-configured data. The initial setup automatically provisions MinIO storage, loads market data, and prepares the analytical backend for immediate use.</p>
-<h3 class="heading" id="clone-repository">
-  Clone Repository
-  <a class="anchor" href="#clone-repository">#</a>
-</h3>
+<p><strong>Clone Repository</strong></p>
+<p>Download the complete project repository including all submodules and navigate to the project directory.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone --recurse-submodules https://github.com/mxmueller/optimizing-pairs-trading
 </span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">cd</span> optimizing-pairs-trading
-</span></span></code></pre></div><h3 class="heading" id="verify-docker-installation">
-  Verify Docker Installation
-  <a class="anchor" href="#verify-docker-installation">#</a>
-</h3>
+</span></span></code></pre></div><p><strong>Verify Docker Installation</strong></p>
+<p>Ensure Docker and Docker Compose are properly installed on your system before proceeding with the deployment.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker --version
 </span></span><span style="display:flex;"><span>docker compose version
-</span></span></code></pre></div><h3 class="heading" id="start-services">
-  Start Services
-  <a class="anchor" href="#start-services">#</a>
-</h3>
+</span></span></code></pre></div><p><strong>Start Services</strong></p>
 <p>The Docker Compose configuration handles service dependencies and health checks automatically. MinIO will initialize first, followed by the analytics backend, notebook runner, and finally the Streamlit frontend. The initial startup may take several minutes as Docker builds images and provisions storage.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up --build --detach
-</span></span></code></pre></div><h5 class="heading" id="verify-deployment">
-  Verify Deployment
-  <a class="anchor" href="#verify-deployment">#</a>
-</h5>
+</span></span></code></pre></div><p><strong>Verify Deployment</strong></p>
 <p>Monitor the deployment progress and ensure all services reach healthy status. The MinIO service includes a health check that verifies data loading completion before dependent services start.</p>
-<p>Check service health:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose ps
 </span></span></code></pre></div><p>All services should show <code>healthy</code> or <code>running</code> status.</p>
 <h2 class="heading" id="service-access">
@@ -251,29 +235,22 @@ The MinIO blob storage service serves as the central data repository, containing
   <a class="anchor" href="#troubleshooting">#</a>
 </h2>
 <p>Common deployment issues often relate to Docker resource constraints, port conflicts, or data file accessibility. The containerized architecture includes health checks and dependency management, but initial setup may require troubleshooting depending on your local environment configuration.</p>
-<h3 class="heading" id="service-wont-start">
-  Service Won&rsquo;t Start
-  <a class="anchor" href="#service-wont-start">#</a>
-</h3>
+<p><strong>Service Won&rsquo;t Start</strong></p>
+<p>Check service logs and restart individual services if needed to resolve startup issues.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Check logs</span>
 </span></span><span style="display:flex;"><span>docker-compose logs [service-name]
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Restart specific service</span>
 </span></span><span style="display:flex;"><span>docker-compose restart [service-name]
-</span></span></code></pre></div><h3 class="heading" id="data-not-loading">
-  Data Not Loading
-  <a class="anchor" href="#data-not-loading">#</a>
-</h3>
+</span></span></code></pre></div><p><strong>Data Not Loading</strong></p>
+<p>Verify data files exist in the expected locations and check file permissions and configuration settings.</p>
 <ul>
 <li>Verify data files exist in <code>./data/</code> directory</li>
 <li>Check file paths in <code>config.yaml</code> match actual structure</li>
 <li>Ensure MinIO has read access to mounted volumes</li>
 </ul>
-<h3 class="heading" id="port-conflicts">
-  Port Conflicts
-  <a class="anchor" href="#port-conflicts">#</a>
-</h3>
-<p>Modify port mappings in <code>docker-compose.yaml</code> if defaults are occupied:</p>
+<p><strong>Port Conflicts</strong></p>
+<p>Modify port mappings in the Docker Compose configuration if default ports are already in use.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>ports:
 </span></span><span style="display:flex;"><span>  - <span style="color:#666;font-style:italic">&#34;8501:8501&#34;</span>  <span style="color:#888;font-style:italic"># Change first number only</span>
 </span></span></code></pre></div><hr>
@@ -282,10 +259,7 @@ The MinIO blob storage service serves as the central data repository, containing
   <a class="anchor" href="#configuration-expert-mode">#</a>
 </h2>
 <p>The system configuration is centralized in a single YAML file that defines storage locations, access credentials, and data mapping between the host filesystem and MinIO buckets. This configuration drives the automatic setup process and determines how market data and strategies are organized within the storage layer.</p>
-<h3 class="heading" id="basic-configuration-configyaml">
-  Basic Configuration (<code>config.yaml</code>)
-  <a class="anchor" href="#basic-configuration-configyaml">#</a>
-</h3>
+<p><strong>Basic Configuration (config.yaml)</strong></p>
 <p>The configuration file maps local data sources to MinIO bucket structures and includes metadata for strategy classification. Each market requires both raw price data and any pre-computed trading strategies that should be loaded during initialization.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>minio:
 </span></span><span style="display:flex;"><span>  user: minioadmin
@@ -303,11 +277,8 @@ The MinIO blob storage service serves as the central data repository, containing
 </span></span><span style="display:flex;"><span>          type: Bollinger
 </span></span><span style="display:flex;"><span>          description: Cluster Bollinger Sliding Strategy
 </span></span><span style="display:flex;"><span>          pair_finding: Clustering
-</span></span></code></pre></div><h3 class="heading" id="required-data-structure">
-  Required Data Structure
-  <a class="anchor" href="#required-data-structure">#</a>
-</h3>
-<p>The host filesystem must be organized according to the expected directory structure. Raw market data files contain OHLCV price series for all symbols in each market, while the results directory stores pre-computed strategy outputs from previous backtesting runs. This separation allows for efficient data management and version control of both input data and generated strategies.</p>
+</span></span></code></pre></div><p><strong>Required Data Structure</strong></p>
+<p>The host filesystem must be organized according to the expected directory structure. Raw market data files contain OHLCV price series for all symbols in each market, while the results directory stores pre-computed strategy outputs from previous backtesting runs.</p>
 <pre tabindex="0"><code>data/                                    
 ├── raw/
 │   ├── ftse_daily.parquet              
@@ -319,11 +290,8 @@ The MinIO blob storage service serves as the central data repository, containing
     │   └── ...
     └── nasdaq100/
         └── ...
-</code></pre><h3 class="heading" id="minio-storage-layout">
-  MinIO Storage Layout
-  <a class="anchor" href="#minio-storage-layout">#</a>
-</h3>
-<p>The MinIO object storage organizes data in a hierarchical bucket structure that mirrors the analytical requirements of the backtesting system. Each market maintains its own namespace with dedicated areas for raw data and strategy results. This organization enables efficient data retrieval and supports parallel processing of multiple markets and strategies.</p>
+</code></pre><p><strong>MinIO Storage Layout</strong></p>
+<p>The MinIO object storage organizes data in a hierarchical bucket structure that mirrors the analytical requirements of the backtesting system. Each market maintains its own namespace with dedicated areas for raw data and strategy results.</p>
 <pre tabindex="0"><code>markets/                                
 ├── FTSE100/
 │   ├── market_data.parquet            
@@ -353,21 +321,15 @@ The MinIO blob storage service serves as the central data repository, containing
   <a class="anchor" href="#development">#</a>
 </h2>
 <p>The containerized development environment supports real-time code changes and debugging across all services. Log aggregation and service introspection capabilities facilitate development workflows and system monitoring during strategy development and testing phases.</p>
-<h3 class="heading" id="accessing-service-logs">
-  Accessing Service Logs
-  <a class="anchor" href="#accessing-service-logs">#</a>
-</h3>
+<p><strong>Accessing Service Logs</strong></p>
+<p>View real-time logs from any service to monitor system behavior and debug issues.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose logs -f [service-name]
-</span></span></code></pre></div><h3 class="heading" id="rebuilding-after-changes">
-  Rebuilding After Changes
-  <a class="anchor" href="#rebuilding-after-changes">#</a>
-</h3>
+</span></span></code></pre></div><p><strong>Rebuilding After Changes</strong></p>
+<p>Rebuild and restart services after making code changes to the application.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose down
 </span></span><span style="display:flex;"><span>docker-compose up --build
-</span></span></code></pre></div><h3 class="heading" id="direct-service-access">
-  Direct Service Access
-  <a class="anchor" href="#direct-service-access">#</a>
-</h3>
+</span></span></code></pre></div><p><strong>Direct Service Access</strong></p>
+<p>Execute commands directly inside running containers for debugging and development tasks.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Execute commands in running container</span>
 </span></span><span style="display:flex;"><span>docker-compose <span style="font-weight:bold;font-style:italic">exec</span> analytics bash
 </span></span><span style="display:flex;"><span>docker-compose <span style="font-weight:bold;font-style:italic">exec</span> streamlit bash

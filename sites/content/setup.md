@@ -8,35 +8,31 @@ The microservices architecture demonstrates a complete backtesting pipeline for 
 
 {{< figure src="/images/archi.drawio.png" width="800" style="text-align: center; margin: 0 auto;" >}}
 
-The **Notebook Runner** (`notebook_runner`) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions.
-
-The **MinIO** blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results.
-
-The **Analytics** (`analytics`) service processes trade data from the blob storage along with raw market data to calculate comprehensive performance metrics. This backend service handles all computational-heavy operations including risk metrics, return calculations, and portfolio statistics.
-
-The **Streamlit** application provides a unified interface for data visualization, performance analysis, and strategy management. Users can explore raw data, examine trading results, analyze performance metrics, and commission new notebook runs directly through the web interface.
-
-All services are located under `src/backtester/services/` and communicate through REST APIs and shared storage.
+The **Notebook Runner** (`notebook_runner`) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions. The **MinIO** blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results. The **Analytics** (`analytics`) service processes trade data from the blob storage along with raw market data to calculate comprehensive performance metrics. This backend service handles all computational-heavy operations including risk metrics, return calculations, and portfolio statistics. The **Streamlit** application provides a unified interface for data visualization, performance analysis, and strategy management. Users can explore raw data, examine trading results, analyze performance metrics, and commission new notebook runs directly through the web interface. All services are located under `src/backtester/services/` and communicate through REST APIs and shared storage.
 
 ## Quick Setup
 
 The following steps will deploy the complete backtesting environment with all required services and pre-configured data. The initial setup automatically provisions MinIO storage, loads market data, and prepares the analytical backend for immediate use.
 
-### Clone Repository
+**Clone Repository**
+
+Download the complete project repository including all submodules and navigate to the project directory.
 
 ```bash
 git clone --recurse-submodules https://github.com/mxmueller/optimizing-pairs-trading
 cd optimizing-pairs-trading
 ```
 
-### Verify Docker Installation
+**Verify Docker Installation**
+
+Ensure Docker and Docker Compose are properly installed on your system before proceeding with the deployment.
 
 ```bash
 docker --version
 docker compose version
 ```
 
-### Start Services
+**Start Services**
 
 The Docker Compose configuration handles service dependencies and health checks automatically. MinIO will initialize first, followed by the analytics backend, notebook runner, and finally the Streamlit frontend. The initial startup may take several minutes as Docker builds images and provisions storage.
 
@@ -44,11 +40,10 @@ The Docker Compose configuration handles service dependencies and health checks 
 docker-compose up --build --detach
 ```
 
-##### Verify Deployment
+**Verify Deployment**
 
 Monitor the deployment progress and ensure all services reach healthy status. The MinIO service includes a health check that verifies data loading completion before dependent services start.
 
-Check service health:
 ```bash
 docker-compose ps
 ```
@@ -72,7 +67,10 @@ The following services will be available once deployment completes. Each service
 
 Common deployment issues often relate to Docker resource constraints, port conflicts, or data file accessibility. The containerized architecture includes health checks and dependency management, but initial setup may require troubleshooting depending on your local environment configuration.
 
-### Service Won't Start
+**Service Won't Start**
+
+Check service logs and restart individual services if needed to resolve startup issues.
+
 ```bash
 # Check logs
 docker-compose logs [service-name]
@@ -81,13 +79,18 @@ docker-compose logs [service-name]
 docker-compose restart [service-name]
 ```
 
-### Data Not Loading
+**Data Not Loading**
+
+Verify data files exist in the expected locations and check file permissions and configuration settings.
+
 - Verify data files exist in `./data/` directory
 - Check file paths in `config.yaml` match actual structure
 - Ensure MinIO has read access to mounted volumes
 
-### Port Conflicts
-Modify port mappings in `docker-compose.yaml` if defaults are occupied:
+**Port Conflicts**
+
+Modify port mappings in the Docker Compose configuration if default ports are already in use.
+
 ```yaml
 ports:
   - "8501:8501"  # Change first number only
@@ -99,7 +102,7 @@ ports:
 
 The system configuration is centralized in a single YAML file that defines storage locations, access credentials, and data mapping between the host filesystem and MinIO buckets. This configuration drives the automatic setup process and determines how market data and strategies are organized within the storage layer.
 
-### Basic Configuration (`config.yaml`)
+**Basic Configuration (config.yaml)**
 
 The configuration file maps local data sources to MinIO bucket structures and includes metadata for strategy classification. Each market requires both raw price data and any pre-computed trading strategies that should be loaded during initialization.
 
@@ -122,9 +125,9 @@ storage:
           pair_finding: Clustering
 ```
 
-### Required Data Structure
+**Required Data Structure**
 
-The host filesystem must be organized according to the expected directory structure. Raw market data files contain OHLCV price series for all symbols in each market, while the results directory stores pre-computed strategy outputs from previous backtesting runs. This separation allows for efficient data management and version control of both input data and generated strategies.
+The host filesystem must be organized according to the expected directory structure. Raw market data files contain OHLCV price series for all symbols in each market, while the results directory stores pre-computed strategy outputs from previous backtesting runs.
 
 ```
 data/                                    
@@ -140,9 +143,9 @@ data/
         └── ...
 ```
 
-### MinIO Storage Layout
+**MinIO Storage Layout**
 
-The MinIO object storage organizes data in a hierarchical bucket structure that mirrors the analytical requirements of the backtesting system. Each market maintains its own namespace with dedicated areas for raw data and strategy results. This organization enables efficient data retrieval and supports parallel processing of multiple markets and strategies.
+The MinIO object storage organizes data in a hierarchical bucket structure that mirrors the analytical requirements of the backtesting system. Each market maintains its own namespace with dedicated areas for raw data and strategy results.
 
 ```
 markets/                                
@@ -180,18 +183,27 @@ Place corresponding data file in `./data/raw/` and restart services. The market 
 
 The containerized development environment supports real-time code changes and debugging across all services. Log aggregation and service introspection capabilities facilitate development workflows and system monitoring during strategy development and testing phases.
 
-### Accessing Service Logs
+**Accessing Service Logs**
+
+View real-time logs from any service to monitor system behavior and debug issues.
+
 ```bash
 docker-compose logs -f [service-name]
 ```
 
-### Rebuilding After Changes
+**Rebuilding After Changes**
+
+Rebuild and restart services after making code changes to the application.
+
 ```bash
 docker-compose down
 docker-compose up --build
 ```
 
-### Direct Service Access
+**Direct Service Access**
+
+Execute commands directly inside running containers for debugging and development tasks.
+
 ```bash
 # Execute commands in running container
 docker-compose exec analytics bash

@@ -103,7 +103,7 @@
 
         <p
             class="small ">
-            <a href="/docs/" >
+            <a href="/docs" >
                 /Docs
             </a>
         </p>
@@ -189,7 +189,6 @@
   </ul>
 
   <ul>
-    <li><a href="#cite-example">Cite Example</a></li>
     <li><a href="#literatur">Literatur</a></li>
   </ul>
 </nav>
@@ -230,7 +229,7 @@ Der Z-Score macht Abweichungen vergleichbar und definiert klare Ein- und Ausstie
 $$\rho_{i,j} = \frac{Cov(X_i, X_j)}{\sigma_{X_i} \sigma_{X_j}} = \frac{\sum_{t=1}^{t_f}(X_i(t) - \bar{X_i})(X_j(t) - \bar{X_j})}{\sqrt{\sum_{t=1}^{t_f}(X_i(t) - \bar{X_i})^2}\sqrt{\sum_{t=1}^{t_f}(X_j(t) - \bar{X_j})^2}}$$</p>
 <p>wobei $\bar{X_i}$ und $\bar{X_j}$ die Mittelwerte der jeweiligen Zeitreihen in der Formationsperiode darstellen. Paare mit $\rho_{i,j} &gt; \rho_{\min}$ oberhalb eines definierten Schwellenwerts werden für das Trading ausgewählt.</p>
 <p><strong>Korrelierte Paare handeln:</strong>
-Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006">Gatev et al. 2006</a> werden die Zeitreihen zunächst normalisiert. Die kumulative Summe<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> der logarithmierten Renditen wird durch ihre historische Standardabweichung geteilt:</p>
+Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006">Gatev et al. 2006</a> werden die Zeitreihen zunächst normalisiert. Die kumulative Summe[^1] der logarithmierten Renditen wird durch ihre historische Standardabweichung geteilt:</p>
 <p>$$Z_k(t) = \frac{\sum_{s=1}^{t} \log\frac{X_k(s)}{X_k(s-1)}}{\sigma_k} \quad \text{für } k \in {i,j}$$</p>
 <p>wobei $\sigma_i$ und $\sigma_j$ die Standardabweichungen der logarithmierten Renditen in der Formationsperiode sind. Der Spread zwischen den normalisierten Zeitreihen wird als Divergenz definiert: $D_{i,j}(t) = Z_i(t) - Z_j(t)$. Wenn die Divergenz einen Schwellenwert $\delta$ überschreitet werden entsprechende Handelssignale erzeugt. Long von $X_i$ und Short $X_j$ bei $D_{i,j}(t) &lt; -\delta$ und Long von $X_j$ und Short $X_i$ bei $D_{i,j}(t) &lt; +\delta$. Die Positionen werden geschlossen, wenn die Divergenz gegen null konvergiert ($D_{i,j}(t) \rightarrow 0$).</p>
 <hr>
@@ -255,10 +254,12 @@ Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006"
 <p>Inwieweit verbessert ein maschineller Lernansatz zur Paaridentifikation die Performance von Pairs Trading Strategien im Vergleich zu traditionellen kointegrationsbasierten Verfahren?</p></blockquote>
 <p>Als explorative Arbeit ist die Vorgabe der maschinellen Lernansätze bewusst offen gehalten. Am Ende konnten zwei Ansätze erarbeitet werden: ein <a href="#ML1">Affinity propagation Clustering</a> und <a href="#ML2">Gradient Boost Regressor</a> Verfahren. Diese werden mit einem kointegrationsbasierten, nach <a href="#ref-Engle%201987" id="cite-Engle 1987">Engle et al. 1987</a> implementierten Ansatz verglichen. Dieser erhält jedoch zur Vergleichbarkeit ebenfalls die Anwendung des <a href="#Window">Sliding Window Ansatzes</a>. Vergleichsstudien begründen die Auswahl durch validierte Überlegenheit der Kointegrationsverfahren gegenüber der Korrelation <a href="#ref-Rad%202016" id="cite-Rad 2016">(Rad 2016)</a>; <a href="#ref-Carrasco%20Bl%c3%a1zquez%202018" id="cite-Carrasco Blázquez 2018">(Carrasco Blázquez 2018)</a>; <a href="#ref-Ma%202022" id="cite-Ma 2022">(Ma 2022)</a>.</p>
 <hr>
-<h1 class="heading" id="ablauf-oder-methodik">
-  Ablauf oder Methodik
-  <a class="anchor" href="#ablauf-oder-methodik">#</a>
+<h1 class="heading" id="ablauf-oder-methods">
+  Ablauf oder Methods
+  <a class="anchor" href="#ablauf-oder-methods">#</a>
 </h1>
+<p>Die systematische Evaluierung der Machine Learning-Ansätze folgt einem strukturierten Verfahren, das in <a href="#ablauf">Abbildung 1</a> dargestellt ist. Drei verschiedene Paaridentifikationsverfahren werden parallel implementiert: der traditionelle <a href="#cointpair">Kointegrationsansatz</a> als Benchmark sowie zwei Machine Learning-Verfahren - <a href="#ML1">Affinity Propagation Clustering</a> und <a href="#ML2">Gradient Boost Regressor</a>.</p>
+<p>Alle Ansätze durchlaufen zunächst ihre spezifische Paarauswahl, wobei die Machine Learning-Verfahren zusätzliche Merkmalsextraktionen und Modelltraining umfassen. Anschließend werden die identifizierten Paare statistisch validiert - sowohl Machine Learning- als auch Kointegrations-Paare müssen den <a href="#cointpair">Engle-Granger-Test</a> mit $p &lt; 0.05$ bestehen. Aus den validierten Paaren werden die Top 20 mit den besten statistischen Eigenschaften für das Trading ausgewählt.</p>
 
 
 
@@ -279,11 +280,11 @@ Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006"
 
     
     <div class="caption-container">
-        <figcaption> Abbildung 1: Systematische Darstellung der Wirtschaftsstruktur mit den Klassifikationsebenen: 1. Global Industry Classification Standard (<em>GICS</em>); 2. Nationale Sektoren (Primär-, Sekundär, Tertiärer-sektor); 3. Hierarchische Industriestruktur (Industriezweig; Industrie, Subindustrie); 4. Inländische Aktienindizes im Kontext der globalen und nationalen Wirtschaft. </figcaption>
+        <figcaption> Abbildung 1: Systematischer Ablauf der Pairs Trading Evaluierung mit drei Paaridentifikationsansätzen, statistischer Validierung, monatlich verschiebbaren Fenstern und paralleler Strategievalidierung auf $N_{100}$ und $F_{100}$ Märkten. </figcaption>
     </div>
     
 </figure>
-<p>HIER TEXT AM ENDE</p>
+<p>Der <a href="#Window">Sliding Window Ansatz</a> verschiebt monatlich sowohl Trainings- als auch Trading-Fenster, wodurch 12 iterative Bewertungszyklen entstehen. Jede Paarauswahl wird mit zwei etablierten Handelsstrategien - <a href="#zscore">Z-Score</a> und <a href="#bollinger">Bollinger Bands</a> - auf beiden Märkten ($N_{100}$ und $F_{100}$) unter einheitlichen <a href="#MarketSim">Marktbedingungen</a> getestet. Diese systematische Evaluierung ermöglicht eine robuste Leistungsbewertung aller Ansätze über verschiedene Marktregime hinweg.</p>
 <hr>
 <h1 class="heading" id="data">
   Data
@@ -316,37 +317,16 @@ Für das Handeln der Paare nach <a href="#ref-Gatev%202006" id="cite-Gatev 2006"
     
 </figure>
 </p>
-<p><em>GICS</em> bildet die Basis für S&amp;P und MSCI Finanzmarkt-Indizes, in denen jede Firma gemäß ihrer Hauptgeschäftstätigkeit genau einer Subindustrie und damit einer Industrie, einem Industrie-Zweig und einem Sektor zugewiesen ist. Die Eingrenzung an potenziellen Paaren bildet sich dann in den jeweils durch die Klassifizierung festgelegten Sektoren bzw. Subsektoren (siehe <a href="#economy-chart">Abbildung 1, siehe 3</a>). So können zwar wirtschaftliche Synergien in den Paaren vorliegen, jedoch können potenzielle Verbindungen von vornherein fälschlicherweise ausgeschlossen werden. Um diese Ausgrenzung größtmöglich zu abstrahieren, geschieht die Vorauswahl auf nationaler volkswirtschaftlicher Ebene (siehe <a href="#economy-chart">Abbildung 1, siehe 2</a>). Diese bewusste Entscheidung gegen sektorspezifische Vorfilterung folgt der Hypothese, dass maschinelle Lernverfahren auch branchenübergreifende Zusammenhänge identifizieren können, die durch traditionelle GICS-basierte Einschränkungen ausgeschlossen würden. Im Rahmen dieser Arbeit geschieht dies im Rahmen des amerikanischen und britischen Marktes in Form des <em>NASDAQ-100</em> und <em>FTSE-100</em> (im Nachfolgenden abgekürzt als $N_{100}$
-​ und $F_{100}$) (siehe <a href="#economy-chart">Abbildung 1, siehe 4</a>).</p>
+<p><em>GICS</em> bildet die Basis für S&amp;P und MSCI Finanzmarkt-Indizes, in denen jede Firma gemäß ihrer Hauptgeschäftstätigkeit genau einer Subindustrie und damit einer Industrie, einem Industrie-Zweig und einem Sektor zugewiesen ist. Die Eingrenzung an potenziellen Paaren bildet sich dann in den jeweils durch die Klassifizierung festgelegten Sektoren bzw. Subsektoren (siehe <a href="#economy-chart">Abbildung 1, siehe 3</a>). So können zwar wirtschaftliche Synergien in den Paaren vorliegen, jedoch können potenzielle Verbindungen von vornherein fälschlicherweise ausgeschlossen werden. Um diese Ausgrenzung größtmöglich zu abstrahieren, geschieht die Vorauswahl auf nationaler volkswirtschaftlicher Ebene (siehe <a href="#economy-chart">Abbildung 1, siehe 2</a>). Diese bewusste Entscheidung gegen sektorspezifische Vorfilterung folgt der Hypothese, dass maschinelle Lernverfahren auch branchenübergreifende Zusammenhänge identifizieren können, die durch traditionelle GICS-basierte Einschränkungen ausgeschlossen würden. Im Rahmen dieser Arbeit geschieht dies im Rahmen des amerikanischen und britischen Marktes in Form des <em>NASDAQ-100</em> und <em>FTSE-100</em> (im Nachfolgenden abgekürzt als $N_{100} und $F_{100}$) (siehe <a href="#economy-chart">Abbildung 1, siehe 4</a>).</p>
 <p><strong>Indizes:</strong> Die Aktiendaten beider Indizes erstrecken sich über den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$, wobei $t_{\text{start}}$ dem 01.01.2020 und $t_{\text{end}}$ dem 01.01.2025 entspricht. Dieser Zeitraum wird unterteilt in Trainings- und Testperiode: Der Trainingszeitraum umfasst $T_{\text{train}} = [01.01.2020, 31.12.2023]$. Der Testzeitraum $T_{\text{test}} = [01.01.2024, 01.01.2025]$. Für jede Aktie wird an jedem Handelstag ein vollständiger Datensatz erfasst, der das Handelssymbol, das Datum sowie die wesentlichen Kursinformationen umfasst: Eröffnungskurs, Tageshöchstkurs, Tagestiefstkurs, Schlusskurs und Handelsvolumen. Da keine weiteren Einschränkungen bezüglich Marktkapitalisierung, Liquidität oder Branchenzugehörigkeit vorliegen, ergibt sich aus dem Pool aller 100 Aktien eines Index $A = {a_1, a_2, &hellip;, a_{100}}$ die Menge aller zulässigen Paare durch $P = {(a_i, a_j) \mid a_i, a_j \in A \land i &lt; j}$. Dies entspricht $\binom{100}{2} = 4950$ möglichen Paarkandidaten pro Index.</p>
-<p>HIER FEHL NCOH VON WANN BIS WANN TRJAINNG UND TEXT</p>
-<p><span id="indices"></span>
-
-
-
-
-
-
-
-
-
-
-
-
-<figure class="">
-
-    <div class="img-container" >
-        <img loading="lazy" alt="Alt-Text" src="https://placehold.co/200" >
-    </div>
-
-    
-    <div class="caption-container">
-        <figcaption> Abbildung 2: Die Abbildung zeigt die normalisierten Marktindizes $F_{100}$ und $N_{100}$ (2020-2025, Basis=100) mit Gesamtwachstum ($F_{100}$: +30,1%, $N_{100}$: +107,1%) und hervorgehobenem Wachstum im Jahr 2024 von $F_{100}$: +7,9%, $N_{100}$: +15,8%. </figcaption>
-    </div>
-    
+<p><span id="market"></span>
+<figure><img src="/images/market_comparison.png"
+    alt="Abbildung 4: Comparative performance of $F_{100}$ and $N_{100}$ indices from 2020-2025, normalized to base value 100 (January 1, 2020). Gray shaded area indicates the 2024-2025 period. Arrows show total growth rates and 2024-2025 performance." width="700"><figcaption>
+      <p>Abbildung 4: Comparative performance of $F_{100}$ and $N_{100}$ indices from 2020-2025, normalized to base value 100 (January 1, 2020). Gray shaded area indicates the 2024-2025 period. Arrows show total growth rates and 2024-2025 performance.</p>
+    </figcaption>
 </figure>
 </p>
-<p><strong>Datenbereinigung:</strong> Zeitreihen, die nicht die vollständige Anzahl an Datenpunkten für den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$ vorweisen können, wurden ausgelassen. Das resultierte für $N_{100}$ in 94 und $F_{100}$ in 98 Aktien pro Index. Der Umgang mit vereinzelt fehlenden Werten erfolgt anhand der Kurszeitreihen $X_i(t)$ für jede Aktie $i$. Eine Vorwärtsinterpolation ersetzt fehlende Werte durch den letzten verfügbaren Wert derselben Zeitreihe: $X_i(t) = X_i(t-k)$, wobei $k$ die kleinste positive Zahl ist, für die $X_i(t-k)$ beobachtet wurde. Anschließend werden bestehende Lücken durch nachfolgende Werte aufgefüllt: $X_i(t) = X_i(t+m)$, wobei $m$ die kleinste positive Zahl ist, für die $X_i(t+m)$ beobachtet wurde. Im Vergleich zu anderen Methoden wie der linearen oder polynomialen Interpolation bietet die Vorwärts- und Rückwärtsinterpolation eine robuste Lösung für Finanzzeitreihen, da sie ausschließlich beobachtete Werte verwendet und so die Kontinuität der Daten bewahrt <a href="#ref-Moritz%202017" id="cite-Moritz 2017">(Moritz 2017)</a>. Der bereinigte, normalisierter Kursverlauf aller vorhanden Werte pro Indices kann <a href="#indices">Abbildung 2</a> entnommen werden.</p>
+<p><strong>Datenbereinigung:</strong> Zeitreihen, die nicht die vollständige Anzahl an Datenpunkten für den Zeitraum $T = [t_{\text{start}}, t_{\text{end}}]$ vorweisen können, wurden ausgelassen. Das resultierte für $N_{100}$ in 94 und $F_{100}$ in 98 Aktien pro Index. Der Umgang mit vereinzelt fehlenden Werten erfolgt anhand der Kurszeitreihen $X_i(t)$ für jede Aktie $i$. Eine Vorwärtsinterpolation ersetzt fehlende Werte durch den letzten verfügbaren Wert derselben Zeitreihe: $X_i(t) = X_i(t-k)$, wobei $k$ die kleinste positive Zahl ist, für die $X_i(t-k)$ beobachtet wurde. Anschließend werden bestehende Lücken durch nachfolgende Werte aufgefüllt: $X_i(t) = X_i(t+m)$, wobei $m$ die kleinste positive Zahl ist, für die $X_i(t+m)$ beobachtet wurde. Im Vergleich zu anderen Methoden wie der linearen oder polynomialen Interpolation bietet die Vorwärts- und Rückwärtsinterpolation eine robuste Lösung für Finanzzeitreihen, da sie ausschließlich beobachtete Werte verwendet und so die Kontinuität der Daten bewahrt <a href="#ref-Moritz%202017" id="cite-Moritz 2017">(Moritz 2017)</a>. Der bereinigte, normalisierter Kursverlauf aller vorhanden Werte pro Indices kann <a href="#market">Abbildung 2</a> entnommen werden.</p>
 <hr>
 <h1 class="heading" id="affinity-propagation-clustering-approach">
   Affinity Propagation Clustering Approach
@@ -544,21 +524,12 @@ $$Lower_{i,j}(t) = \mu_{spread}(t) - 2.0 \cdot \sigma_{spread}(t)$$</p>
             </tr>
         </tbody>
     </table>
-</div><p>GRAFIK VORLESUNG</p>
-<h1 class="heading" id="market-sim">
+</div><h1 class="heading" id="market-sim">
   Market Sim
   <a class="anchor" href="#market-sim">#</a>
 </h1>
 <p>Alle Paare werden unter einheitlichen Marktbedingungen getestet. Das Startkapital beträgt €100.000 mit einer festen Positionsgröße von 1% des verfügbaren Kapitals pro Trade. Realistische Transaktionskosten werden durch eine fixe Kommission von €1,00 pro Trade sowie eine variable Gebühr von 0,018% des Handelsvolumens simuliert. Zusätzlich wird ein Bid-Ask-Spread von 0,1% berücksichtigt, der sowohl beim Einstieg als auch Ausstieg anfällt. Diese Kostenstuktur entspricht typischen Retail-Brokerage-Bedingungen und gewährleistet eine realistische Performance-Bewertung <a href="#ref-Interactive%20Brokers%202024" id="cite-Interactive Brokers 2024">(Interactive Brokers 2024)</a>. Der risikofreie Zinssatz wird mit 0% angesetzt, da Opportunitätskosten durch die marktneutrale Natur des Pairs Trading minimiert werden.</p>
-<h2 class="heading" id="cite-example">
-  Cite Example
-  <a class="anchor" href="#cite-example">#</a>
-</h2>
-<p>bla <a href="#cost-function">Zur Kostenfunktion</a>
-Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
-<a href="#ref-Engle%20Granger%201987" id="cite-Engle Granger 1987">(cf. Engle Granger 1987)</a>
-<a href="#ref-Engle%20Granger%201987" id="cite-Engle Granger 1987">(Engle Granger et al. 1987, S. 255)</a>
-<p>Laut <a href="#ref-Jacobs%202015" id="cite-Jacobs 2015">cf. Jacobs et al. 2015, S. 255</a> ist&hellip;</p>
+<p>Die ergebnisse sind in der nachsind in der <a href="/results/">nachfolgenden Seite</a> zusammengefasst.</p>
 <h2 class="heading" id="literatur">
   Literatur
   <a class="anchor" href="#literatur">#</a>
@@ -687,14 +658,6 @@ Machine Learning <a href="#ref-" id="cite-">()</a> ist wichtig.</p>
 <div id="ref-Syril 2025" class="reference">
   <span class="ref-label">[Syril 2025]</span>
   <span class="ref-content">Syril, W. M., &amp; Nagarajan, C. D. (2025). Optimizing commodity futures trading in the financial market: Fine-tuning Bollinger Bands strategy. Global Business Review. <a href="https://doi.org/10.1177/09721509251328555">https://doi.org/10.1177/09721509251328555</a></span>
-</div>
-<div class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1">
-<p>Die kumulative Summe der Log-Renditen ist die laufende Aufsummierung aller bisherigen Renditen und zeigt, wie sich der Preis insgesamt vom Startpunkt verändert hat.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
 </div>
 
     </div>
