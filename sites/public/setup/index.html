@@ -57,7 +57,7 @@ The Notebook Runner (notebook_runner) service leverages papermill to execute all
 
 
 
-<link rel="stylesheet" href="http://localhost:1313/optimizing-pairs-trading/assets/combined.min.86d430e6c23ecf5f6ca9608eb2296e956059d54b0d8db9e85ab8d794b9153a48.css" media="all">
+<link rel="stylesheet" href="/optimizing-pairs-trading/assets/combined.min.86d430e6c23ecf5f6ca9608eb2296e956059d54b0d8db9e85ab8d794b9153a48.css" media="all">
 
 
 
@@ -104,7 +104,7 @@ The Notebook Runner (notebook_runner) service leverages papermill to execute all
 
         <p
             class="small ">
-            <a href="http://localhost:1313/optimizing-pairs-trading/docs.html" >
+            <a href="/docs/" >
                 /Docs
             </a>
         </p>
@@ -112,7 +112,7 @@ The Notebook Runner (notebook_runner) service leverages papermill to execute all
 
         <p
             class="small ">
-            <a href="http://localhost:1313/optimizing-pairs-trading/results.html" >
+            <a href="/results/" >
                 /Results
             </a>
         </p>
@@ -120,7 +120,7 @@ The Notebook Runner (notebook_runner) service leverages papermill to execute all
 
         <p
             class="small ">
-            <a href="http://localhost:1313/optimizing-pairs-trading/setup.html" >
+            <a href="/setup/" >
                 /Setup
             </a>
         </p>
@@ -128,7 +128,7 @@ The Notebook Runner (notebook_runner) service leverages papermill to execute all
 
         <p
             class="small ">
-            <a href="http://localhost:1313/optimizing-pairs-trading/backtester.html" >
+            <a href="/backtester/" >
                 /Backtester
             </a>
         </p>
@@ -171,7 +171,7 @@ The Notebook Runner (notebook_runner) service leverages papermill to execute all
     
     <div class="single-content">
       <p>The microservices architecture demonstrates a complete backtesting pipeline for pairs trading strategies. Each service fulfills a specific role in the data processing and analysis workflow.</p>
-<figure><img src="http://localhost:1313/optimizing-pairs-trading/images/archi.drawio.png" width="800">
+<figure><img src="/images/archi.drawio.png" width="800">
 </figure>
 
 <p>The <strong>Notebook Runner</strong> (<code>notebook_runner</code>) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions. The <strong>MinIO</strong> blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results. The <strong>Analytics</strong> (<code>analytics</code>) service processes trade data from the blob storage along with raw market data to calculate comprehensive performance metrics. This backend service handles all computational-heavy operations including risk metrics, return calculations, and portfolio statistics. The <strong>Streamlit</strong> application provides a unified interface for data visualization, performance analysis, and strategy management. Users can explore raw data, examine trading results, analyze performance metrics, and commission new notebook runs directly through the web interface. All services are located under <code>src/backtester/services/</code> and communicate through REST APIs and shared storage.</p>
@@ -353,7 +353,7 @@ The Notebook Runner (notebook_runner) service leverages papermill to execute all
             <div class="single-pagination-container-prev">
                 <div class="single-pagination-text">←</div>
                 <div class="single-pagination-text">
-                    <a href="http://localhost:1313/optimizing-pairs-trading/results/">
+                    <a href="/optimizing-pairs-trading/results/">
                         Results
                     </a>
                 </div>
@@ -365,7 +365,7 @@ The Notebook Runner (notebook_runner) service leverages papermill to execute all
             
             <div class="single-pagination-container-next">
                 <div class="single-pagination-text">
-                    <a href="http://localhost:1313/optimizing-pairs-trading/backtester/">
+                    <a href="/optimizing-pairs-trading/backtester/">
                         Backtester
                     </a>
                 </div>
@@ -463,6 +463,6 @@ The Notebook Runner (notebook_runner) service leverages papermill to execute all
   
 </body>
 
-<script src="http://localhost:1313/optimizing-pairs-trading/js/theme-switch.js"></script>
-<script defer src="http://localhost:1313/optimizing-pairs-trading/js/copy-code.js"></script>
+<script src="/optimizing-pairs-trading/js/theme-switch.js"></script>
+<script defer src="/optimizing-pairs-trading/js/copy-code.js"></script>
 </html>
