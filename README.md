@@ -1,3 +1,5 @@
+[![Deploy Hugo site to Pages](https://github.com/mxmueller/optimizing-pairs-trading/actions/workflows/hugo.yml/badge.svg)](https://github.com/mxmueller/optimizing-pairs-trading/actions/workflows/hugo.yml)
+
 # Machine Learning Optimizations for Pairs Trading
 
 
