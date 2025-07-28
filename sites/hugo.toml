@@ -4,6 +4,7 @@ title = 'Exploring Machine Learning Optimizatios for Pair Selection in Pairs Tra
 theme = 'typo'
 uglyURLs = true
 relativeURLs = true
+canonifyURLs = true
 
 # Google analytics code
 googleAnalytics = "G-xxxxxxxxx"
