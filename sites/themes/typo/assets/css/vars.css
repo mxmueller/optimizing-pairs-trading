@@ -67,7 +67,7 @@
 
 @media screen and (max-width: 1024px) {
     :root {
-        --main-width: 750px;
+        --main-width: 950px;
         --header-top-gap: 1rem;
         --caption-padding: calc(.25 * var(--main-padding));
     }
