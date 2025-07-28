@@ -2,9 +2,7 @@ baseURL = 'https://mxmueller.github.io/optimizing-pairs-trading/'
 languageCode = 'en-us'
 title = 'Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading'
 theme = 'typo'
-uglyURLs = true
 relativeURLs = true
-canonifyURLs = true
 
 # Google analytics code
 googleAnalytics = "G-xxxxxxxxx"
@@ -58,19 +56,19 @@ url = "https://github.com/mxmueller/optimizing-pairs-trading"
 # Main menu pages
 [[params.menu]]
 name = "Docs"
-url = "/docs"
+url = "/docs.html"
 
 [[params.menu]]
-name = "Results"
-url = "/results/"
+name = "Results" 
+url = "/results.html"
 
 [[params.menu]]
 name = "Setup"
-url = "/setup/"
+url = "/setup.html"
 
 [[params.menu]]
 name = "Backtester"
-url = "/backtester/"
+url = "/backtester.html"
 
 # Syntax highlight on code blocks
 [markup]
