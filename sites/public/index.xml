@@ -15,6 +15,13 @@
       <description>&lt;p&gt;This research project explores &lt;strong&gt;Machine Learning Optimizations for Pair Selection in Pairs Trading&lt;/strong&gt;, investigating whether modern ML approaches can outperform traditional statistical methods in identifying profitable trading pairs. The study compares machine learning techniques (Gradient Boost Regressor and Affinity Propagation) against conventional cointegration-based methods, testing their performance on major European and US indices including the N₁₀₀ and F₁₀₀.&lt;/p&gt;&#xA;&lt;p&gt;This work is conducted as a &lt;strong&gt;two-semester student research project&lt;/strong&gt; at the &lt;a href=&#34;https://www.heidenheim.dhbw.de/en/home&#34;&gt;DHBW Heidenheim&lt;/a&gt;, focusing on the intersection of quantitative finance and machine learning applications in algorithmic trading.&lt;/p&gt;</description>
     </item>
     <item>
+      <title></title>
+      <link>http://localhost:1313/home/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/home/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Ausarbeitung</title>
       <link>http://localhost:1313/docs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

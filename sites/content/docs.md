@@ -3,6 +3,8 @@ title: "Ausarbeitung"
 math: true  # Das aktiviert KaTeX (ist schon im Theme)
 toc: true
 readTime: true
+breadcrumb: false
+showBreadcrumb: false
 ---
 
 ****
@@ -90,19 +92,19 @@ The [Sliding Window approach](#Window) shifts both training and trading windows 
 To obtain a subset of time series (securities, stocks, or other instruments) for pair formation methods, comparable studies employ pre-selection criteria such as the Global Industry Classification Standard (GICS) {{< cite ref="Do 2010" page="p. 8" >}}.
 
 {{< anchor "economy-chart" >}}
-![Alt-Text](/images/economy.drawio.png "Figure 1: Systematic representation of economic structure with classification levels: 1. Global Industry Classification Standard (*GICS*); 2. National sectors (Primary, Secondary, Tertiary sector); 3. Hierarchical industry structure (Industry group; Industry, Sub-industry); 4. Domestic stock indices in the context of global and national economy.")
+![Alt-Text](/images/economy.drawio.png "Figure 2: Systematic representation of economic structure with classification levels: 1. Global Industry Classification Standard (*GICS*); 2. National sectors (Primary, Secondary, Tertiary sector); 3. Hierarchical industry structure (Industry group; Industry, Sub-industry); 4. Domestic stock indices in the context of global and national economy.")
 
-*GICS* forms the foundation for S&P and MSCI financial market indices, where each firm is assigned to exactly one sub-industry based on its primary business activity, and thus to one industry, industry group, and sector. Potential pairs are then restricted to the sectors or subsectors defined by this classification (see [Figure 1, see 3](#economy-chart)). While this captures economic synergies in pairs, it may wrongly exclude potential connections from the start. To minimize this exclusion, we select stocks at the national economic level (see [Figure 1, see 2](#economy-chart)). We deliberately avoid sector-specific filtering based on the assumption that machine learning methods can identify cross-industry relationships that traditional GICS-based restrictions would miss. In this research, we implement this through the American and British markets using the *NASDAQ-100* and *FTSE-100* (abbreviated as $N_{100}$ and $F_{100}$) (see [Figure 1, see 4](#economy-chart)).
+*GICS* forms the foundation for S&P and MSCI financial market indices, where each firm is assigned to exactly one sub-industry based on its primary business activity, and thus to one industry, industry group, and sector. Potential pairs are then restricted to the sectors or subsectors defined by this classification (see [Figure 2, level 3](#economy-chart)). While this captures economic synergies in pairs, it may wrongly exclude potential connections from the start. To minimize this exclusion, we select stocks at the national economic level (see [Figure 2, level 2](#economy-chart)). We deliberately avoid sector-specific filtering based on the assumption that machine learning methods can identify cross-industry relationships that traditional GICS-based restrictions would miss. In this research, we implement this through the American and British markets using the *NASDAQ-100* and *FTSE-100* (abbreviated as $N_{100}$ and $F_{100}$) (see [Figure 2, level 4](#economy-chart)).
 
 **Indices:** Stock data for both indices spans the period $T = [t_{\text{start}}, t_{\text{end}}]$, where $t_{\text{start}}$ corresponds to January 1, 2020, and $t_{\text{end}}$ to January 1, 2025. This period is divided into training and testing phases: The training period covers $T_{\text{train}} = [01.01.2020, 31.12.2023]$. The testing period spans $T_{\text{test}} = [01.01.2024, 01.01.2025]$. For each stock, a complete dataset is captured on every trading day, including the trading symbol, date, and essential price information: opening price, daily high, daily low, closing price, and trading volume. Since no additional restrictions regarding market capitalization, liquidity, or sector affiliation apply, the pool of all 100 stocks in an index $A = \{a_1, a_2, ..., a_{100}\}$ yields the set of all permissible pairs through $P = \{(a_i, a_j) \mid a_i, a_j \in A \land i < j\}$. This corresponds to $\binom{100}{2} = 4950$ possible pair candidates per index.
 
 {{< anchor "market" >}}
 {{< figure src="/images/market_comparison.png" 
-           caption="Figure 4: Comparative performance of $F_{100}$ and $N_{100}$ indices from 2020-2025, normalized to base value 100 (January 1, 2020). Gray shaded area indicates the 2024-2025 period. Arrows show total growth rates and 2024-2025 performance."
+           caption="Figure 3: Comparative performance of $F_{100}$ and $N_{100}$ indices from 2020-2025, normalized to base value 100 (January 1, 2020). Gray shaded area indicates the 2024-2025 period. Arrows show total growth rates and 2024-2025 performance."
            width="700" 
            style="text-align: center; margin: 0 auto;" >}}
 
-**Data Cleaning:** Time series without complete data points for the period $T = [t_{\text{start}}, t_{\text{end}}]$ were excluded. This resulted in 94 stocks for $N_{100}$ and 98 stocks for $F_{100}$ per index. For isolated missing values, we use the price time series $X_i(t)$ for each stock $i$. Forward interpolation replaces missing values with the last available value from the same time series: $X_i(t) = X_i(t-k)$, where $k$ is the smallest positive number for which $X_i(t-k)$ was observed. Remaining gaps are then filled with subsequent values: $X_i(t) = X_i(t+m)$, where $m$ is the smallest positive number for which $X_i(t+m)$ was observed. Compared to other methods such as linear or polynomial interpolation, forward and backward interpolation provides a robust solution for financial time series, as it uses only observed values and preserves data continuity {{< cite ref="Moritz 2017" >}}. The cleaned, normalized price progression of all available values per index can be seen in [Figure 2](#market).
+**Data Cleaning:** Time series without complete data points for the period $T = [t_{\text{start}}, t_{\text{end}}]$ were excluded. This resulted in 94 stocks for $N_{100}$ and 98 stocks for $F_{100}$ per index. For isolated missing values, we use the price time series $X_i(t)$ for each stock $i$. Forward interpolation replaces missing values with the last available value from the same time series: $X_i(t) = X_i(t-k)$, where $k$ is the smallest positive number for which $X_i(t-k)$ was observed. Remaining gaps are then filled with subsequent values: $X_i(t) = X_i(t+m)$, where $m$ is the smallest positive number for which $X_i(t+m)$ was observed. Compared to other methods such as linear or polynomial interpolation, forward and backward interpolation provides a robust solution for financial time series, as it uses only observed values and preserves data continuity {{< cite ref="Moritz 2017" >}}. The cleaned, normalized price progression of all available values per index can be seen in [Figure 3](#market).
 ****
 
 ## Affinity Propagation Clustering 
@@ -117,14 +119,14 @@ The economic assumption is that stocks with similar risk-return profiles respond
 
 {{< anchor "cluster2" >}}
 {{< figure src="/images/cluster1.drawio.png" 
-           caption="Figure 3: Affinity Propagation Clustering for $N_{100}$ and $F_{100}$ stocks in return-volatility space with exemplar-based cluster centers and selected pairs after cointegration test and score evaluation in t-SNE similarity space."
+           caption="Figure 4: Affinity Propagation Clustering for $N_{100}$ and $F_{100}$ stocks in return-volatility space with exemplar-based cluster centers and selected pairs after cointegration test and score evaluation in t-SNE similarity space."
           >}}
 
-[Figure 3](#cluster2) shows Affinity Propagation Clustering in the original return-volatility space for the $F_{100}$. The connecting lines illustrate the exemplar-based structure: each stock connects to its cluster center, where the centers are actual stocks from the dataset (not calculated means). A possible economic interpretation of these clusters (important only for the left side of the figure) can be seen using the return-volatility quadrants in [Figure 4](#cluster3).
+[Figure 4](#cluster2) shows Affinity Propagation Clustering in the original return-volatility space for the $F_{100}$. The connecting lines illustrate the exemplar-based structure: each stock connects to its cluster center, where the centers are actual stocks from the dataset (not calculated means). A possible economic interpretation of these clusters (important only for the left side of the figure) can be seen using the return-volatility quadrants in [Figure 5](#cluster3).
 
 {{< anchor "cluster3" >}}
 {{< figure src="/images/eco.drawio.png" 
-           caption="Figure 4: Economic interpretation of return-to-volatility quadrants."
+           caption="Figure 5: Economic interpretation of return-to-volatility quadrants."
            width="300" 
            style="text-align: center; margin: 0 auto;" >}}
 
@@ -135,7 +137,7 @@ $$S_{i,j} = 0.6 \cdot D_{center,norm} + 0.4 \cdot D_{profile,norm}$$
 
 where $D_{center}$ measures the average euclidean distance of both stocks to cluster center $C$ and $D_{profile}$ measures the direct euclidean distance between stocks in standardized return-volatility space. Both components are min-max normalized and only pairs with [cointegration](#cointpair) $p$-value $< 0.05$ qualify for trading. Final selection results from the top 20 best scores that meet statistical requirements.
 
-[Figure 3](#cluster2) shows on the right side the stocks selected after [score evaluation](#score) and [cointegration test](#cointpair). The t-SNE transformation projects these into a similarity space that better reveals local neighborhoods and exemplarily shows the final pairs of a window.
+[Figure 4](#cluster2) shows on the right side the stocks selected after [score evaluation](#score) and [cointegration test](#cointpair). The t-SNE transformation projects these into a similarity space that better reveals local neighborhoods and exemplarily shows the final pairs of a window.
 
 We avoid configuring the `preference` parameter since cluster numbers should be determined automatically. The $N_{100}$ showed `Silhouette Score` of `0.415`, `Calinski-Harabasz Score` of `93.58`, and `Davies-Bouldin Score` of `0.712` during development. The $F_{100}$ showed `Silhouette Score` of `0.377`, `Calinski-Harabasz Score` of `80.66`, and `Davies-Bouldin Score` of `0.742`.
 
@@ -167,12 +169,12 @@ The final model's hyperparameters include `learning_rate` of `0.2`, `max_depth` 
 
 {{< anchor "regressor" >}}
 {{< figure src="/images/regressorv1.drawio.png" 
-           caption="Figure 5: Predicted vs Actual representation of Gradient Boosting models for $N_{100}$ (left) and $F_{100}$ (right). The linear relationship between predicted and actual spread deviations confirms the predictive quality of both models."
+           caption="Figure 6: Predicted vs Actual representation of Gradient Boosting models for $N_{100}$ (left) and $F_{100}$ (right). The linear relationship between predicted and actual spread deviations confirms the predictive quality of both models."
            style="text-align: center; margin: 0 auto;" >}}
 
 In the final step, pairs are also statistically tested with [cointegration](#cointpair) $p$-value $< 0.05$ and selected in descending order by top 20 based on their mean-reversion properties for trading.
 
-The Predicted vs Actual representations in [Figure 5](#regressor) confirm solid predictive performance of both models. The $N_{100}$ model achieves an `R²` of `0.707` with `MSE` of `0.068` and `MAE` of `0.201`, while the $F_{100}$ model achieves an `R²` of `0.652` with `MSE` of `0.084` and `MAE` of `0.227`.
+The Predicted vs Actual representations in [Figure 6](#regressor) confirm solid predictive performance of both models. The $N_{100}$ model achieves an `R²` of `0.707` with `MSE` of `0.068` and `MAE` of `0.201`, while the $F_{100}$ model achieves an `R²` of `0.652` with `MSE` of `0.084` and `MAE` of `0.227`.
 
 ## Sliding Windows 
 The Sliding Window approach applied in this research shifts both the training and trading windows. For each iteration $i \in \{1, 2, ..., 12\}$, both time periods are shifted synchronously by $\Delta t = 1$ month. The training and trading windows are defined as:
@@ -180,11 +182,11 @@ The Sliding Window approach applied in this research shifts both the training an
 $$T_{train}^{(i)} = [t_{start} + (i-1) \cdot \Delta t, t_{train\_end} + (i-1) \cdot \Delta t]$$
 $$T_{trade}^{(i)} = [t_{train\_end} + (i-1) \cdot \Delta t + 1, t_{train\_end} + (i-1) \cdot \Delta t + \Delta_{trade}]$$
 
-with $t_{train\_end} = 01.01.2024$ and $\Delta_{trade} = 1$ month. This coupled shift ensures that the training window maintains its 3-year length, as visualized in [Figure 6](#window).
+with $t_{train\_end} = 01.01.2024$ and $\Delta_{trade} = 1$ month. This coupled shift ensures that the training window maintains its 3-year length, as visualized in [Figure 7](#window).
 
 {{< anchor "window" >}}
 {{< figure src="/images/window.drawio.png" 
-           caption="Figure 6: Coupled shift of both windows across 12 iterations."
+           caption="Figure 7: Coupled shift of both windows across 12 iterations."
           >}}
 
 The temporal assignment between pair identification and trade execution follows a strict rule: Stock pairs identified in training window $T_{train}^{(i)}$ may only be opened in the directly following trading window $T_{trade}^{(i)}$. However, already opened trades can be closed in later windows $T_{trade}^{(j)}$ with $j > i$, as long as the exit conditions are met.
@@ -192,9 +194,9 @@ The temporal assignment between pair identification and trade execution follows 
 ## Trading Strategies 
 To evaluate the identified pairs, two established technical trading strategies are applied: a **Z-Score** and a **Bollinger-Band** based strategy. Z-Score has become a widely used method in pairs trading {{< cite ref="Quantinsti 2025" >}}, as pairs trading ranks among the most frequently used market-neutral strategies {{< cite ref="Carrasco Blázquez 2018" >}}. Bollinger Bands are implemented as an additional strategy because, unlike the fixed thresholds of Z-Score, they use dynamic bands that adapt to market volatility {{< cite ref="Leung 2020" >}}; {{< cite ref="Syril 2025" >}}.
 
-{{< anchor "window" >}}
+{{< anchor "strategies" >}}
 {{< figure src="/images/strategies.drawio.png" 
-           caption="Figure 6: Coupled shift of both windows across 12 iterations."
+           caption="Figure 8: Visual representation of Z-Score and Bollinger Bands trading strategies showing entry and exit signals for pairs trading."
            width="800" 
           >}}
 
@@ -284,4 +286,3 @@ All pairs are tested under uniform market conditions. Starting capital amounts t
 {{< reference "Othman 2025" >}}Othman, A. H. A. (2025). Enhancing pairs trading strategies in the cryptocurrency industry using machine learning clustering algorithms. London Journal of Research In Management & Business, 25(1), 33-52. https://journalspress.uk/index.php/LJRMB/article/view/1179{{< /reference >}}
 
 {{< reference "Syril 2025" >}}Syril, W. M., & Nagarajan, C. D. (2025). Optimizing commodity futures trading in the financial market: Fine-tuning Bollinger Bands strategy. Global Business Review. https://doi.org/10.1177/09721509251328555{{< /reference >}}
-
