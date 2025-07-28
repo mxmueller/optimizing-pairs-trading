@@ -1,0 +1,34 @@
+{{- $ref := .Get "ref" -}}
+{{- $page := .Get "page" -}}
+{{- $vgl := .Get "vgl" -}}
+{{- $etal := .Get "etal" -}}
+{{- $style := .Get "style" | default "paren" -}}
+{{- $noparen := .Get "noparen" -}}
+
+{{- $displayRef := $ref -}}
+{{- if $etal -}}
+  {{- $parts := split $ref " " -}}
+  {{- $lastPart := index $parts (sub (len $parts) 1) -}}
+  {{- $firstParts := first (sub (len $parts) 1) $parts -}}
+  {{- $displayRef = printf "%s et al. %s" (delimit $firstParts " ") $lastPart -}}
+{{- end -}}
+
+{{- if $noparen -}}
+  <a href="#ref-{{ $ref }}" id="cite-{{ $ref }}">
+  {{- if $vgl -}}
+    {{- if eq $vgl "true" -}}vgl. {{ $displayRef }}{{- else -}}{{ $vgl }} {{ $displayRef }}{{- end -}}
+  {{- else -}}
+    {{ $displayRef }}
+  {{- end -}}
+  {{- if $page -}}, {{ $page }}{{- end -}}
+  </a>
+{{- else if eq $style "paren" -}}
+  <a href="#ref-{{ $ref }}" id="cite-{{ $ref }}">(
+  {{- if $vgl -}}
+    {{- if eq $vgl "true" -}}vgl. {{ $displayRef }}{{- else -}}{{ $vgl }} {{ $displayRef }}{{- end -}}
+  {{- else -}}
+    {{ $displayRef }}
+  {{- end -}}
+  {{- if $page -}}, {{ $page }}{{- end -}}
+  )</a>
+{{- end -}}

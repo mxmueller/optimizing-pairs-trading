@@ -56,7 +56,7 @@
 
 
 
-<link rel="stylesheet" href="/assets/combined.min.0d41f7df4b254b9ea5ad925d84046d60c8636d6630d18497be726888dbd86312.css" media="all">
+<link rel="stylesheet" href="/assets/combined.min.269e2db4a31e6b5c43e259aca53795c723fd264f99aadf5d1df5c4d5e03c56c0.css" media="all">
 
 
 
@@ -199,22 +199,22 @@
   <a class="anchor" href="#the-cointegration-approach">#</a>
 </h2>
 <p>Despite what the name might suggest, cointegration has nothing to do with &ldquo;integration.&rdquo; According to <a href="#ref-Engle%201987" id="cite-Engle 1987">Engle et al. 1987</a>, pairs are tested for long-term equilibrium relationships. While time series may deviate from each other in the short term, economic forces theoretically maintain their long-term relationship.</p>
-<p><span id="cointpair"></span>
+<p><a id="cointpair"></a>
 <strong>Finding Cointegrated Pairs:</strong> To identify such relationships, a regression equation is first estimated:
 <!-- raw HTML omitted --><!-- raw HTML omitted -->
 $$X_i(t) = \alpha_{i,j} + \beta_{i,j} X_j(t) + \varepsilon_{i,j}(t)$$</p>
-<p>The residuals $\varepsilon_{i,j}(t)$ from this regression must be stationary, even though the original time series $X_i(t)$ and $X_j(t)$ are non-stationary. A stationary process returns to its mean and exhibits constant variance. The Engle-Granger procedure <a href="#ref-Engle%201987" id="cite-Engle 1987">(cf. Engle 1987)</a> tests this stationarity of residuals using the Augmented Dickey-Fuller test <a href="#ref-Dickey%201979" id="cite-Dickey 1979">(cf. Dickey 1979)</a>. The null hypothesis states that the residuals have a unit root (are non-stationary). If this null hypothesis is rejected at significance level $\alpha_{\text{sig}}$ ($p$-value $&lt; \alpha_{\text{sig}}$), cointegration exists.</p>
+<p>The residuals $\varepsilon_{i,j}(t)$ from this regression must be stationary, even though the original time series $X_i(t)$ and $X_j(t)$ are non-stationary. A stationary process returns to its mean and exhibits constant variance. The Engle-Granger procedure <a href="#ref-Engle%201987" id="cite-Engle 1987">(Engle 1987)</a> tests this stationarity of residuals using the Augmented Dickey-Fuller test <a href="#ref-Dickey%201979" id="cite-Dickey 1979">(Dickey 1979)</a>. The null hypothesis states that the residuals have a unit root (are non-stationary). If this null hypothesis is rejected at significance level $\alpha_{\text{sig}}$ ($p$-value $&lt; \alpha_{\text{sig}}$), cointegration exists.</p>
 <p><strong>Trading Cointegrated Pairs:</strong> Due to their statistical properties (variance stabilization), prices are applied logarithmically as $\log X_i(t)$ and $\log X_j(t)$. To determine the optimal ratio for a trade, the hedge ratio is established through linear regression:</p>
-<p><span id="f2"></span>
+<p><a id="f2"></a>
 $$\log X_i(t) = \alpha_{i,j} + \beta_{i,j} \log X_j(t) + \varepsilon_{i,j}(t)$$</p>
 <p>Where $\alpha_{i,j}$ represents the constant (regression intercept), $\beta_{i,j}$ the hedge ratio (specifying how many units of $X_j$ to trade per unit of $X_i$), and $\varepsilon_{i,j}(t)$ the error term (residuals). The hedge ratio $\beta_{i,j}$ ensures that long and short positions remain market-neutral. Using the hedge ratio, a market-neutral spread can be constructed:</p>
-<p><span id="f3"></span>
+<p><a id="f3"></a>
 $$Spread_{i,j}(t) = \log X_i(t) - \beta_{i,j} \log X_j(t)$$</p>
 <p>This spread eliminates common market movements. However, for trading to be profitable, the spread must be mean-reverting:</p>
 <p><!-- raw HTML omitted --><!-- raw HTML omitted -->
 $$Spread_{i,j}(t) = \mu_{i,j} + u_{i,j}(t)$$</p>
 <p>where $u_{i,j}(t)$ is a stationary process with $E[u_{i,j}(t)] = 0$. In trading, profitable deviations can only be captured when the spread returns to its mean. To determine when the spread deviates too far from its mean, it is normalized:</p>
-<p><span id="f5"></span>
+<p><a id="f5"></a>
 $$Z_{i,j}(t) = \frac{Spread_{i,j}(t) - \mu_{i,j}}{\sigma_{i,j}}$$</p>
 <p>The Z-score enables comparison of deviations and defines clear entry and exit signals. For example, with $\theta = 2$: Long when $Z_{i,j}(t) &lt; -\theta$ by going long $X_i$ and short $\beta_{i,j} \cdot X_j$, or short when $Z_{i,j}(t) &gt; +\theta$ by going short $X_i$ and long $\beta_{i,j} \cdot X_j$. These trades are exited when $Z_{i,j}(t) \rightarrow 0$, as the spread returns to its historical center.</p>
 <h2 class="heading" id="the-correlation-approach">
@@ -223,7 +223,7 @@ $$Z_{i,j}(t) = \frac{Spread_{i,j}(t) - \mu_{i,j}}{\sigma_{i,j}}$$</p>
 </h2>
 <p>According to <a href="#ref-Gatev%202006" id="cite-Gatev 2006">Gatev et al. 2006</a>, the correlation approach is based on the assumption that $X_i(t)$ and $X_j(t)$ with historically high correlation will continue to exhibit similar price movements in the future. Unlike cointegration-based approaches, this method does not assume long-term equilibrium relationships but rather short-term correlation patterns.</p>
 <p><strong>Finding Correlated Pairs:</strong> In correlation-based methods, pairs are selected according to <a href="#ref-Sharpe%201964" id="cite-Sharpe 1964">Sharpe 1964</a> using Pearson correlation over a formation period of length $t_f$:</p>
-<p><span id="f6"></span>
+<p><a id="f6"></a>
 $$\rho_{i,j} = \frac{Cov(X_i, X_j)}{\sigma_{X_i} \sigma_{X_j}} = \frac{\sum_{t=1}^{t_f}(X_i(t) - \bar{X_i})(X_j(t) - \bar{X_j})}{\sqrt{\sum_{t=1}^{t_f}(X_i(t) - \bar{X_i})^2}\sqrt{\sum_{t=1}^{t_f}(X_j(t) - \bar{X_j})^2}}$$</p>
 <p>where $\bar{X_i}$ and $\bar{X_j}$ represent the means of the respective time series during the formation period. Pairs with $\rho_{i,j} &gt; \rho_{\min}$ above a defined threshold are selected for trading.</p>
 <p><strong>Trading Correlated Pairs:</strong>
@@ -238,7 +238,7 @@ For trading pairs according to <a href="#ref-Gatev%202006" id="cite-Gatev 2006">
 <p><strong>Three key factors</strong> undermine the profitability of static pairs trading applications in today&rsquo;s market environment:</p>
 <ol>
 <li>
-<p><strong>Popularity:</strong> The more market participants use the same strategy, the faster arbitrage opportunities disappear <a href="#ref-Jacobs%202015" id="cite-Jacobs 2015">(cf. Jacobs 2015)</a>. The adoption of pairs trading has demonstrably increased among professional traders, institutional investors, and hedge fund managers since the early 2000s <a href="#ref-Miao%202014" id="cite-Miao 2014">(Miao 2014, p. 96)</a>.</p>
+<p><strong>Popularity:</strong> The more market participants use the same strategy, the faster arbitrage opportunities disappear <a href="#ref-Jacobs%202015" id="cite-Jacobs 2015">(Jacobs 2015)</a>. The adoption of pairs trading has demonstrably increased among professional traders, institutional investors, and hedge fund managers since the early 2000s <a href="#ref-Miao%202014" id="cite-Miao 2014">(Miao 2014, p. 96)</a>.</p>
 </li>
 <li>
 <p><strong>Elimination of Inefficiencies:</strong> <a href="#ref-Miao%202014" id="cite-Miao 2014">Miao et al. 2014</a> illustrates how High Frequency Trading (HFT) eliminates market inefficiencies through technological advancement. While positions were held for weeks or days during the development of cointegration-based and correlation-based approaches, arbitrage opportunities are now exploited within hours, minutes, or even seconds. The inefficiencies on which classical pairs trading relies are identified and eliminated faster than traditional approaches can respond.</p>
@@ -289,7 +289,7 @@ For trading pairs according to <a href="#ref-Gatev%202006" id="cite-Gatev 2006">
   <a class="anchor" href="#data">#</a>
 </h2>
 <p>To obtain a subset of time series (securities, stocks, or other instruments) for pair formation methods, comparable studies employ pre-selection criteria such as the Global Industry Classification Standard (GICS) <a href="#ref-Do%202010" id="cite-Do 2010">(Do 2010, p. 8)</a>.</p>
-<p><span id="economy-chart"></span>
+<p><a id="economy-chart"></a>
 
 
 
@@ -317,7 +317,7 @@ For trading pairs according to <a href="#ref-Gatev%202006" id="cite-Gatev 2006">
 </p>
 <p><em>GICS</em> forms the foundation for S&amp;P and MSCI financial market indices, where each firm is assigned to exactly one sub-industry based on its primary business activity, and thus to one industry, industry group, and sector. Potential pairs are then restricted to the sectors or subsectors defined by this classification (see <a href="#economy-chart">Figure 2, level 3</a>). While this captures economic synergies in pairs, it may wrongly exclude potential connections from the start. To minimize this exclusion, we select stocks at the national economic level (see <a href="#economy-chart">Figure 2, level 2</a>). We deliberately avoid sector-specific filtering based on the assumption that machine learning methods can identify cross-industry relationships that traditional GICS-based restrictions would miss. In this research, we implement this through the American and British markets using the <em>NASDAQ-100</em> and <em>FTSE-100</em> (abbreviated as $N_{100}$ and $F_{100}$) (see <a href="#economy-chart">Figure 2, level 4</a>).</p>
 <p><strong>Indices:</strong> Stock data for both indices spans the period $T = [t_{\text{start}}, t_{\text{end}}]$, where $t_{\text{start}}$ corresponds to January 1, 2020, and $t_{\text{end}}$ to January 1, 2025. This period is divided into training and testing phases: The training period covers $T_{\text{train}} = [01.01.2020, 31.12.2023]$. The testing period spans $T_{\text{test}} = [01.01.2024, 01.01.2025]$. For each stock, a complete dataset is captured on every trading day, including the trading symbol, date, and essential price information: opening price, daily high, daily low, closing price, and trading volume. Since no additional restrictions regarding market capitalization, liquidity, or sector affiliation apply, the pool of all 100 stocks in an index $A = {a_1, a_2, &hellip;, a_{100}}$ yields the set of all permissible pairs through $P = {(a_i, a_j) \mid a_i, a_j \in A \land i &lt; j}$. This corresponds to $\binom{100}{2} = 4950$ possible pair candidates per index.</p>
-<p><span id="market"></span>
+<p><a id="market"></a>
 <figure><img src="/images/market_comparison.png"
     alt="Figure 3: Comparative performance of $F_{100}$ and $N_{100}$ indices from 2020-2025, normalized to base value 100 (January 1, 2020). Gray shaded area indicates the 2024-2025 period. Arrows show total growth rates and 2024-2025 performance." width="700"><figcaption>
       <p>Figure 3: Comparative performance of $F_{100}$ and $N_{100}$ indices from 2020-2025, normalized to base value 100 (January 1, 2020). Gray shaded area indicates the 2024-2025 period. Arrows show total growth rates and 2024-2025 performance.</p>
@@ -335,15 +335,15 @@ For trading pairs according to <a href="#ref-Gatev%202006" id="cite-Gatev 2006">
 <p>$$\text{Return} = R_i = \frac{1}{T} \sum_{t=1}^{T} \frac{P_t - P_{t-1}}{P_{t-1}} \times \text{Trading days per year}$$
 $$\text{Volatility} = V_i = \sqrt{\frac{1}{T-1} \sum_{t=1}^{T} \left( \frac{P_t - P_{t-1}}{P_{t-1}} - \mu \right)^2} \times \sqrt{\text{Trading days per year}}$$</p>
 <p>The economic assumption is that stocks with similar risk-return profiles respond comparably to market conditions and therefore exhibit more stable statistical relationships than randomly chosen pairs. Clustering reduces the search space to a few hundred pair combinations within clusters, minimizing the multiple testing problem.</p>
-<p><span id="cluster2"></span>
+<p><a id="cluster2"></a>
 <figure><img src="/images/cluster1.drawio.png"
     alt="Figure 4: Affinity Propagation Clustering for $N_{100}$ and $F_{100}$ stocks in return-volatility space with exemplar-based cluster centers and selected pairs after cointegration test and score evaluation in t-SNE similarity space."><figcaption>
       <p>Figure 4: Affinity Propagation Clustering for $N_{100}$ and $F_{100}$ stocks in return-volatility space with exemplar-based cluster centers and selected pairs after cointegration test and score evaluation in t-SNE similarity space.</p>
     </figcaption>
 </figure>
 </p>
-<p><a href="#cluster2">Figure 4</a> shows Affinity Propagation Clustering in the original return-volatility space for the $F_{100}$. The connecting lines illustrate the exemplar-based structure: each stock connects to its cluster center, where the centers are actual stocks from the dataset (not calculated means). A possible economic interpretation of these clusters (important only for the left side of the figure) can be seen using the return-volatility quadrants in <a href="#cluster3">Figure 5</a>.</p>
-<p><span id="cluster3"></span>
+<p><a href="#cluster2">Figure 4</a> shows Affinity Propagation Clustering in the original return-volatility space for the $F_{100}$. The connecting lines illustrate the exemplar-based structure: each stock connects to its cluster center, where the centers are actual stocks from the dataset (not calculated means). A possible economic interpretation of these clusters (important only for the left side of the figure) can be seen using the quadrants in <a href="#cluster3">Figure 5</a>.</p>
+<p><a id="cluster3"></a>
 <figure><img src="/images/eco.drawio.png"
     alt="Figure 5: Economic interpretation of return-to-volatility quadrants." width="300"><figcaption>
       <p>Figure 5: Economic interpretation of return-to-volatility quadrants.</p>
@@ -351,7 +351,7 @@ $$\text{Volatility} = V_i = \sqrt{\frac{1}{T-1} \sum_{t=1}^{T} \left( \frac{P_t 
 </figure>
 </p>
 <p>Cointegration tests remain necessary as an additional processing step, since similar return-volatility profiles do not automatically guarantee long-term equilibrium relationships - clustering serves as an economically motivated pre-selection for statistically robust pairs with local significance. Pair selection occurs through a weighted score based on cluster center distance and profile similarity:</p>
-<p><span id="score"></span>
+<p><a id="score"></a>
 $$S_{i,j} = 0.6 \cdot D_{center,norm} + 0.4 \cdot D_{profile,norm}$$</p>
 <p>where $D_{center}$ measures the average euclidean distance of both stocks to cluster center $C$ and $D_{profile}$ measures the direct euclidean distance between stocks in standardized return-volatility space. Both components are min-max normalized and only pairs with <a href="#cointpair">cointegration</a> $p$-value $&lt; 0.05$ qualify for trading. Final selection results from the top 20 best scores that meet statistical requirements.</p>
 <p><a href="#cluster2">Figure 4</a> shows on the right side the stocks selected after <a href="#score">score evaluation</a> and <a href="#cointpair">cointegration test</a>. The t-SNE transformation projects these into a similarity space that better reveals local neighborhoods and exemplarily shows the final pairs of a window.</p>
@@ -361,7 +361,7 @@ $$S_{i,j} = 0.6 \cdot D_{center,norm} + 0.4 \cdot D_{profile,norm}$$</p>
   <a class="anchor" href="#gradient-boost-regressor">#</a>
 </h2>
 <p>The Gradient Boost Regressor combines many weak decision trees into a strong predictive model incrementally, where each new tree uses the residuals (difference between actual and predicted values) of previous trees as target variables. The method systematically analyzes in each iteration which direction predictions need correction to minimize errors, trains a new decision tree that learns exactly these corrections, and adds it to the overall prediction <a href="#ref-He%202019" id="cite-He 2019">(He 2019)</a>.</p>
-<p>At the time of writing, no comparable application for pair discovery exists in the literature. Studies such as <a href="#ref-Krauss%202017" id="cite-Krauss 2017">cf. Krauss et al. 2017</a> titled <em>&ldquo;Deep neural networks, gradient-boosted trees, random forests: Statistical arbitrage on the S&amp;P 500&rdquo;</em> show that Gradient-Boosted Trees outperform both Deep Neural Networks (0.33%) and Random Forests (0.43%) in statistical arbitrage strategies with 0.37% daily returns before transaction costs. This demonstrates the method&rsquo;s potential for successful application in pairs trading.</p>
+<p>At the time of writing, no comparable application for pair discovery exists in the literature. Studies such as <a href="#ref-Krauss%202017" id="cite-Krauss 2017">Krauss et al. 2017</a> titled <em>&ldquo;Deep neural networks, gradient-boosted trees, random forests: Statistical arbitrage on the S&amp;P 500&rdquo;</em> show that Gradient-Boosted Trees outperform both Deep Neural Networks (0.33%) and Random Forests (0.43%) in statistical arbitrage strategies with 0.37% daily returns before transaction costs. This demonstrates the method&rsquo;s potential for successful application in pairs trading.</p>
 <p>The regressor uses a multidimensional feature vector to predict average spread deviations between stock pairs. This target variable selection follows validation as a target variable in related machine learning works connected to statistical arbitrage <a href="#ref-Sarmento%202020" id="cite-Sarmento 2020">(Sarmento 2020)</a>; <a href="#ref-Lin%202021" id="cite-Lin 2021">(Lin 2021)</a>. Empirical findings show that price differences between cointegrated stocks in classical pairs trading do not converge but persist, causing losses. Traditional methods measure spreads, define thresholds, and react accordingly. Machine learning approaches, however, forecast stock pairs with future minimal spread volatility. Instead of trading all cointegrated pairs and awaiting their convergence, the model selects only pairs with predicted spread stability.</p>
 <p>The final feature matrix comprises 32 dimensions: 3 statistical base features, 20 technical time series indicators, 6 volume properties, and 3 extended MACD components. Missing values are handled through SimpleImputer with mean strategy:</p>
 
@@ -418,7 +418,7 @@ $$S_{i,j} = 0.6 \cdot D_{center,norm} + 0.4 \cdot D_{profile,norm}$$</p>
     </table>
 </div><p>Feature selection and time window choices resulted from a two-stage optimization process. A feature set of 80 technical indicators with varying time windows was evaluated using <code>Gradient Boosting Feature Importance Analysis</code>. From the initial feature importance ranking, the 32 strongest features were selected while eliminating redundant features with high correlation.</p>
 <p>The final model&rsquo;s hyperparameters include <code>learning_rate</code> of <code>0.2</code>, <code>max_depth</code> of <code>2</code>, and <code>n_estimators</code> of <code>300</code> trees, plus <code>min_samples_split</code> and <code>min_samples_leaf</code> of <code>2</code> each. Parameter selection occurred through grid search with <code>learning_rate</code> $∈ {0.01, 0.1, 0.2}$, <code>max_depth</code> $∈ {2, 3, 4}$, <code>n_estimators</code> $∈ {100, 200, 300}$, and regularization parameters <code>min_samples_split</code> $∈ {2, 4}$ and <code>min_samples_leaf</code> $∈ {1, 2}$. Five-fold cross-validation with $R²$-Score as optimization metric yielded the final configuration. Training occurs on 80% of available data with 20% test set evaluation.</p>
-<p><span id="regressor"></span>
+<p><a id="regressor"></a>
 <figure><img src="/images/regressorv1.drawio.png"
     alt="Figure 6: Predicted vs Actual representation of Gradient Boosting models for $N_{100}$ (left) and $F_{100}$ (right). The linear relationship between predicted and actual spread deviations confirms the predictive quality of both models."><figcaption>
       <p>Figure 6: Predicted vs Actual representation of Gradient Boosting models for $N_{100}$ (left) and $F_{100}$ (right). The linear relationship between predicted and actual spread deviations confirms the predictive quality of both models.</p>
@@ -435,7 +435,7 @@ $$S_{i,j} = 0.6 \cdot D_{center,norm} + 0.4 \cdot D_{profile,norm}$$</p>
 <p>$$T_{train}^{(i)} = [t_{start} + (i-1) \cdot \Delta t, t_{train_end} + (i-1) \cdot \Delta t]$$
 $$T_{trade}^{(i)} = [t_{train_end} + (i-1) \cdot \Delta t + 1, t_{train_end} + (i-1) \cdot \Delta t + \Delta_{trade}]$$</p>
 <p>with $t_{train_end} = 01.01.2024$ and $\Delta_{trade} = 1$ month. This coupled shift ensures that the training window maintains its 3-year length, as visualized in <a href="#window">Figure 7</a>.</p>
-<p><span id="window"></span>
+<p><a id="window"></a>
 <figure><img src="/images/window.drawio.png"
     alt="Figure 7: Coupled shift of both windows across 12 iterations."><figcaption>
       <p>Figure 7: Coupled shift of both windows across 12 iterations.</p>
@@ -448,7 +448,7 @@ $$T_{trade}^{(i)} = [t_{train_end} + (i-1) \cdot \Delta t + 1, t_{train_end} + (
   <a class="anchor" href="#trading-strategies">#</a>
 </h2>
 <p>To evaluate the identified pairs, two established technical trading strategies are applied: a <strong>Z-Score</strong> and a <strong>Bollinger-Band</strong> based strategy. Z-Score has become a widely used method in pairs trading <a href="#ref-Quantinsti%202025" id="cite-Quantinsti 2025">(Quantinsti 2025)</a>, as pairs trading ranks among the most frequently used market-neutral strategies <a href="#ref-Carrasco%20Bl%c3%a1zquez%202018" id="cite-Carrasco Blázquez 2018">(Carrasco Blázquez 2018)</a>. Bollinger Bands are implemented as an additional strategy because, unlike the fixed thresholds of Z-Score, they use dynamic bands that adapt to market volatility <a href="#ref-Leung%202020" id="cite-Leung 2020">(Leung 2020)</a>; <a href="#ref-Syril%202025" id="cite-Syril 2025">(Syril 2025)</a>.</p>
-<p><span id="strategies"></span>
+<p><a id="strategies"></a>
 <figure><img src="/images/strategies.drawio.png"
     alt="Figure 8: Visual representation of Z-Score and Bollinger Bands trading strategies showing entry and exit signals for pairs trading." width="800"><figcaption>
       <p>Figure 8: Visual representation of Z-Score and Bollinger Bands trading strategies showing entry and exit signals for pairs trading.</p>
@@ -459,7 +459,7 @@ $$T_{trade}^{(i)} = [t_{train_end} + (i-1) \cdot \Delta t + 1, t_{train_end} + (
   Z-Score Strategy
   <a class="anchor" href="#z-score-strategy">#</a>
 </h3>
-<p>The Z-Score strategy uses the previously introduced <a href="#f5">Z-Score normalization</a> with rolling windows of $w_2 = 60$ trading days for calculating $\mu_{i,j}$ and $\sigma_{i,j}$. This threshold applies to the evaluation and was selected as the mean value (but can be adjusted). According to <a href="#ref-Krauss%202015" id="cite-Krauss 2015">cf. Krauss et al. 2015</a> from the Institute for Economics at the University of Erlangen-Nuremberg, typical window sizes for historical means and standard deviations in pairs trading strategies range between 30 and 90 days.</p>
+<p>The Z-Score strategy uses the previously introduced <a href="#f5">Z-Score normalization</a> with rolling windows of $w_2 = 60$ trading days for calculating $\mu_{i,j}$ and $\sigma_{i,j}$. This threshold applies to the evaluation and was selected as the mean value (but can be adjusted). According to <a href="#ref-Krauss%202015" id="cite-Krauss 2015">Krauss et al. 2015</a> from the Institute for Economics at the University of Erlangen-Nuremberg, typical window sizes for historical means and standard deviations in pairs trading strategies range between 30 and 90 days.</p>
 
 <div class="table-outer">
     <table>
@@ -529,135 +529,83 @@ $$Lower_{i,j}(t) = \mu_{spread}(t) - 2.0 \cdot \sigma_{spread}(t)$$</p>
   Literatur
   <a class="anchor" href="#literatur">#</a>
 </h2>
-
 <div id="ref-Sharpe 1964" class="reference">
-  <span class="ref-label">[Sharpe 1964]</span>
-  <span class="ref-content">Sharpe, W. F. (1964). Capital Asset Prices: A Theory of Market Equilibrium Under Conditions of Risk. The Journal of Finance, 19(3), 425-442. <a href="https://doi.org/10.1111/j.1540-6261.1964.tb02865.x">https://doi.org/10.1111/j.1540-6261.1964.tb02865.x</a></span>
+  <strong>[Sharpe 1964]</strong> Sharpe, W. F. (1964). Capital Asset Prices: A Theory of Market Equilibrium Under Conditions of Risk. The Journal of Finance, 19(3), 425-442. https://doi.org/10.1111/j.1540-6261.1964.tb02865.x
 </div>
-
 <div id="ref-Dickey 1979" class="reference">
-  <span class="ref-label">[Dickey 1979]</span>
-  <span class="ref-content">Dickey, D. A., &amp; Fuller, W. A. (1979). Distribution of the Estimators for Autoregressive Time Series with a Unit Root. Journal of the American Statistical Association, 74, 427-431. <a href="https://api.semanticscholar.org/CorpusID:56458593">https://api.semanticscholar.org/CorpusID:56458593</a></span>
+  <strong>[Dickey 1979]</strong> Dickey, D. A., & Fuller, W. A. (1979). Distribution of the Estimators for Autoregressive Time Series with a Unit Root. Journal of the American Statistical Association, 74, 427-431. https://api.semanticscholar.org/CorpusID:56458593
 </div>
-
 <div id="ref-Engle 1987" class="reference">
-  <span class="ref-label">[Engle 1987]</span>
-  <span class="ref-content">Engle, R. F., &amp; Granger, C. W. J. (1987). Co-integration and Error Correction: Representation, Estimation, and Testing. Econometrica, 55(2), 251-276. <a href="https://ideas.repec.org/a/ecm/emetrp/v55y1987i2p251-76.html">https://ideas.repec.org/a/ecm/emetrp/v55y1987i2p251-76.html</a></span>
+  <strong>[Engle 1987]</strong> Engle, R. F., & Granger, C. W. J. (1987). Co-integration and Error Correction: Representation, Estimation, and Testing. Econometrica, 55(2), 251-276. https://ideas.repec.org/a/ecm/emetrp/v55y1987i2p251-76.html
 </div>
-
 <div id="ref-Vidyamurthy 2004" class="reference">
-  <span class="ref-label">[Vidyamurthy 2004]</span>
-  <span class="ref-content">Vidyamurthy, G. (2004). Pairs Trading: Quantitative Methods and Analysis. John Wiley &amp; Sons, Hoboken, New Jersey.</span>
+  <strong>[Vidyamurthy 2004]</strong> Vidyamurthy, G. (2004). Pairs Trading: Quantitative Methods and Analysis. John Wiley & Sons, Hoboken, New Jersey.
 </div>
-
 <div id="ref-Gatev 2006" class="reference">
-  <span class="ref-label">[Gatev 2006]</span>
-  <span class="ref-content">Gatev, E., Goetzmann, W. N., &amp; Rouwenhorst, K. G. (2006). Pairs Trading: Performance of a Relative Value Arbitrage Rule. Yale ICF Working Paper No. 08-03. <a href="https://doi.org/10.2139/ssrn.141615">https://doi.org/10.2139/ssrn.141615</a></span>
+  <strong>[Gatev 2006]</strong> Gatev, E., Goetzmann, W. N., & Rouwenhorst, K. G. (2006). Pairs Trading: Performance of a Relative Value Arbitrage Rule. Yale ICF Working Paper No. 08-03. https://doi.org/10.2139/ssrn.141615
 </div>
-
 <div id="ref-Dueck 2009" class="reference">
-  <span class="ref-label">[Dueck 2009]</span>
-  <span class="ref-content">Dueck, D. (2009). Affinity propagation: Clustering data by passing messages. PhD thesis.</span>
+  <strong>[Dueck 2009]</strong> Dueck, D. (2009). Affinity propagation: Clustering data by passing messages. PhD thesis.
 </div>
-
 <div id="ref-Do 2010" class="reference">
-  <span class="ref-label">[Do 2010]</span>
-  <span class="ref-content">Do, B., &amp; Faff, R. (2010). Does simple pairs trading still work? Financial Analysts Journal, 66(4), 83-95. <a href="https://doi.org/10.2469/faj.v66.n4.1">https://doi.org/10.2469/faj.v66.n4.1</a></span>
+  <strong>[Do 2010]</strong> Do, B., & Faff, R. (2010). Does simple pairs trading still work? Financial Analysts Journal, 66(4), 83-95. https://doi.org/10.2469/faj.v66.n4.1
 </div>
-
 <div id="ref-Miao 2014" class="reference">
-  <span class="ref-label">[Miao 2014]</span>
-  <span class="ref-content">Miao, G. J. (2014). High frequency and dynamic pairs trading based on statistical arbitrage using a two-stage correlation and cointegration approach. International Journal of Economics and Finance, 6, 96. <a href="https://api.semanticscholar.org/CorpusID:54175142">https://api.semanticscholar.org/CorpusID:54175142</a></span>
+  <strong>[Miao 2014]</strong> Miao, G. J. (2014). High frequency and dynamic pairs trading based on statistical arbitrage using a two-stage correlation and cointegration approach. International Journal of Economics and Finance, 6, 96. https://api.semanticscholar.org/CorpusID:54175142
 </div>
-
 <div id="ref-Krauss 2015" class="reference">
-  <span class="ref-label">[Krauss 2015]</span>
-  <span class="ref-content">Krauss, C. (2015). Statistical arbitrage pairs trading strategies: Review and outlook. IWQW Discussion Papers, No. 09/2015, Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut für Wirtschaftspolitik und Quantitative Wirtschaftsforschung (IWQW), Nürnberg. <a href="https://hdl.handle.net/10419/116783">https://hdl.handle.net/10419/116783</a></span>
+  <strong>[Krauss 2015]</strong> Krauss, C. (2015). Statistical arbitrage pairs trading strategies: Review and outlook. IWQW Discussion Papers, No. 09/2015, Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut für Wirtschaftspolitik und Quantitative Wirtschaftsforschung (IWQW), Nürnberg. https://hdl.handle.net/10419/116783
 </div>
-
 <div id="ref-Jacobs 2015" class="reference">
-  <span class="ref-label">[Jacobs 2015]</span>
-  <span class="ref-content">Jacobs, H., &amp; Weber, M. (2015). On the determinants of pairs trading profitability. Journal of Financial Markets, 23, 75-97. <a href="https://doi.org/10.1016/j.finmar.2014.12.001">https://doi.org/10.1016/j.finmar.2014.12.001</a></span>
+  <strong>[Jacobs 2015]</strong> Jacobs, H., & Weber, M. (2015). On the determinants of pairs trading profitability. Journal of Financial Markets, 23, 75-97. https://doi.org/10.1016/j.finmar.2014.12.001
 </div>
-
 <div id="ref-Rad 2016" class="reference">
-  <span class="ref-label">[Rad 2016]</span>
-  <span class="ref-content">Rad, H., Low, R. K. Y., &amp; Faff, R. (2016). The profitability of pairs trading strategies: distance, cointegration and copula methods. Quantitative Finance, 16(10), 1541-1558. <a href="https://doi.org/10.1080/14697688.2016.1164337">https://doi.org/10.1080/14697688.2016.1164337</a></span>
+  <strong>[Rad 2016]</strong> Rad, H., Low, R. K. Y., & Faff, R. (2016). The profitability of pairs trading strategies: distance, cointegration and copula methods. Quantitative Finance, 16(10), 1541-1558. https://doi.org/10.1080/14697688.2016.1164337
 </div>
-
 <div id="ref-Moritz 2017" class="reference">
-  <span class="ref-label">[Moritz 2017]</span>
-  <span class="ref-content">Moritz, S., &amp; Bartz-Beielstein, T. (2017). imputeTS: Time series missing value imputation in R. The R Journal, 9(1), 207-218. <a href="https://doi.org/10.32614/RJ-2017-009">https://doi.org/10.32614/RJ-2017-009</a></span>
+  <strong>[Moritz 2017]</strong> Moritz, S., & Bartz-Beielstein, T. (2017). imputeTS: Time series missing value imputation in R. The R Journal, 9(1), 207-218. https://doi.org/10.32614/RJ-2017-009
 </div>
-
 <div id="ref-Krauss 2017" class="reference">
-  <span class="ref-label">[Krauss 2017]</span>
-  <span class="ref-content">Krauss, C., Do, X. A., &amp; Huck, N. (2017). Deep neural networks, gradient-boosted trees, random forests: Statistical arbitrage on the S&amp;P 500. European Journal of Operational Research, 259(2), 689-702. <a href="https://doi.org/10.1016/j.ejor.2016.10.031">https://doi.org/10.1016/j.ejor.2016.10.031</a></span>
+  <strong>[Krauss 2017]</strong> Krauss, C., Do, X. A., & Huck, N. (2017). Deep neural networks, gradient-boosted trees, random forests: Statistical arbitrage on the S&P 500. European Journal of Operational Research, 259(2), 689-702. https://doi.org/10.1016/j.ejor.2016.10.031
 </div>
-
 <div id="ref-Carrasco Blázquez 2018" class="reference">
-  <span class="ref-label">[Carrasco Blázquez 2018]</span>
-  <span class="ref-content">Carrasco Blázquez, M., De la Orden De la Cruz, C., &amp; Prado Román, C. (2018). Pairs trading techniques: An empirical contrast. European Research on Management and Business Economics, 24(3), 160-167. <a href="https://doi.org/10.1016/j.iedeen.2018.05.002">https://doi.org/10.1016/j.iedeen.2018.05.002</a></span>
+  <strong>[Carrasco Blázquez 2018]</strong> Carrasco Blázquez, M., De la Orden De la Cruz, C., & Prado Román, C. (2018). Pairs trading techniques: An empirical contrast. European Research on Management and Business Economics, 24(3), 160-167. https://doi.org/10.1016/j.iedeen.2018.05.002
 </div>
-
 <div id="ref-He 2019" class="reference">
-  <span class="ref-label">[He 2019]</span>
-  <span class="ref-content">He, Z., Lin, D., Lau, T., &amp; Wu, M. (2019). Gradient boosting machine: A survey. arXiv preprint arXiv:1908.06951. <a href="https://arxiv.org/abs/1908.06951">https://arxiv.org/abs/1908.06951</a></span>
+  <strong>[He 2019]</strong> He, Z., Lin, D., Lau, T., & Wu, M. (2019). Gradient boosting machine: A survey. arXiv preprint arXiv:1908.06951. https://arxiv.org/abs/1908.06951
 </div>
-
 <div id="ref-Chen 2019" class="reference">
-  <span class="ref-label">[Chen 2019]</span>
-  <span class="ref-content">Chen, K., Chiu, M. C., &amp; Wong, H. Y. (2019). Time-consistent mean-variance pairs-trading under regime-switching cointegration. SIAM Journal on Financial Mathematics, 10(2), 632-665. <a href="https://doi.org/10.1137/18M1209611">https://doi.org/10.1137/18M1209611</a></span>
+  <strong>[Chen 2019]</strong> Chen, K., Chiu, M. C., & Wong, H. Y. (2019). Time-consistent mean-variance pairs-trading under regime-switching cointegration. SIAM Journal on Financial Mathematics, 10(2), 632-665. https://doi.org/10.1137/18M1209611
 </div>
-
 <div id="ref-QuantStart 2020" class="reference">
-  <span class="ref-label">[QuantStart 2020]</span>
-  <span class="ref-content">QuantStart. (2020). Dynamic Hedge Ratio Between ETF Pairs Using the Kalman Filter. Retrieved from <a href="https://www.quantstart.com/articles/Dynamic-Hedge-Ratio-Between-ETF-Pairs-Using-the-Kalman-Filter/">https://www.quantstart.com/articles/Dynamic-Hedge-Ratio-Between-ETF-Pairs-Using-the-Kalman-Filter/</a></span>
+  <strong>[QuantStart 2020]</strong> QuantStart. (2020). Dynamic Hedge Ratio Between ETF Pairs Using the Kalman Filter. Retrieved from https://www.quantstart.com/articles/Dynamic-Hedge-Ratio-Between-ETF-Pairs-Using-the-Kalman-Filter/ 
 </div>
-
 <div id="ref-Leung 2020" class="reference">
-  <span class="ref-label">[Leung 2020]</span>
-  <span class="ref-content">Leung, J. M. J., &amp; Chong, T. T. L. (2020). The profitability of Bollinger Bands: Evidence from the constituent stocks of Taiwan 50. Physica A: Statistical Mechanics and its Applications, 539, 122949.</span>
+  <strong>[Leung 2020]</strong> Leung, J. M. J., & Chong, T. T. L. (2020). The profitability of Bollinger Bands: Evidence from the constituent stocks of Taiwan 50. Physica A: Statistical Mechanics and its Applications, 539, 122949.
 </div>
-
 <div id="ref-Sarmento 2020" class="reference">
-  <span class="ref-label">[Sarmento 2020]</span>
-  <span class="ref-content">Sarmento, S. M., &amp; Horta, N. (2020). Enhancing a pairs trading strategy with the application of machine learning. Expert Systems with Applications, 158, 113490. <a href="https://doi.org/10.1016/j.eswa.2020.113490">https://doi.org/10.1016/j.eswa.2020.113490</a></span>
+  <strong>[Sarmento 2020]</strong> Sarmento, S. M., & Horta, N. (2020). Enhancing a pairs trading strategy with the application of machine learning. Expert Systems with Applications, 158, 113490. https://doi.org/10.1016/j.eswa.2020.113490
 </div>
-
 <div id="ref-Lin 2021" class="reference">
-  <span class="ref-label">[Lin 2021]</span>
-  <span class="ref-content">Lin, T.-Y., Chen, C. W. S., &amp; Syu, F.-Y. (2021). Multi-asset pair-trading strategy: A statistical learning approach. The North American Journal of Economics and Finance, 55, 101295. <a href="https://doi.org/10.1016/j.najef.2020.101295">https://doi.org/10.1016/j.najef.2020.101295</a></span>
+  <strong>[Lin 2021]</strong> Lin, T.-Y., Chen, C. W. S., & Syu, F.-Y. (2021). Multi-asset pair-trading strategy: A statistical learning approach. The North American Journal of Economics and Finance, 55, 101295. https://doi.org/10.1016/j.najef.2020.101295
 </div>
-
 <div id="ref-Ma 2022" class="reference">
-  <span class="ref-label">[Ma 2022]</span>
-  <span class="ref-content">Ma, B., &amp; Ślepaczuk, R. (2022). The profitability of pairs trading strategies on Hong-Kong stock market: distance, cointegration, and correlation methods. Working Papers 2022-02, Faculty of Economic Sciences, University of Warsaw. <a href="https://ideas.repec.org/p/war/wpaper/2022-02.html">https://ideas.repec.org/p/war/wpaper/2022-02.html</a></span>
+  <strong>[Ma 2022]</strong> Ma, B., & Ślepaczuk, R. (2022). The profitability of pairs trading strategies on Hong-Kong stock market: distance, cointegration, and correlation methods. Working Papers 2022-02, Faculty of Economic Sciences, University of Warsaw. https://ideas.repec.org/p/war/wpaper/2022-02.html
 </div>
-
 <div id="ref-Feng 2023" class="reference">
-  <span class="ref-label">[Feng 2023]</span>
-  <span class="ref-content">Feng, Y., Zhang, Y., &amp; Wang, Y. (2023). Out‐of‐sample volatility prediction: Rolling window, expanding window, or both? Journal of Forecasting, 43, 567-582. <a href="https://doi.org/10.1002/for.3046">https://doi.org/10.1002/for.3046</a></span>
+  <strong>[Feng 2023]</strong> Feng, Y., Zhang, Y., & Wang, Y. (2023). Out‐of‐sample volatility prediction: Rolling window, expanding window, or both? Journal of Forecasting, 43, 567-582. https://doi.org/10.1002/for.3046
 </div>
-
 <div id="ref-Interactive Brokers 2024" class="reference">
-  <span class="ref-label">[Interactive Brokers 2024]</span>
-  <span class="ref-content">Interactive Brokers LLC. (2024). Commission Schedule and Trading Costs. Retrieved from <a href="https://www.interactivebrokers.com/en/pricing/commissions-stocks">https://www.interactivebrokers.com/en/pricing/commissions-stocks</a></span>
+  <strong>[Interactive Brokers 2024]</strong> Interactive Brokers LLC. (2024). Commission Schedule and Trading Costs. Retrieved from https://www.interactivebrokers.com/en/pricing/commissions-stocks
 </div>
-
 <div id="ref-Quantinsti 2025" class="reference">
-  <span class="ref-label">[Quantinsti 2025]</span>
-  <span class="ref-content">QuantInsti. (2025). Pairs Trading for Beginners: Correlation, Cointegration, Examples, and Strategy Steps. Retrieved from <a href="https://blog.quantinsti.com/pairs-trading-basics/">https://blog.quantinsti.com/pairs-trading-basics/</a></span>
+  <strong>[Quantinsti 2025]</strong> QuantInsti. (2025). Pairs Trading for Beginners: Correlation, Cointegration, Examples, and Strategy Steps. Retrieved from https://blog.quantinsti.com/pairs-trading-basics/
 </div>
-
 <div id="ref-Othman 2025" class="reference">
-  <span class="ref-label">[Othman 2025]</span>
-  <span class="ref-content">Othman, A. H. A. (2025). Enhancing pairs trading strategies in the cryptocurrency industry using machine learning clustering algorithms. London Journal of Research In Management &amp; Business, 25(1), 33-52. <a href="https://journalspress.uk/index.php/LJRMB/article/view/1179">https://journalspress.uk/index.php/LJRMB/article/view/1179</a></span>
+  <strong>[Othman 2025]</strong> Othman, A. H. A. (2025). Enhancing pairs trading strategies in the cryptocurrency industry using machine learning clustering algorithms. London Journal of Research In Management & Business, 25(1), 33-52. https://journalspress.uk/index.php/LJRMB/article/view/1179
 </div>
-
 <div id="ref-Syril 2025" class="reference">
-  <span class="ref-label">[Syril 2025]</span>
-  <span class="ref-content">Syril, W. M., &amp; Nagarajan, C. D. (2025). Optimizing commodity futures trading in the financial market: Fine-tuning Bollinger Bands strategy. Global Business Review. <a href="https://doi.org/10.1177/09721509251328555">https://doi.org/10.1177/09721509251328555</a></span>
+  <strong>[Syril 2025]</strong> Syril, W. M., & Nagarajan, C. D. (2025). Optimizing commodity futures trading in the financial market: Fine-tuning Bollinger Bands strategy. Global Business Review. https://doi.org/10.1177/09721509251328555
 </div>
 
     </div>

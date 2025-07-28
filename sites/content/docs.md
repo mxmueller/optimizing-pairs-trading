@@ -122,7 +122,7 @@ The economic assumption is that stocks with similar risk-return profiles respond
            caption="Figure 4: Affinity Propagation Clustering for $N_{100}$ and $F_{100}$ stocks in return-volatility space with exemplar-based cluster centers and selected pairs after cointegration test and score evaluation in t-SNE similarity space."
           >}}
 
-[Figure 4](#cluster2) shows Affinity Propagation Clustering in the original return-volatility space for the $F_{100}$. The connecting lines illustrate the exemplar-based structure: each stock connects to its cluster center, where the centers are actual stocks from the dataset (not calculated means). A possible economic interpretation of these clusters (important only for the left side of the figure) can be seen using the return-volatility quadrants in [Figure 5](#cluster3).
+[Figure 4](#cluster2) shows Affinity Propagation Clustering in the original return-volatility space for the $F_{100}$. The connecting lines illustrate the exemplar-based structure: each stock connects to its cluster center, where the centers are actual stocks from the dataset (not calculated means). A possible economic interpretation of these clusters (important only for the left side of the figure) can be seen using the quadrants in [Figure 5](#cluster3).
 
 {{< anchor "cluster3" >}}
 {{< figure src="/images/eco.drawio.png" 

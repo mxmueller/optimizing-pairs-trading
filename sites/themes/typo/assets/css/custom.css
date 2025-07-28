@@ -1,1 +1,20 @@
-/* Place custom css here */
+.reference {
+  margin-bottom: 1em;
+  text-indent: -2em;
+  padding-left: 2em;
+  line-height: 1.4;
+}
+
+.reference strong {
+padding-right : 0.5em;
+} 
+
+figure img {
+    margin: 0 auto;
+}
+
+figure figcaption {
+    text-align: center;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
