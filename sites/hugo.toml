@@ -2,7 +2,7 @@ baseURL = 'https://mxmueller.github.io/optimizing-pairs-trading/'
 languageCode = 'en-us'
 title = 'Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading'
 theme = 'typo'
-#canonifyURLs = true
+canonifyURLs = true
 
 # Google analytics code
 googleAnalytics = "G-xxxxxxxxx"
