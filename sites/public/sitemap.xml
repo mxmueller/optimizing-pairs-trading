@@ -2,20 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/optimizing-pairs-trading/about/</loc>
+    <loc>http://localhost:1313/optimizing-pairs-trading/about.html</loc>
   </url><url>
-    <loc>http://localhost:1313/optimizing-pairs-trading/home/</loc>
+    <loc>http://localhost:1313/optimizing-pairs-trading/home.html</loc>
   </url><url>
-    <loc>http://localhost:1313/optimizing-pairs-trading/docs/</loc>
+    <loc>http://localhost:1313/optimizing-pairs-trading/docs.html</loc>
   </url><url>
-    <loc>http://localhost:1313/optimizing-pairs-trading/backtester/</loc>
+    <loc>http://localhost:1313/optimizing-pairs-trading/backtester.html</loc>
   </url><url>
-    <loc>http://localhost:1313/optimizing-pairs-trading/setup/</loc>
+    <loc>http://localhost:1313/optimizing-pairs-trading/setup.html</loc>
   </url><url>
     <loc>http://localhost:1313/optimizing-pairs-trading/</loc>
   </url><url>
-    <loc>http://localhost:1313/optimizing-pairs-trading/results/</loc>
+    <loc>http://localhost:1313/optimizing-pairs-trading/results.html</loc>
   </url><url>
-    <loc>http://localhost:1313/optimizing-pairs-trading/tags/</loc>
+    <loc>http://localhost:1313/optimizing-pairs-trading/tags.html</loc>
   </url>
 </urlset>
