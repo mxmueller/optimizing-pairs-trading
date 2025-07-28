@@ -4,6 +4,3 @@
 [submodule "src/backtester"]
 	path = src/backtester
 	url = git@github.com:mxmueller/backtester.git
-[submodule "sites/themes/typo"]
-	path = sites/themes/typo
-	url = https://github.com/tomfran/typo.git
