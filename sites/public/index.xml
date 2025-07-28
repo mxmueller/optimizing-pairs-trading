@@ -2,51 +2,51 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home on Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading</title>
-    <link>http://localhost:1313/</link>
+    <link>http://localhost:1313/optimizing-pairs-trading/</link>
     <description>Recent content in Home on Exploring Machine Learning Optimizatios for Pair Selection in Pairs Trading</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/optimizing-pairs-trading/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title></title>
-      <link>http://localhost:1313/about/</link>
+      <link>http://localhost:1313/optimizing-pairs-trading/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/about/</guid>
+      <guid>http://localhost:1313/optimizing-pairs-trading/about/</guid>
       <description>&lt;p&gt;This research project explores &lt;strong&gt;Machine Learning Optimizations for Pair Selection in Pairs Trading&lt;/strong&gt;, investigating whether modern ML approaches can outperform traditional statistical methods in identifying profitable trading pairs. The study compares machine learning techniques (Gradient Boost Regressor and Affinity Propagation) against conventional cointegration-based methods, testing their performance on major European and US indices including the N₁₀₀ and F₁₀₀.&lt;/p&gt;&#xA;&lt;p&gt;This work is conducted as a &lt;strong&gt;two-semester student research project&lt;/strong&gt; at the &lt;a href=&#34;https://www.heidenheim.dhbw.de/en/home&#34;&gt;DHBW Heidenheim&lt;/a&gt;, focusing on the intersection of quantitative finance and machine learning applications in algorithmic trading.&lt;/p&gt;</description>
     </item>
     <item>
       <title></title>
-      <link>http://localhost:1313/home/</link>
+      <link>http://localhost:1313/optimizing-pairs-trading/home/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/home/</guid>
+      <guid>http://localhost:1313/optimizing-pairs-trading/home/</guid>
       <description></description>
     </item>
     <item>
       <title>Ausarbeitung</title>
-      <link>http://localhost:1313/docs/</link>
+      <link>http://localhost:1313/optimizing-pairs-trading/docs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/docs/</guid>
+      <guid>http://localhost:1313/optimizing-pairs-trading/docs/</guid>
       <description>&lt;hr&gt;&#xA;&lt;p&gt;Pairs trading is a non-directional trading strategy that works regardless of market direction &lt;a href=&#34;#ref-Vidyamurthy%202004&#34; id=&#34;cite-Vidyamurthy 2004&#34;&gt;(Vidyamurthy 2004, p. 8)&lt;/a&gt;. It relies on historical relationships between two securities (time series) $X_i(t)$ and $X_j(t)$ and exploits temporary deviations in their price relationship for profit generation. Statistical pairs trading employs two primary methods: cointegration-based and correlation-based techniques. &lt;a href=&#34;#ref-Engle%201987&#34; id=&#34;cite-Engle 1987&#34;&gt;Engle et al. 1987&lt;/a&gt; established the theoretical foundations of cointegration, &lt;a href=&#34;#ref-Vidyamurthy%202004&#34; id=&#34;cite-Vidyamurthy 2004&#34;&gt;Vidyamurthy et al. 2004&lt;/a&gt; developed its application in pairs trading, and &lt;a href=&#34;#ref-Gatev%202006&#34; id=&#34;cite-Gatev 2006&#34;&gt;Gatev et al. 2006&lt;/a&gt; introduced the correlation-based approach. Pairs trading involves two fundamental steps: identifying suitable pairs and trading them.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Backtester</title>
-      <link>http://localhost:1313/backtester/</link>
+      <link>http://localhost:1313/optimizing-pairs-trading/backtester/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/backtester/</guid>
-      <description>&lt;hr&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;configuration-sidebar&#34;&gt;&#xA;  Configuration Sidebar&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#configuration-sidebar&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;The Configuration Sidebar serves as the central control panel for the backtesting application. All analyses rely on these settings.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a id=&#34;window&#34;&gt;&lt;/a&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;http://localhost:1313/images/gif/config.gif&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;market--strategy&#34;&gt;&#xA;  Market &amp;amp; Strategy&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#market--strategy&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;The first step involves selecting a market from the &lt;code&gt;Select Market&lt;/code&gt; dropdown. This choice determines which stocks and strategies become available. After market selection, the &lt;code&gt;Select Strategy&lt;/code&gt; dropdown displays only compatible strategies. Without a valid selection, the application shows &amp;ldquo;No strategies available for selected market&amp;rdquo;.&lt;/p&gt;</description>
+      <guid>http://localhost:1313/optimizing-pairs-trading/backtester/</guid>
+      <description>&lt;hr&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;configuration-sidebar&#34;&gt;&#xA;  Configuration Sidebar&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#configuration-sidebar&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;The Configuration Sidebar serves as the central control panel for the backtesting application. All analyses rely on these settings.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a id=&#34;window&#34;&gt;&lt;/a&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;http://localhost:1313/optimizing-pairs-trading/images/gif/config.gif&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;market--strategy&#34;&gt;&#xA;  Market &amp;amp; Strategy&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#market--strategy&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;The first step involves selecting a market from the &lt;code&gt;Select Market&lt;/code&gt; dropdown. This choice determines which stocks and strategies become available. After market selection, the &lt;code&gt;Select Strategy&lt;/code&gt; dropdown displays only compatible strategies. Without a valid selection, the application shows &amp;ldquo;No strategies available for selected market&amp;rdquo;.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Backtesting Demonstrator Setup Guide</title>
-      <link>http://localhost:1313/setup/</link>
+      <link>http://localhost:1313/optimizing-pairs-trading/setup/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/setup/</guid>
-      <description>&lt;p&gt;The microservices architecture demonstrates a complete backtesting pipeline for pairs trading strategies. Each service fulfills a specific role in the data processing and analysis workflow.&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;http://localhost:1313/images/archi.drawio.png&#34; width=&#34;800&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;The &lt;strong&gt;Notebook Runner&lt;/strong&gt; (&lt;code&gt;notebook_runner&lt;/code&gt;) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions. The &lt;strong&gt;MinIO&lt;/strong&gt; blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results. The &lt;strong&gt;Analytics&lt;/strong&gt; (&lt;code&gt;analytics&lt;/code&gt;) service processes trade data from the blob storage along with raw market data to calculate comprehensive performance metrics. This backend service handles all computational-heavy operations including risk metrics, return calculations, and portfolio statistics. The &lt;strong&gt;Streamlit&lt;/strong&gt; application provides a unified interface for data visualization, performance analysis, and strategy management. Users can explore raw data, examine trading results, analyze performance metrics, and commission new notebook runs directly through the web interface. All services are located under &lt;code&gt;src/backtester/services/&lt;/code&gt; and communicate through REST APIs and shared storage.&lt;/p&gt;</description>
+      <guid>http://localhost:1313/optimizing-pairs-trading/setup/</guid>
+      <description>&lt;p&gt;The microservices architecture demonstrates a complete backtesting pipeline for pairs trading strategies. Each service fulfills a specific role in the data processing and analysis workflow.&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;http://localhost:1313/optimizing-pairs-trading/images/archi.drawio.png&#34; width=&#34;800&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;The &lt;strong&gt;Notebook Runner&lt;/strong&gt; (&lt;code&gt;notebook_runner&lt;/code&gt;) service leverages papermill to execute all possible permutations of pair-finding algorithms and trading strategies through parameterized Jupyter notebooks. This allows for systematic generation and testing of different strategy combinations across various market conditions. The &lt;strong&gt;MinIO&lt;/strong&gt; blob storage service serves as the central data repository, containing both the theoretical results presented in the research and raw market data. Additionally, all newly generated strategy runs are automatically stored here, creating a comprehensive historical record of backtesting results. The &lt;strong&gt;Analytics&lt;/strong&gt; (&lt;code&gt;analytics&lt;/code&gt;) service processes trade data from the blob storage along with raw market data to calculate comprehensive performance metrics. This backend service handles all computational-heavy operations including risk metrics, return calculations, and portfolio statistics. The &lt;strong&gt;Streamlit&lt;/strong&gt; application provides a unified interface for data visualization, performance analysis, and strategy management. Users can explore raw data, examine trading results, analyze performance metrics, and commission new notebook runs directly through the web interface. All services are located under &lt;code&gt;src/backtester/services/&lt;/code&gt; and communicate through REST APIs and shared storage.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Results</title>
-      <link>http://localhost:1313/results/</link>
+      <link>http://localhost:1313/optimizing-pairs-trading/results/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/results/</guid>
+      <guid>http://localhost:1313/optimizing-pairs-trading/results/</guid>
       <description>&lt;p&gt;The following evaluation of results examines the hypothesis: &lt;em&gt;Machine learning-based approaches for pair identification outperform traditional cointegration-based methods in pairs trading.&lt;/em&gt; In contrast to cointegration-based methods, the pairs identified through machine learning approaches with their respective strategies beat the market ($F_{100}$: +7.9%, $N_{100}$: +15.8% for the year 2024).&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;performance-on-the-n_100-index&#34;&gt;&#xA;  Performance on the $N_{100}$ Index&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#performance-on-the-n_100-index&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;On the $N_{100}$, the Gradient Boost Regressor achieved 20.90% annual return (Z-Score) with a Sharpe ratio of 6.16. This corresponds to a market outperformance of 5.1 percentage points compared to the $N_{100}$ Index. The Affinity Propagation approach achieved 17.98% with a Sharpe ratio of 7.48. Traditional cointegration approaches, by contrast, reached -1.13% or showed double-digit losses.&lt;/p&gt;</description>
     </item>
   </channel>
