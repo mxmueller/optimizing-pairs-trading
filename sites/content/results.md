@@ -4,11 +4,10 @@ math: true  # Das aktiviert KaTeX (ist schon im Theme)
 readTime: true
 ---
 
-Die nachfolgende Auswertung der Ergebnisse Hypothese: *Machine Learning-basierte Ansätze zur Paaridentifikation übertreffen traditionelle kointegrationsbasierte Verfahren im Pairs Trading.* Die durch Machine Learning Ansätze gefundenen Paare schlagen im Gegensatz zu den kointegrationsbasierten Verfahren mit ihren jeweiligen Strategien den Markt ($F_{100}$: +7,9%, $N_{100}$: +15,8% für das Jahr 2024).
+The following evaluation of results examines the hypothesis: *Machine learning-based approaches for pair identification outperform traditional cointegration-based methods in pairs trading.* In contrast to cointegration-based methods, the pairs identified through machine learning approaches with their respective strategies beat the market ($F_{100}$: +7.9%, $N_{100}$: +15.8% for the year 2024).
 
-## Performance am $N_{100}$-Index
-
-Am $N_{100}$ erreichte der Gradient Boost Regressor 20,90% Jahresrendite (Z-Score) bei einer Sharpe Ratio von 6,16. Dies entspricht einer Marktoutperformance von 5,1 Prozentpunkten gegenüber dem $N_{100}$ Index. Der Affinity Propagation Ansatz erzielte 17,98% mit einer Sharpe Ratio von 7,48. Die traditionellen Kointegrationsansätze erreichten dagegen -1,13% oder wiesen zweistellige Verluste auf.
+## Performance on the $N_{100}$ Index
+On the $N_{100}$, the Gradient Boost Regressor achieved 20.90% annual return (Z-Score) with a Sharpe ratio of 6.16. This corresponds to a market outperformance of 5.1 percentage points compared to the $N_{100}$ Index. The Affinity Propagation approach achieved 17.98% with a Sharpe ratio of 7.48. Traditional cointegration approaches, by contrast, reached -1.13% or showed double-digit losses.
 
 | Ansatz | Strategy | Return (%) | Sharpe Ratio | Max Drawdown (%) |
 |--------|----------|------------|--------------|------------------|
@@ -21,17 +20,15 @@ Am $N_{100}$ erreichte der Gradient Boost Regressor 20,90% Jahresrendite (Z-Scor
 
 {{< anchor "nasdaq-rolling" >}}
 {{< figure src="/images/lala.png" 
-           caption="Rolling-Window-Analyse der Strategieperformance am $N_{100}$-Index mit 252-Tage-Fenster. Machine Learning-Verfahren zeigen konsistent positive Performance, während Kointegrationsansätze volatil verlaufen."
+           caption="Rolling window analysis of strategy performance on the $N_{100}$ Index with 252-day window. Machine learning methods show consistently positive performance, while cointegration approaches exhibit volatile patterns."
           >}}
-
 {{< anchor "nasdaq-heatmap" >}}
 {{< figure src="/images/2.png" 
-           caption="Monatliche Performance-Heatmap der sechs Trading-Strategien am $N_{100}$-Index für 2024. Die Darstellung verdeutlicht die unterschiedliche Marktanpassung der Algorithmen. Farbskala von rot (Underperformance) bis grün (Outperformance)."
+           caption="Monthly performance heatmap of the six trading strategies on the $N_{100}$ Index for 2024. The visualization illustrates the different market adaptation of the algorithms. Color scale from red (underperformance) to green (outperformance)."
           >}}
 
-## Performance am $F_{100}$-Index
-
-Am $F_{100}$ generierten beide Machine-Learning-Verfahren Renditen zwischen 11,18% und 14,30%, was einer Outperformance von 3,3 bis 6,4 Prozentpunkten entspricht. Der Affinity Propagation Ansatz mit Z-Score Strategie erreichte die höchste Rendite von 14,30% bei einer Sharpe Ratio von 6,40. Die Kointegrationsansätze erreichten dagegen nur 0,81% oder wiesen zweistellige Verluste auf.
+## Performance on the $F_{100}$ Index
+On the $F_{100}$, both machine learning methods generated returns between 11.18% and 14.30%, corresponding to an outperformance of 3.3 to 6.4 percentage points. The Affinity Propagation approach with Z-Score strategy achieved the highest return of 14.30% with a Sharpe ratio of 6.40. Cointegration approaches, by contrast, reached only 0.81% or showed double-digit losses.
 
 | Ansatz | Strategy | Return (%) | Sharpe Ratio | Max Drawdown (%) |
 |--------|----------|------------|--------------|------------------|
@@ -44,16 +41,12 @@ Am $F_{100}$ generierten beide Machine-Learning-Verfahren Renditen zwischen 11,1
 
 {{< anchor "ftse-rolling" >}}
 {{< figure src="/images/la.png" 
-           caption="Rolling-Window-Analyse der Strategieperformance am $F_{100}$-Index mit 252-Tage-Fenster. Auch am europäischen Markt übertreffen Machine Learning-Ansätze die traditionellen Verfahren deutlich."
+           caption="Rolling window analysis of strategy performance on the $F_{100}$ Index with 252-day window. Machine learning approaches significantly outperform traditional methods in European markets as well."
           >}}
-
 {{< anchor "ftse-heatmap" >}}
 {{< figure src="/images/1.png" 
-           caption="Monatliche Performance-Heatmap der sechs implementierten Trading-Strategien am $F_{100}$-Index für das Jahr 2024. Die Farbcodierung zeigt positive (grün) und negative (rot) Renditen in Prozent an."
+           caption="Monthly performance heatmap of the six implemented trading strategies on the $F_{100}$ Index for 2024. Color coding shows positive (green) and negative (red) returns in percent."
           >}}
 
-## Fazit
-
-Die Ergebnisse zeigen, dass traditionelle statistische Arbitrage-Ansätze in den untersuchten Märkten ihre Profitabilität verloren haben. Die Machine-Learning-Verfahren identifizieren dagegen weiterhin profitable Arbitragemöglichkeiten und erreichen dabei eine konsistente Marktoutperformance bei niedrigen Drawdowns. Die monatlichen Performance-Heatmaps verdeutlichen die unterschiedlichen Risikoprofile: Machine-Learning-Verfahren weisen konsistent positive monatliche Erträge auf, während kointegrationsbasierte Strategien häufige negative Perioden verzeichnen.
-
-Diese Ergebnisse und tiefergehende Analysen sowie Anpassungen der Handels- und Paarfindungsparameter der jeweiligen Ansätze können im Backtester nachgestellt werden. Die Funktionsweise und das Setup können hier gesehen werden.
+## Conclusion
+The results demonstrate that traditional statistical arbitrage approaches have lost their profitability in the examined markets. Machine learning methods, by contrast, continue to identify profitable arbitrage opportunities while achieving consistent market outperformance with low drawdowns. The monthly performance heatmaps illustrate the different risk profiles: machine learning methods exhibit consistently positive monthly returns, while cointegration-based strategies record frequent negative periods. These results and deeper analyses as well as adjustments to the trading and pair discovery parameters of the respective approaches can be replicated in the [backtester](/setup/). The functionality and setup can be viewed here.

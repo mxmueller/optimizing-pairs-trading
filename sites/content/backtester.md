@@ -6,6 +6,7 @@ readTime: true
 
 ---
 
+****
 
 ## Configuration Sidebar
 The Configuration Sidebar serves as the central control panel for the backtesting application. All analyses rely on these settings.

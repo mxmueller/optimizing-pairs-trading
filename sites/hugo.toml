@@ -58,6 +58,12 @@ url = "/results/"
 name = "Setup"
 url = "/setup/"
 
+
+[[params.menu]]
+name = "About"
+url = "/about/"
+
+
 [[params.menu]]
 name = "Backtester"
 url = "/backtester/"
