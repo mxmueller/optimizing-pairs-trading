@@ -3,4 +3,4 @@
 	url = https://github.com/tomfran/typo.git
 [submodule "src/backtester"]
 	path = src/backtester
-	url = git@github.com:mxmueller/backtester.git
+	url = https://github.com/mxmueller/backtester.git
